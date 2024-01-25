@@ -248,7 +248,7 @@ def plant_builder_7dof_iiwa(usemeshcat = False):
     #parser.package_map().Add("cvisirisexamples", missing directory)
     if usemeshcat:
         visualizer = MeshcatVisualizer.AddToBuilder(builder.builder(), scene_graph, meshcat)
-    directives_file = "7_dof_directives_newshelf.yaml"#FindResourceOrThrow() 
+    directives_file = "directives/7_dof_directives_newshelf.yaml"#FindResourceOrThrow() 
     path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
     parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
     directives = LoadModelDirectives(directives_file)
@@ -270,7 +270,7 @@ def plant_builder_7dof_4shelves(usemeshcat = False):
     parser = builder.parser()
     #parser.package_map().Add("cvisirisexamples", missing directory)
     
-    directives_file = "7_dof_directives_4shelves.yaml"#FindResourceOrThrow() 
+    directives_file = "directives/7_dof_directives_4shelves.yaml"#FindResourceOrThrow() 
     path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
     parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
     directives = LoadModelDirectives(directives_file)
@@ -295,7 +295,7 @@ def plant_builder_7dof_bins(usemeshcat = False):
     parser = builder.parser()
     #parser.package_map().Add("cvisirisexamples", missing directory)
     
-    directives_file = "7dof_bins_example.yaml"#FindResourceOrThrow() 
+    directives_file = "directives/7dof_bins_example.yaml"#FindResourceOrThrow() 
     path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
     parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
     directives = LoadModelDirectives(directives_file)
