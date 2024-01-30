@@ -1,4 +1,4 @@
-from ur3e_demo import UrDiagram
+from .ur3e_demo import UrDiagram
 from functools import partial
 from pydrake.all import (StartMeshcat,
                          RobotDiagramBuilder,
@@ -17,11 +17,11 @@ from pydrake.all import (StartMeshcat,
 import numpy as np
 import os
 
-def plant_builder_5dof_ur5(use_meshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
+def plant_builder_5dof_ur5(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
     ur = UrDiagram(num_ur = 1, weld_wrist = True, add_shelf = cfg['add_shelf'],
-                    add_gripper = cfg['add_gripper'], use_meshcat=use_meshcat)
+                    add_gripper = cfg['add_gripper'], use_meshcat=usemeshcat)
 
-    if use_meshcat: meshcat = ur.meshcat
+    if usemeshcat: meshcat = ur.meshcat
     plant = ur.plant
     diagram_context = ur.diagram.CreateDefaultContext()
     ur.diagram.ForcedPublish(diagram_context)
@@ -31,13 +31,13 @@ def plant_builder_5dof_ur5(use_meshcat = False, cfg = {'add_shelf': True, 'add_g
     # scene_graph_context = ur.scene_graph.GetMyMutableContextFromRoot(
     #     diagram_context)
     scene_graph = ur.scene_graph
-    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if use_meshcat else None
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
-def plant_builder_6dof_ur5(use_meshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
+def plant_builder_6dof_ur5(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
     ur = UrDiagram(num_ur = 1, weld_wrist = False, add_shelf = cfg['add_shelf'],
-                    add_gripper = cfg['add_gripper'], use_meshcat=use_meshcat)
+                    add_gripper = cfg['add_gripper'], use_meshcat=usemeshcat)
 
-    if use_meshcat: meshcat = ur.meshcat
+    if usemeshcat: meshcat = ur.meshcat
     plant = ur.plant
     diagram_context = ur.diagram.CreateDefaultContext()
     ur.diagram.ForcedPublish(diagram_context)
@@ -47,7 +47,7 @@ def plant_builder_6dof_ur5(use_meshcat = False, cfg = {'add_shelf': True, 'add_g
     # scene_graph_context = ur.scene_graph.GetMyMutableContextFromRoot(
     #     diagram_context)
     scene_graph = ur.scene_graph
-    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if use_meshcat else None
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 def plant_builder_2dof_flipper_obs(usemeshcat = False):
     if usemeshcat:
@@ -60,23 +60,24 @@ def plant_builder_2dof_flipper_obs(usemeshcat = False):
     parser = builder.parser()
     # plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0.001)
     # parser = Parser(plant)
-    rel_path_cvisiris = "../cvisiris_examples/"
+    rel_path = "../iris_benchmarks/iris_environments/"
     #oneDOF_iiwa_asset = rel_path_cvisiris + "assets/oneDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/oneDOF_iiwa7_with_box_collision.sdf")
-    twoDOF_iiwa_asset = rel_path_cvisiris + "assets/twoDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
+    twoDOF_iiwa_asset = rel_path + "assets/twoDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
 
-    box_asset = rel_path_cvisiris + "assets/box_small.urdf" #FindResourceOrThrow("drake/C_Iris_Examples/assets/box_small.urdf")
-    roi_asset = rel_path_cvisiris + "assets/roi_box.urdf"
-    obs_asset = rel_path_cvisiris + "assets/2d_obs.urdf"
-    path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
-    parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
+    box_asset = rel_path + "assets/box_small.urdf" #FindResourceOrThrow("drake/C_Iris_Examples/assets/box_small.urdf")
+    roi_asset = rel_path + "assets/roi_box.urdf"
+    obs_asset = rel_path + "assets/2d_obs.urdf"
+    path_repo = os.path.dirname(os.path.abspath('')) + "/iris_benchmarks" #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
+    parser.package_map().Add("iris_environments", path_repo+"/iris_environments/assets")
+    parser.SetAutoRenaming(True)
     models = []
-    models.append(parser.AddModelFromFile(box_asset, "box"))
+    models.append(parser.AddModels(box_asset)[0])
     
-    models.append(parser.AddModelFromFile(obs_asset, "obs_box"))
-    models.append(parser.AddModelFromFile(obs_asset, "obs_box2"))
-    models.append(parser.AddModelFromFile(obs_asset, "obs_box3"))
-    models.append(parser.AddModelFromFile(twoDOF_iiwa_asset, "iiwatwodof"))
-    models.append(parser.AddModelFromFile(roi_asset, "roi_box"))
+    models.append(parser.AddModels(obs_asset)[0])
+    models.append(parser.AddModels(obs_asset)[0])
+    models.append(parser.AddModels(obs_asset)[0])
+    models.append(parser.AddModels(twoDOF_iiwa_asset)[0])
+    models.append(parser.AddModels(roi_asset)[0])
     #models.append(parser.AddModelFromFile(oneDOF_iiwa_asset, "iiwaonedof"))
 
     locs = [[0.,0.,0.],
@@ -190,20 +191,21 @@ def plant_builder_3dof_flipper(usemeshcat = False):
     plant = builder.plant()
     scene_graph = builder.scene_graph()
     parser = builder.parser()
-    path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
-    parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
+    parser.SetAutoRenaming(True)
+    path_repo = os.path.dirname(os.path.abspath(''))+ "/iris_benchmarks" #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
+    parser.package_map().Add("iris_environments", path_repo+"/iris_environments/assets")
     # plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0.001)
     # parser = Parser(plant)
-    rel_path_cvisiris = "../cvisiris_examples/"
-    oneDOF_iiwa_asset = rel_path_cvisiris + "assets/oneDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/oneDOF_iiwa7_with_box_collision.sdf")
-    twoDOF_iiwa_asset = rel_path_cvisiris + "assets/twoDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
+    rel_path = path_repo+"/iris_environments/"
+    oneDOF_iiwa_asset = rel_path + "assets/oneDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/oneDOF_iiwa7_with_box_collision.sdf")
+    twoDOF_iiwa_asset = rel_path + "assets/twoDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
 
-    box_asset = rel_path_cvisiris + "assets/box_small.urdf" #FindResourceOrThrow("drake/C_Iris_Examples/assets/box_small.urdf")
+    box_asset = rel_path + "assets/box_small.urdf" #FindResourceOrThrow("drake/C_Iris_Examples/assets/box_small.urdf")
 
     models = []
-    models.append(parser.AddModelFromFile(box_asset, "box"))
-    models.append(parser.AddModelFromFile(twoDOF_iiwa_asset, "iiwatwodof"))
-    models.append(parser.AddModelFromFile(oneDOF_iiwa_asset, "iiwaonedof"))
+    models.append(parser.AddModels(box_asset)[0])
+    models.append(parser.AddModels(twoDOF_iiwa_asset)[0])
+    models.append(parser.AddModels(oneDOF_iiwa_asset)[0])
 
     locs = [[0.,0.,0.],
             [0.,.55,0.],
@@ -248,9 +250,9 @@ def plant_builder_7dof_iiwa(usemeshcat = False):
     #parser.package_map().Add("cvisirisexamples", missing directory)
     if usemeshcat:
         visualizer = MeshcatVisualizer.AddToBuilder(builder.builder(), scene_graph, meshcat)
-    directives_file = "directives/7_dof_directives_newshelf.yaml"#FindResourceOrThrow() 
-    path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
-    parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
+    directives_file = os.path.dirname(os.path.abspath('')) +"/iris_benchmarks/iris_environments/directives/7_dof_directives_newshelf.yaml"#FindResourceOrThrow() 
+    path_repo = os.path.dirname(os.path.abspath('')) +"/iris_benchmarks"#os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
+    parser.package_map().Add("iris_environments", path_repo+"/iris_environments/assets")
     directives = LoadModelDirectives(directives_file)
     models = ProcessModelDirectives(directives, plant, parser)
     plant.Finalize()
@@ -270,9 +272,9 @@ def plant_builder_7dof_4shelves(usemeshcat = False):
     parser = builder.parser()
     #parser.package_map().Add("cvisirisexamples", missing directory)
     
-    directives_file = "directives/7_dof_directives_4shelves.yaml"#FindResourceOrThrow() 
-    path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
-    parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
+    directives_file = os.path.dirname(os.path.abspath('')) +"/iris_benchmarks/iris_environments/directives/7_dof_directives_4shelves.yaml"#FindResourceOrThrow() 
+    path_repo = os.path.dirname(os.path.abspath(''))+ "/iris_benchmarks"
+    parser.package_map().Add("iris_environments", path_repo+"/iris_environments/assets")
     directives = LoadModelDirectives(directives_file)
     models = ProcessModelDirectives(directives, plant, parser)
     plant.Finalize()
@@ -295,9 +297,9 @@ def plant_builder_7dof_bins(usemeshcat = False):
     parser = builder.parser()
     #parser.package_map().Add("cvisirisexamples", missing directory)
     
-    directives_file = "directives/7dof_bins_example.yaml"#FindResourceOrThrow() 
-    path_repo = os.path.dirname(os.path.abspath('')) #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
-    parser.package_map().Add("cvisiris", path_repo+"/cvisiris_examples/assets")
+    directives_file = os.path.dirname(os.path.abspath('')) +"/iris_benchmarks/iris_environments/directives/7dof_bins_example.yaml"#FindResourceOrThrow() 
+    path_repo = os.path.dirname(os.path.abspath(''))+ "/iris_benchmarks" #os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
+    parser.package_map().Add("iris_environments", path_repo+"/iris_environments/assets")
     directives = LoadModelDirectives(directives_file)
     models = ProcessModelDirectives(directives, plant, parser)
     plant.Finalize()
@@ -326,9 +328,10 @@ def environment_builder_14dof_iiwas(usemeshcat = False):
     scene_graph = builder.scene_graph()# AddMultibodyPlantSceneGraph(builder, time_step=0.0)
 
     parser = builder.parser()
-    parser.package_map().Add("bimanual", os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/cvisiris_examples/assets_bimanual")
+    parser.package_map().Add("bimanual", os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/iris_environments/assets_bimanual")
 
-    directives = LoadModelDirectives("assets_bimanual/models/bimanual_iiwa_with_shelves.yaml")
+    directives = LoadModelDirectives(os.path.dirname(os.path.abspath('')) +
+                                     "/iris_benchmarks/iris_environments/assets_bimanual/models/bimanual_iiwa_with_shelves.yaml")
     models = ProcessModelDirectives(directives, plant, parser)
 
     plant.Finalize()
