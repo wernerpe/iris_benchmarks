@@ -54,8 +54,8 @@ class UrDiagram:
         self.plant = self.robotdiagrambuilder.plant()
         self.scene_graph = self.robotdiagrambuilder.scene_graph()
         parser = self.robotdiagrambuilder.parser()
-        path_repo = os.path.dirname(os.path.abspath('')) +"/iris_benchmarks"#os.path.dirname(os.path.dirname(os.path.realpath(__file__))) # replace with {path to cvisirsexamples repo}
-        parser.package_map().Add("iris_environments", path_repo+"/iris_environments/assets")
+        path_repo = os.path.dirname(os.path.abspath(__file__)) 
+        parser.package_map().Add("iris_environments", path_repo+"/assets")
         if weld_wrist:
             ur_file_name = "ur3e_cylinder_weld_wrist.urdf"
         else:
@@ -63,7 +63,7 @@ class UrDiagram:
                 ur_file_name = "ur3e_cylinder_revolute_wrist.urdf"
             elif num_ur == 2:
                 ur_file_name = "ur3e_cylinder_revolute_wrist_collision_visual.urdf"
-        ur_file_path = path_repo+"/iris_environments/assets/models/ur3e/"+ur_file_name
+        ur_file_path = path_repo+"/assets/models/ur3e/"+ur_file_name
         # FindResourceOrThrow("cvisiris/models/ur3e/" +
         #                                    ur_file_name)
         self.ur_instances = []
@@ -81,7 +81,7 @@ class UrDiagram:
                     gripper_file = "schunk_wsg_50_welded_fingers.sdf"
                 elif num_ur == 2:
                     gripper_file = "schunk_wsg_50_welded_fingers_collision_visual.sdf"
-                gripper_file_path =path_repo+"/iris_environments/assets/models/wsg_50_description/sdf/" +gripper_file 
+                gripper_file_path =path_repo+"/assets/models/wsg_50_description/sdf/" +gripper_file 
                 #FindResourceOrThrow(
                     
                     #)
@@ -102,7 +102,7 @@ class UrDiagram:
                             friction=CoulombFriction(0.9, 0.5),
                             properties=proximity_properties)
         if add_shelf:
-            shelf_file_path = os.path.dirname(os.path.abspath('')) + "/iris_benchmarks/iris_environments/assets/shelves.sdf"
+            shelf_file_path = os.path.dirname(os.path.abspath(__file__)) + "/assets/shelves.sdf"
             shelf_instance = parser.AddModels(shelf_file_path)[0]
             shelf_body = self.plant.GetBodyByName("shelves_body",
                                                   shelf_instance)
