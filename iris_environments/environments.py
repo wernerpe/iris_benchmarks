@@ -17,7 +17,7 @@ from pydrake.all import (StartMeshcat,
 import numpy as np
 import os
 
-def plant_builder_5dof_ur5(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
+def plant_builder_5dof_ur3(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
     ur = UrDiagram(num_ur = 1, weld_wrist = True, add_shelf = cfg['add_shelf'],
                     add_gripper = cfg['add_gripper'], use_meshcat=usemeshcat)
 
@@ -33,7 +33,7 @@ def plant_builder_5dof_ur5(usemeshcat = False, cfg = {'add_shelf': True, 'add_gr
     scene_graph = ur.scene_graph
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
-def plant_builder_6dof_ur5(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
+def plant_builder_6dof_ur3(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
     ur = UrDiagram(num_ur = 1, weld_wrist = False, add_shelf = cfg['add_shelf'],
                     add_gripper = cfg['add_gripper'], use_meshcat=usemeshcat)
 
@@ -368,10 +368,10 @@ def get_environment_builder(environment_name):
         return plant_builder_2dof_flipper_obs
     if environment_name == '3DOFFLIPPER':
         return plant_builder_3dof_flipper
-    elif environment_name == '5DOFUR5':
-        return plant_builder_5dof_ur5
-    elif environment_name == '6DOFUR5':
-        return plant_builder_6dof_ur5
+    elif environment_name == '5DOFUR3':
+        return plant_builder_5dof_ur3
+    elif environment_name == '6DOFUR3':
+        return plant_builder_6dof_ur3
     elif environment_name == '7DOFIIWA':
         return plant_builder_7dof_iiwa
     elif environment_name == '7DOFBINS':
