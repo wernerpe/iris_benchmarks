@@ -17,6 +17,15 @@ from pydrake.all import (StartMeshcat,
 import numpy as np
 import os
 
+env_names = ['2DOFFLIPPER', 
+             '3DOFFLIPPER', 
+             '5DOFUR3', 
+             '6DOFUR3', 
+             '7DOFIIWA', 
+             '7DOF4SHELVES', 
+             '7DOFBINS', 
+             '14DOFIIWAS']
+
 def plant_builder_5dof_ur3(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
     ur = UrDiagram(num_ur = 1, weld_wrist = True, add_shelf = cfg['add_shelf'],
                     add_gripper = cfg['add_gripper'], use_meshcat=usemeshcat)
@@ -361,7 +370,7 @@ def environment_builder_14dof_iiwas(usemeshcat = False):
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 def get_environment_builder(environment_name):
-    valid_names = ['2DOFFLIPPER','3DOFFLIPPER', '5DOFUR5', '6DOFUR5','7DOFIIWA', '7DOF4SHELVES', '7DOFBINS', '14DOFIIWAS']
+    valid_names = env_names
     if not environment_name in valid_names:
         raise ValueError(f"Choose a valid environment {valid_names}")
     if environment_name == '2DOFFLIPPER':
