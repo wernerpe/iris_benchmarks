@@ -8,8 +8,6 @@ from functools import partial
 results = {}
 
 
-
-
 for env_name in env_names:
     results, is_new = run_default_settings(env_name)
     name = get_experiment_name(env_name, settings='customBLAH')

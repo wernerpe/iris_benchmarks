@@ -7,9 +7,11 @@ import pickle
 
 results_default = {}
 
-for env_name in env_names:
+for env_name in env_names[:2]:
+    print(env_name)
     result, is_new = run_default_settings(env_name)
     name = get_experiment_name(env_name, settings='default')
     if is_new:
+        print("saving result")
         with open(name, 'wb') as f:
             pickle.dump(result, f)

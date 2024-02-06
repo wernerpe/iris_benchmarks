@@ -390,3 +390,22 @@ def get_environment_builder(environment_name):
     elif environment_name == '14DOFIIWAS':
         return environment_builder_14dof_iiwas
     return None
+
+def get_robot_instance_names(environment_name):
+    assert environment_name in env_names
+    if environment_name == '2DOFFLIPPER':
+        return ["iiwa7_twoDOF"]
+    if environment_name == '3DOFFLIPPER':
+        return ['iiwa7_oneDOF', 'iiwa7_twoDOF']
+    elif environment_name == '5DOFUR3':
+        return ["ur0", "shunk0"]
+    elif environment_name == '6DOFUR3':
+        return ["ur0", "shunk0"]
+    elif environment_name == '7DOFIIWA':
+        return ["iiwa", "wsg"]
+    elif environment_name == '7DOFBINS':
+        return ["iiwa", "wsg"]
+    elif environment_name == '7DOF4SHELVES':
+        return ["iiwa", "wsg"]
+    elif environment_name == '14DOFIIWAS':
+        return ["iiwa_left", "wsg_left", "iiwa_right", "wsg_right"]
