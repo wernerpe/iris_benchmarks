@@ -12,23 +12,44 @@ import yaml
 import time
 import os
 import pickle
+import hashlib
+import json
 
 root = os.path.dirname(os.path.abspath(__file__)) 
 
 def run_default_settings(env_name):
     iris_options = IrisOptions()
     
-    with open(root+f"/default_options/{env_name}.yml", 'r') as f:
+    configs= os.listdir(root+f"/default_options")
+    for c in configs:
+        if env_name in c:
+            settings_path = root+f"/default_options/"+c
+            old_hash = c.split('_')[-1][:-4]
+            break
+    with open(settings_path, 'r') as f:
         settings = yaml.safe_load(f)
     for k in settings.keys():
         setattr(iris_options, k, settings[k])
 
-    experiment_name = get_experiment_name(env_name, settings='default')
-    if experiment_name.split('/')[-1] in os.listdir(root+"/default_experiments"):
-        with open(experiment_name, 'rb') as f:
-            results = pickle.load(f)
-        return results, False
+    settings_hash = hashlib.sha1(
+                        json.dumps(settings, 
+                            sort_keys=True)
+                            .encode('utf-8')).hexdigest()[:10]
+    
+    are_settings_new = settings_hash != old_hash
 
+    experiment_name = get_experiment_name(env_name, settings='default')
+    if experiment_name.split('/')[-1]+f"_{settings_hash}.pkl" in \
+            os.listdir(root+"/default_experiments")\
+        and not are_settings_new:
+        path = root+"/default_experiments/"+experiment_name.split('/')[-1]+f"_{settings_hash}.pkl"
+        with open(path, 'rb') as f:
+            results = pickle.load(f)
+        return results, False, settings_hash
+
+    #rename settings file 
+    os.rename(settings_path, root+f"/default_options/{c.split('_')[0]}_{settings_hash}.yml")
+    
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
     mut_cont = plant.GetMyMutableContextFromRoot(diagram_context)
@@ -52,7 +73,7 @@ def run_default_settings(env_name):
                'volumes': volumes, 
                'fraction_in_collision': fraction_in_collision,
                'num_faces': num_faces}
-    return results, True
+    return results, True, settings_hash
 
 def run_custom_experiment(env_name, iris_handle):
     pass
@@ -89,10 +110,10 @@ def get_experiment_name(env_name, settings= 'default'):
     if settings != 'default':
         current_time = datetime.datetime.now()
         timestamp = current_time.strftime("%Y%m%d%H%M%S")
-        name = f"logs/{timestamp}_{env_name}_{settings}.pkl"
+        name = f"logs/{timestamp}_{env_name}_{settings}"
         return name
     else:
-        return root + f"/default_experiments/{env_name}.pkl"
+        return root + f"/default_experiments/{env_name}"
     
 def load_seed_points(env_name):
     seed_point_file = root+'/seedpoints/'+env_name+'.yml'
