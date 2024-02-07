@@ -81,8 +81,33 @@ def run_default_settings(env_name):
                'num_faces': num_faces}
     return results, True, settings_hash
 
-def run_custom_experiment(env_name, iris_handle):
-    pass
+def run_custom_experiment(env_name, 
+                          plant, 
+                          diagram, 
+                          iris_handle, 
+                          configuration_space_margin):
+    
+    seed_points = load_seed_points(env_name)
+    regions, times = build_regions(seed_points, 
+                    plant.GetPositionLowerLimits(), 
+                    plant.GetPositionUpperLimits(),
+                    configuration_space_margin,
+                    iris_handle)
+    
+    rob_names = get_robot_instance_names(env_name)
+    robot_instances = [plant.GetModelInstanceByName(n) for n in rob_names]
+    checker = SceneGraphCollisionChecker(model = diagram.Clone(), 
+                    robot_model_instances = robot_instances,
+                    #configuration_distance_function = _configuration_distance,
+                    edge_step_size = 0.125)
+    
+    volumes, fraction_in_collision, num_faces = evaluate_regions(regions, checker)
+    results = {'regions': regions, 
+               'times': times, 
+               'volumes': volumes, 
+               'fraction_in_collision': fraction_in_collision,
+               'num_faces': num_faces}
+    return results
 
 
 def project_to_polytope(pt: np.ndarray,
