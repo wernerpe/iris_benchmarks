@@ -5,7 +5,9 @@ from pydrake.all import (HPolyhedron,
                          RandomGenerator, 
                          SceneGraphCollisionChecker,
                          IrisInConfigurationSpace,
-                         IrisOptions)
+                         IrisOptions,
+                         MathematicalProgram,
+                         OsqpSolver)
 from typing import List
 import numpy as np
 import yaml
@@ -66,7 +68,11 @@ def run_default_settings(env_name):
                     edge_step_size = 0.125)
     
     seed_points = load_seed_points(env_name)
-    regions, times = build_regions(seed_points, iris_handle)
+    regions, times = build_regions(seed_points, 
+                                   plant.GetPositionLowerLimits(), 
+                                   plant.GetPositionUpperLimits(),
+                                   iris_options.configuration_space_margin,
+                                   iris_handle)
     volumes, fraction_in_collision, num_faces = evaluate_regions(regions, checker)
     results = {'regions': regions, 
                'times': times, 
@@ -78,15 +84,38 @@ def run_default_settings(env_name):
 def run_custom_experiment(env_name, iris_handle):
     pass
 
-def build_regions(seed_points : np.ndarray, iris_handle):
+
+def project_to_polytope(pt: np.ndarray,
+                        P: HPolyhedron,
+                        lower_limits: np.ndarray,
+                        upper_limits: np.ndarray) -> np.ndarray:
+    assert(len(upper_limits.squeeze()) == P.ambient_dimension())
+    prog = MathematicalProgram()
+    s = prog.NewContinuousVariables(len(upper_limits))
+    #prog.AddBoundingBoxConstraint(lower_limits, upper_limits, s)
+    prog.AddLinearConstraint(P.A(), np.full_like(P.b(), -np.inf), P.b(), s)
+    prog.AddQuadraticErrorCost(np.eye(s.shape[0]), pt, s)
+    osqp_solver = OsqpSolver()
+    result = osqp_solver.Solve(prog)
+    return result.GetSolution(s)
+
+def build_regions(seed_points : np.ndarray,
+                  lower_limits: np.ndarray,
+                  upper_limits: np.ndarray,
+                  cspace_margin: float, 
+                  iris_handle):
     regions = []
     times = []
-    for p in seed_points:
+    domain = HPolyhedron.MakeBox(lower_limits+cspace_margin, upper_limits-cspace_margin)
+    for i, p in enumerate(seed_points):
+        p_proj = project_to_polytope(p, domain, lower_limits, upper_limits)
+        assert domain.PointInSet(p_proj)
         t1 = time.time()
-        r = iris_handle(p)
+        r = iris_handle(p_proj)
         t2 = time.time()
         times.append(t2-t1)
         regions.append(r)
+        print(f"Seedpoint {i+1}/{len(seed_points)}")
     return regions, times
 
 def evaluate_regions(regions: List[HPolyhedron], 

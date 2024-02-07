@@ -399,9 +399,9 @@ def get_robot_instance_names(environment_name):
     if environment_name == '3DOFFLIPPER':
         return ['iiwa7_oneDOF', 'iiwa7_twoDOF']
     elif environment_name == '5DOFUR3':
-        return ["ur0", "shunk0"]
+        return ["ur3e", "Schunk_Gripper"]
     elif environment_name == '6DOFUR3':
-        return ["ur0", "shunk0"]
+        return ["ur3e", "Schunk_Gripper"]
     elif environment_name == '7DOFIIWA':
         return ["iiwa", "wsg"]
     elif environment_name == '7DOFBINS':

@@ -7,7 +7,7 @@ import pickle
 
 results_default = {}
 
-for env_name in env_names[:2]:
+for env_name in env_names[:5]:
     print(env_name)
     result, is_new, settings_hash = run_default_settings(env_name)
     name = get_experiment_name(env_name, settings='default')
