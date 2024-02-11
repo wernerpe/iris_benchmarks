@@ -9,25 +9,36 @@ def get_env_name(path):
         if e in path:
             return e    
 
-data = {}
-for e in env_names:
-    data[e] = {'default': {}}
 keys_stats = ['times', 'volumes', 'fraction_in_collision', 'num_faces']
 stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 'Number Faces']
 
+default_configs_to_plot = ['config_1', 
+                           'config_2',
+                           'config_3',
+                           ]
+data = {}
+for e in env_names:
+    data[e] = {}
+    for c in default_configs_to_plot:
+        data[e][f"default/{c}"] = {}
+
 root = os.path.dirname(os.path.abspath(__file__))
-default_exp_path = os.listdir(root + f"/benchmarks/default_experiments")
-for exp in default_exp_path:
-    env_name = get_env_name(exp)
-    with open(root + f"/benchmarks/default_experiments/"+exp, 'rb') as f:
-        result = pickle.load(f)
-        
-        data[env_name]['default']['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
-        data[env_name]['default']['min_stats'] = [ np.min(result[k]) for k in keys_stats]
-        data[env_name]['default']['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+for conf in default_configs_to_plot:
+    default_exp_path = [e for e in os.listdir(root + f"/benchmarks/default_experiments/{conf}") if e.endswith('pkl')]
+    for exp in default_exp_path:
+        env_name = get_env_name(exp)
+        with open(root + f"/benchmarks/default_experiments/{conf}/"+exp, 'rb') as f:
+            result = pickle.load(f)
+            
+            data[env_name][f"default/{conf}"]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
+            data[env_name][f"default/{conf}"]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
+            data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
 
 
-experiments_to_add = ['fast_iris/setting_1', 'fast_iris/setting_2']
+experiments_to_add = [
+    #'fast_iris/setting_1', 
+    #'fast_iris/setting_2'
+    ]
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 
 for exp_name in experiments_to_add:

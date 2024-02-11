@@ -4,10 +4,11 @@ from benchmarks.helpers import run_default_settings, get_experiment_name
 import os
 import pickle 
 
+config = 'config_3'
 for env_name in env_names:
     print(env_name)
-    result, is_new, settings_hash = run_default_settings(env_name)
-    name = get_experiment_name(env_name, settings='default')
+    name = get_experiment_name(env_name, config, settings='default')
+    result, is_new, settings_hash = run_default_settings(env_name, config)
     if is_new:
         print("saving result")
         with open(name+f"_{settings_hash}.pkl", 'wb') as f:            
