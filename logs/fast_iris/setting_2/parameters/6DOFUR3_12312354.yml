@@ -1,0 +1,11 @@
+bisection_steps: 10
+configuration_space_margin: 0.01
+max_iterations: 2
+max_iterations_separating_planes: 100
+max_separating_planes_per_iteration: -1
+num_consecutive_failures: 1
+num_particles: 500
+random_seed: 1234
+relative_termination_threshold: 0.001
+termination_threshold: 0.02
+verbose: false
