@@ -27,11 +27,14 @@ for exp in default_exp_path:
         data[env_name]['default']['max_stats'] = [ np.max(result[k]) for k in keys_stats]
 
 
-experiments_to_add = ['test_1']
+experiments_to_add = ['fast_iris/setting_1', 'fast_iris/setting_2']
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 
 for exp_name in experiments_to_add:
-    env_experiments = os.listdir(root+f"/logs/{exp_name}")
+    env_experiments = []
+    for e in os.listdir(root+f"/logs/{exp_name}"):
+        if e[-4:] == '.pkl':
+            env_experiments.append(e)
     for e in env_names:
         data[e][exp_name] = {}
     for exp in env_experiments:
@@ -59,6 +62,7 @@ for statid, (k, ax) in enumerate(zip(keys_stats, axs_squeezed)):
                 max_stats.append(data[e][exp]['max_stats'][statid])
                 mean_stats.append(data[e][exp]['max_stats'][statid])
         ax.scatter(xloc, mean_stats, label = exp, s= 80)
+        ax.set_yscale('log')
         err = [np.array(min_stats),
                np.array(max_stats)]
         ax.errorbar(xloc, mean_stats, yerr = err, fmt='o', capsize=5, capthick=2)

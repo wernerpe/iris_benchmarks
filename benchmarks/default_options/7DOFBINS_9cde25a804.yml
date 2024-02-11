@@ -1,0 +1,8 @@
+configuration_space_margin: 0.01
+iteration_limit: 2
+num_additional_constraint_infeasible_samples: 5
+num_collision_infeasible_samples: 8
+random_seed: 1234
+relative_termination_threshold: 0.001
+require_sample_point_is_contained: true
+termination_threshold: 0.02

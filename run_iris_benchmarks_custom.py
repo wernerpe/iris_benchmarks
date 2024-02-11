@@ -9,6 +9,7 @@ import sys
 root = os.path.dirname(os.path.abspath(__file__)) 
 experiment_name = "fast_iris"
 experiment_path = root+f"/logs/{experiment_name}"
+settings_name = 'setting_2'
 
 def import_function_with_spec(module_name, function_name, file_path):
     """
@@ -54,6 +55,7 @@ for env_name in env_names:
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
     
     iris_handle, configuration_space_margin, settings_hash = get_iris_handle(env_name,
+                                                                             settings_name,
                                                                              plant,
                                                                              diagram,
                                                                              diagram_context,
@@ -65,8 +67,8 @@ for env_name in env_names:
                                         diagram,
                                         iris_handle,
                                         configuration_space_margin)
-        name = get_experiment_name(env_name, settings='customBLAH')
+        #name = get_experiment_name(env_name, settings='customBLAH')
         #save results
-        with open(experiment_path+f"/{env_name}_{settings_hash}.pkl", 'wb') as f:
+        with open(experiment_path+f"/{settings_name}/{env_name}_{settings_hash}.pkl", 'wb') as f:
             pickle.dump(results, f)
 

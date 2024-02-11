@@ -73,6 +73,7 @@ def run_default_settings(env_name):
                                    plant.GetPositionUpperLimits(),
                                    iris_options.configuration_space_margin,
                                    iris_handle)
+    print("switching to evaluation")
     volumes, fraction_in_collision, num_faces = evaluate_regions(regions, checker)
     results = {'regions': regions, 
                'times': times, 
@@ -133,6 +134,9 @@ def build_regions(seed_points : np.ndarray,
     times = []
     domain = HPolyhedron.MakeBox(lower_limits+cspace_margin, upper_limits-cspace_margin)
     for i, p in enumerate(seed_points):
+        current_time = datetime.datetime.now()
+        timestamp = current_time.strftime("[%H_%M_%S]")
+        print(timestamp)
         p_proj = project_to_polytope(p, domain, lower_limits, upper_limits)
         assert domain.PointInSet(p_proj)
         t1 = time.time()
@@ -148,7 +152,6 @@ def evaluate_regions(regions: List[HPolyhedron],
                      Ns = 5000):
     gen = RandomGenerator(1337)
     num_faces = [r.A().shape[0] for r in regions]
-    volumes = [VPolytope(r).CalcVolume() for r in regions]
     fraction_in_collision = []
     for r in regions:
         samples = []
@@ -158,6 +161,8 @@ def evaluate_regions(regions: List[HPolyhedron],
             samples.append(prev)
         col_free = col_checker.CheckConfigsCollisionFree(np.array(samples), parallelize=True)
         fraction_in_collision.append(np.sum(1-1.0*np.array(col_free))/Ns)
+    print('calculating volumes')
+    volumes = [r.CalcVolumeViaSampling(gen, 0.001, int(1e7)).volume for r in regions]
     return volumes, fraction_in_collision, num_faces 
 
 def get_experiment_name(env_name, settings= 'default'):

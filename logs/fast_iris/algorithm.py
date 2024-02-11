@@ -9,12 +9,13 @@ from pydrake.all import (FastIris,
 from iris_environments.environments import get_robot_instance_names
 import os
 
-def get_iris_handle(env_name, 
+def get_iris_handle(env_name,
+                    settings_name, 
                     plant, 
                     diagram, 
                     diagram_context):
     root = os.path.dirname(os.path.abspath(__file__)) 
-    settings_path = root + f"/parameters/{env_name}_12312354.yml"
+    settings_path = root + f"/{settings_name}/parameters/{env_name}_12312354.yml"
     with open(settings_path, 'r') as f:
         settings = yaml.safe_load(f)
 
