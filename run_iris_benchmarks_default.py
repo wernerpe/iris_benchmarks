@@ -4,8 +4,8 @@ from benchmarks.helpers import run_default_settings, get_experiment_name
 import os
 import pickle 
 
-config = 'config_1'
-for env_name in env_names:
+config = 'config_4'
+for env_name in env_names[:4]:
     print(env_name)
     name = get_experiment_name(env_name, config, settings='default')
     result, is_new, settings_hash = run_default_settings(env_name, config)

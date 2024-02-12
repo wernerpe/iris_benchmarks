@@ -24,7 +24,7 @@ def run_default_settings(env_name, config):
     
     configs= os.listdir(root+f"/default_experiments/{config}/parameters")
     for c in configs:
-        if env_name in c:
+``        if env_name in c:
             settings_path = root+f"/default_experiments/{config}/parameters/"+c
             old_hash = c.split('_')[-1][:-4]
             break

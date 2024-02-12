@@ -13,7 +13,7 @@ keys_stats = ['times', 'volumes', 'fraction_in_collision', 'num_faces']
 stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 'Number Faces']
 
 default_configs_to_plot = ['config_1', 
-                           'config_2',
+                           #'config_2',
                            'config_3',
                            ]
 data = {}
@@ -37,7 +37,7 @@ for conf in default_configs_to_plot:
 
 experiments_to_add = [
     #'fast_iris/setting_1', 
-    #'fast_iris/setting_2'
+    'fast_iris/setting_2'
     ]
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 
