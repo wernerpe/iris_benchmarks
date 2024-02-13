@@ -20,7 +20,8 @@ import os
 env_names = ['2DOFFLIPPER', 
              '3DOFFLIPPER', 
              '5DOFUR3', 
-             '6DOFUR3', 
+             '6DOFUR3',
+             'MYCOBOT', 
              '7DOFIIWA', 
              '7DOF4SHELVES', 
              '7DOFBINS', 
@@ -272,6 +273,31 @@ def plant_builder_7dof_iiwa(usemeshcat = False):
     diagram.ForcedPublish(diagram_context)
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
+def plant_builder_mycobot(usemeshcat = False):
+    if usemeshcat:
+        #meshcat = StartMeshcat()
+        meldis = Meldis()
+        meshcat = meldis.meshcat
+    builder = RobotDiagramBuilder()
+    plant = builder.plant()
+    scene_graph = builder.scene_graph()
+    parser = builder.parser()
+    #parser.package_map().Add("cvisirisexamples", missing directory)
+    directives_file = os.path.dirname(os.path.abspath(__file__)) +"/directives/mycobot.yaml"#FindResourceOrThrow() 
+    path_repo = os.path.dirname(os.path.abspath(__file__)) 
+    parser.package_map().Add("mycobot_description", path_repo+"/../../mycobot_ros/mycobot_description")
+    parser.package_map().Add("iris_environments", path_repo+"/assets")
+    directives = LoadModelDirectives(directives_file)
+    models = ProcessModelDirectives(directives, plant, parser)
+    plant.Finalize()
+    if usemeshcat:
+        visualizer = AddDefaultVisualization(builder.builder(), meshcat)
+    diagram = builder.Build()
+    diagram_context = diagram.CreateDefaultContext()
+    plant_context = plant.GetMyContextFromRoot(diagram_context)
+    diagram.ForcedPublish(diagram_context)
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
+
 def plant_builder_7dof_4shelves(usemeshcat = False):
     if usemeshcat:
         meld = Meldis()
@@ -382,6 +408,8 @@ def get_environment_builder(environment_name):
         return plant_builder_5dof_ur3
     elif environment_name == '6DOFUR3':
         return plant_builder_6dof_ur3
+    elif environment_name == 'MYCOBOT':
+        return plant_builder_mycobot
     elif environment_name == '7DOFIIWA':
         return plant_builder_7dof_iiwa
     elif environment_name == '7DOFBINS':
