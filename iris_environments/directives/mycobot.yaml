@@ -10,8 +10,8 @@ directives:
     name: cobot_origin
     X_PF:
       base_frame: world
-      translation: [0, 0, 0.5]
-      
+      translation: [0, 0, 0.037]
+
 - add_weld:
     parent: cobot_origin
     child: mycobot::g_base

@@ -5,191 +5,178 @@
 
 
   <link name="g_base">
-    <visual>
+    <visual name="g_base_visual">
       <geometry>
         <mesh filename="package://mycobot_description/urdf/mycobot/G_base.obj"/>
       </geometry>
       <origin xyz = "0.0 0 -0.03" rpy = "0 0 1.5708"/>
     </visual>
-    <collision>
+    <collision name="g_base_collision">
       <geometry>
-        <mesh filename="package://mycobot_description/urdf/mycobot/G_base.obj"/>
+	    <box size="0.152000 0.034000 0.111987"/> 
       </geometry>
-      <origin xyz = "0.0 0 -0.03" rpy = "0 0 1.5708"/>
+	<origin xyz = "0.0 0.0 -0.029993735924363135" rpy = "0 0 1.5708"/>
     </collision>
   </link>
 
   <link name="joint1">
-    <visual>
+    <visual name="joint1_visual">
       <geometry>
-	     <!--- 0.0 0 -0.04  1.5708 3.14159-->
        <mesh filename="package://mycobot_description/urdf/mycobot/joint1.obj"/>
       </geometry>
       <origin xyz = "0.0 0 0 " rpy = " 0 0 -1.5708"/>
     </visual>
-    <collision>
+    <collision name="joint1_collision">
       <geometry>
-	     <!--- 0.0 0 -0.04  1.5708 3.14159-->
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint1.obj"/>
+	    <box size="0.092000 0.098794 0.075000"/> 
         </geometry>
-        <origin xyz = "0.0 0 0 " rpy = " 0 0 -1.5708"/>
+	<origin xyz = "-0.003603000196375702 -6.852573722575459e-07 0.0364999994635582" rpy = " 0 0 -1.5708"/>
     </collision>
   </link>
 
   <link name="joint2">
-    <visual>
+    <visual name="joint2_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/joint2.obj"/>
       </geometry>
       <origin xyz = "0.0 0 -0.06096 " rpy = " 0 0 -1.5708"/>
     </visual>
-    <collision>
+    <collision name="joint2_collision">
      <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint2.obj"/>
+	    <box size="0.062540 0.050000 0.089060"/> 
       </geometry>
-      <origin xyz = "0.0 0 -0.06096 " rpy = " 0 0 -1.5708"/>
+	<origin xyz = "-2.316249949871487e-08 -0.0063058007508090905 -0.02061169940609485" rpy = " 0 0 -1.5708"/>
     </collision>
   </link>
 
 
   <link name="joint3">
-    <visual>
+    <visual name="joint3_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/joint3.obj"/>
       </geometry>
     <origin xyz = "0.0 0 0.03256 " rpy = " 0 -1.5708 0"/>
     </visual>
-    <collision>
+    <collision name="joint3_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint3.obj"/>
+	    <box size="0.057440 0.050000 0.158000"/> 
       </geometry>
-      <origin xyz = "0.0 0 0.03256 " rpy = " 0 -1.5708 0"/>
+	<origin xyz = "-0.05400009135297152 0.0 0.05755575728534496" rpy = " 0 -1.5708 0"/>
     </collision>
   </link>
 
 
   <link name="joint4">
-    <visual>
+    <visual name="joint4_visual">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
        <mesh filename="package://mycobot_description/urdf/mycobot/joint4.obj"/>
       </geometry>
       <origin xyz = "0.0 0 0.03056 " rpy = " 0 -1.5708 0"/>
     </visual>
-    <collision>
+    <collision name="joint4_collision">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint4.obj"/>
+	    <box size="0.059800 0.045200 0.138800"/> 
       </geometry>
-      <origin xyz = "0.0 0 0.03056 " rpy = " 0 -1.5708 0"/>
+	<origin xyz = "-0.04675991282741587 0.0 0.00649580915152255" rpy = " 0 -1.5708 0"/>
     </collision>
   </link>
 
 
   <link name="joint5">
-    <visual>
+    <visual name="joint5_visual">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
        <mesh filename="package://mycobot_description/urdf/mycobot/joint5.obj"/>
       </geometry>
     <origin xyz = "0.0 0 -0.03356 " rpy = " -1.5708 0 0"/>
     </visual>
-    <collision>
+    <collision name="joint5_collision">
        <geometry>
-       <!--- 0.0 0 -0.04 -->
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint5.obj"/>
+	    <box size="0.040586 0.054786 0.058343"/> 
       </geometry>
-      <origin xyz = "0.0 0 -0.03356 " rpy = " -1.5708 0 0"/>
+	<origin xyz = "5.047768354415894e-07 -0.008464809015650809 -0.007311053822263748" rpy = " -1.5708 0 0"/>
     </collision>
   </link>
 
 
   <link name="joint6">
-    <visual>
+    <visual name="joint6_visual">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
        <mesh filename="package://mycobot_description/urdf/mycobot/joint6.obj"/>
       </geometry>
     <origin xyz = "0 0.00 -0.038 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="joint6_collision">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint6.obj"/>
+	    <box size="0.040400 0.058700 0.059120"/> 
       </geometry>
-    <origin xyz = "0 0.00 -0.038 " rpy = " 0 0 0"/>
+	<origin xyz = "0.0 0.006750000640749931 -0.00944000045955181" rpy = " 0 0 0"/>
     </collision>
   </link>
 
 
   <link name="joint6_flange">
-    <visual>
+    <visual name="joint6_flange_visual">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
        <mesh filename="package://mycobot_description/urdf/mycobot/joint7.obj"/>
       </geometry>
     <origin xyz = "0.0 0 -0.012 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="joint6_flange_collision">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
-       <mesh filename="package://mycobot_description/urdf/mycobot/joint7.obj"/>
+	    <box size="0.040400 0.040400 0.015700"/> 
       </geometry>
-    <origin xyz = "0.0 0 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "0.0 0.0 -0.005149999994784594" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_base">
-    <visual>
+    <visual name="gripper_base_visual">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_base.obj"/>
       </geometry>
     <origin xyz = "0.0 0 -0.012 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="gripper_base_collision">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_base.obj"/>
+	    <box size="0.060000 0.073525 0.055700"/> 
       </geometry>
-    <origin xyz = "0.0 0 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "0.0 0.006442371755838394 -0.020050001226365567" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_left1">
-    <visual>
+    <visual name="gripper_left1_visual">
       <geometry>
-       <!--- 0.0 0 -0.04 -->
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_left1.obj"/>
       </geometry>
     <origin xyz = "0.039 -0.0133 -0.012 " rpy = " 0 0 0"/>
     <!-- <origin xyz = "0.0 0 -0.012 " rpy = " 0 0 0"/> -->
     </visual>
-    <collision>
+    <collision name="gripper_left1_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_left1.obj"/>
+	    <box size="0.061259 0.028367 0.024333"/> 
       </geometry>
-        <origin xyz = "-0.039 -0.0133 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "-0.04112945323437452 -0.0133 -0.011166651163250208" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_left2">
-    <visual>
+    <visual name="gripper_left2_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_left2.obj"/>
       </geometry>
     <origin xyz = "0.005 -0.0195 -0.012 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="gripper_left2_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_left2.obj"/>
+	    <box size="0.042015 0.022000 0.011000"/> 
       </geometry>
-        <origin xyz = "-0.005 -0.0195 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "-0.005029023736715317 -0.022599942347034812 -0.012" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_left3">
-    <visual>
+    <visual name="gripper_left3_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_left3.obj"/>
       </geometry>
@@ -197,56 +184,56 @@
     <!-- <origin xyz = "0.0 0 0 " rpy = " 0 0 0"/> -->
 
     </visual>
-    <collision>
+    <collision name="gripper_left3_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_left3.obj"/>
+	    <box size="0.007000 0.042170 0.042139"/> 
       </geometry>
-    <origin xyz = "0.0 0 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "0.002500000176951289 0.0058351559564471245 -0.017851018242537976" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_right1">
-    <visual>
+    <visual name="gripper_right1_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_right1.obj"/>
       </geometry>
     <origin xyz = "-0.039 -0.0133 -0.012 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="gripper_right1_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_right1.obj"/>
+	    <box size="0.061259 0.028367 0.024333"/> 
       </geometry>
-        <origin xyz = "-0.039 -0.0133 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "-0.04112945323437452 -0.0133 -0.011166651163250208" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_right2">
-    <visual>
+    <visual name="gripper_right2_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_right2.obj"/>
       </geometry>
     <origin xyz = "-0.005 -0.0195 -0.012 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="gripper_right2_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_right2.obj"/>
+	    <box size="0.042015 0.022000 0.011000"/> 
       </geometry>
-        <origin xyz = "-0.005 -0.0195 -0.012 " rpy = " 0 0 0"/>
+	<origin xyz = "-0.005029023736715317 -0.022599942347034812 -0.012" rpy = " 0 0 0"/>
     </collision>
   </link>
 
   <link name="gripper_right3">
-    <visual>
+    <visual name="gripper_right3_visual">
       <geometry>
        <mesh filename="package://mycobot_description/urdf/mycobot/gripper_right3.obj"/>
       </geometry>
     <origin xyz = "-0.012 0.0025 -0.012 " rpy = " 0 0 0"/>
     </visual>
-    <collision>
+    <collision name="gripper_right3_collision">
       <geometry>
-       <mesh filename="package://mycobot_description/urdf/mycobot/gripper_right3.obj"/>
+	    <box size="0.007000 0.037764 0.045797"/> 
       </geometry>
-    <origin xyz = "-0.012 0.0025 -0.012" rpy = " 0 0 0"/>
+	<origin xyz = "-0.009499999823048711 0.006131988540291787 -0.019680121809244156" rpy = " 0 0 0"/>
     </collision>
   </link>
 

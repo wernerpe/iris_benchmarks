@@ -285,7 +285,7 @@ def plant_builder_mycobot(usemeshcat = False):
     #parser.package_map().Add("cvisirisexamples", missing directory)
     directives_file = os.path.dirname(os.path.abspath(__file__)) +"/directives/mycobot.yaml"#FindResourceOrThrow() 
     path_repo = os.path.dirname(os.path.abspath(__file__)) 
-    parser.package_map().Add("mycobot_description", path_repo+"/../../mycobot_ros/mycobot_description")
+    parser.package_map().Add("mycobot_description", path_repo+"/assets/mycobot_description")
     parser.package_map().Add("iris_environments", path_repo+"/assets")
     directives = LoadModelDirectives(directives_file)
     models = ProcessModelDirectives(directives, plant, parser)

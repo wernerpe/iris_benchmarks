@@ -99,10 +99,10 @@ def convert_dae_to_obj(dae_file_path, obj_file_path, scaling = 1):
 # Example usage
 convert_dae_to_obj('input_file.dae', 'output_file.obj')
 
-path_gitfolder = os.path.dirname(os.path.abspath(__file__)) + "/../.."
-path_target = path_gitfolder+"/mycobot_ros/mycobot_description/urdf/mycobot/mycobot_urdf.urdf"
+path_gitfolder = os.path.dirname(os.path.abspath(__file__)) + "/.."
+path_target = path_gitfolder+"/iris_environments/assets/mycobot_description/urdf/mycobot/mycobot_with_gripper_parallel.urdf"
 package_name = "mycobot_description"
-package_path = path_gitfolder+"/mycobot_ros/mycobot_description"
+package_path = path_gitfolder+"/iris_environments/assets/mycobot_description"
 
 
 def process_mesh_line(line):
@@ -153,9 +153,9 @@ for l in all_lines:
         do_append = False
         trans = collision_geoms[col_name.lower()][1]
         original_trans = [float(s) for s in l.split('"')[1].replace('"', '').split(' ')[:3]]
-        rpy = [float(s) for s in lines[-6].split("rpy")[1].split('"')[1].split(' ') if s != '']
+        rpy = [float(s) for s in l.split("rpy")[1].split('"')[1].split(' ') if s != '']
         t = (rpy_to_matrix(np.array(rpy))@np.array(trans).reshape(-1,1)).squeeze()
-        lines.append(f'\t<origin xyz = "{t[0]+original_trans[0]} {t[1]+original_trans[1]} {t[2]+original_trans[2]}" rpy' + lines[-6].split("rpy")[1])
+        lines.append(f'\t<origin xyz = "{t[0]+original_trans[0]} {t[1]+original_trans[1]} {t[2]+original_trans[2]}" rpy' + l.split("rpy")[1])
         #lines.append(lines[-6])
     if do_append:
             lines.append(l)
