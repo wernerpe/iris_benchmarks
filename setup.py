@@ -7,4 +7,7 @@ setup(
     install_requires=[
         # list your dependencies here
     ],
+    package_data={
+        'iris_environments': ['assets/*', 'assets_bimanual/*', 'directives/*'],
+    },
 )

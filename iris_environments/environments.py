@@ -21,7 +21,7 @@ env_names = ['2DOFFLIPPER',
              '3DOFFLIPPER', 
              '5DOFUR3', 
              '6DOFUR3',
-             'MYCOBOT', 
+             #'MYCOBOT', 
              '7DOFIIWA', 
              '7DOF4SHELVES', 
              '7DOFBINS', 
@@ -397,7 +397,7 @@ def environment_builder_14dof_iiwas(usemeshcat = False):
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 def get_environment_builder(environment_name):
-    valid_names = env_names
+    valid_names = env_names + ['MYCOBOT']
     if not environment_name in valid_names:
         raise ValueError(f"Choose a valid environment {valid_names}")
     if environment_name == '2DOFFLIPPER':
