@@ -42,7 +42,7 @@ def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius =
     path_repo = os.path.dirname(os.path.abspath(__file__))
     
     urdf = f'''
-<robot name="boxes">
+<robot name="ball_in_boxes">
   <link name="fixed">
     <collision name="top_left">
       <origin rpy="0 0 0" xyz="{-pos:.2f} {pos:.2f} 0"/>
@@ -499,7 +499,7 @@ def get_environment_builder(environment_name):
 def get_robot_instance_names(environment_name):
     assert environment_name in env_names+['MYCOBOT', '2DOFBLOCKS']
     if environment_name == '2DOFBLOCKS':
-        return ["movable"]
+        return ["ball_in_boxes"]
     if environment_name == '2DOFFLIPPER':
         return ["iiwa7_twoDOF"]
     if environment_name == '3DOFFLIPPER':
