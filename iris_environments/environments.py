@@ -28,6 +28,80 @@ env_names = ['2DOFFLIPPER',
              '14DOFIIWAS']
 
 
+def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius = 0.01):
+    if usemeshcat:
+        #meshcat = StartMeshcat()
+        meldis = Meldis()
+        meshcat = meldis.meshcat
+    builder = RobotDiagramBuilder()
+    plant = builder.plant()
+    scene_graph = builder.scene_graph()
+    parser = builder.parser()
+    # plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0.001)
+    # parser = Parser(plant)
+    path_repo = os.path.dirname(os.path.abspath(__file__))
+    
+    urdf = f'''
+<robot name="boxes">
+  <link name="fixed">
+    <collision name="top_left">
+      <origin rpy="0 0 0" xyz="{-pos:.2f} {pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+    </collision>
+    <collision name="top_right">
+      <origin rpy="0 0 0" xyz="{pos:.2f} {pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+    </collision>
+    <collision name="bottom_left">
+      <origin rpy="0 0 0" xyz="{-pos:.2f} {-pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+    </collision>
+    <collision name="bottom_right">
+      <origin rpy="0 0 0" xyz="{pos:.2f} {-pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+    </collision>
+  </link>
+  <joint name="fixed_link_weld" type="fixed">
+    <parent link="world"/>
+    <child link="fixed"/>
+  </joint>
+  <link name="movable">
+    <collision name="sphere">
+      <geometry><sphere radius="{radius:.2f}"/></geometry>
+    </collision>
+  </link>
+  <link name="for_joint"/>
+  <joint name="x" type="prismatic">
+    <axis xyz="1 0 0"/>
+    <limit lower="-2" upper="2"/>
+    <parent link="world"/>
+    <child link="for_joint"/>
+  </joint>
+  <joint name="y" type="prismatic">
+    <axis xyz="0 1 0"/>
+    <limit lower="-2" upper="2"/>
+    <parent link="for_joint"/>
+    <child link="movable"/>
+  </joint>
+</robot>
+'''
+    parser.AddModelsFromString(urdf, "urdf")
+    plant.Finalize()
+    inspector = scene_graph.model_inspector()
+    if usemeshcat:
+        meshcat_params = MeshcatVisualizerParams()
+        meshcat_params.role = Role.kIllustration
+        visualizer = AddDefaultVisualization(builder.builder(), meshcat)
+    diagram = builder.Build()
+    diagram_context = diagram.CreateDefaultContext()
+    plant_context = plant.GetMyMutableContextFromRoot(diagram_context)
+    diagram.ForcedPublish(diagram_context)
+    if usemeshcat:
+        print(meshcat.web_url())
+    meshcat.SetProperty('/drake/proximity', "visible", True)
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
+
+
 def plant_builder_5dof_ur3(usemeshcat = False, cfg = {'add_shelf': True, 'add_gripper': True}):
     ur = UrDiagram(num_ur = 1, weld_wrist = True, add_shelf = cfg['add_shelf'],
                     add_gripper = cfg['add_gripper'], use_meshcat=usemeshcat)
@@ -397,9 +471,11 @@ def environment_builder_14dof_iiwas(usemeshcat = False):
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 def get_environment_builder(environment_name):
-    valid_names = env_names + ['MYCOBOT']
+    valid_names = env_names + ['MYCOBOT', '2DOFBLOCKS']
     if not environment_name in valid_names:
         raise ValueError(f"Choose a valid environment {valid_names}")
+    if environment_name == '2DOFBLOCKS':
+        return plant_builder_2dof_blocks
     if environment_name == '2DOFFLIPPER':
         return plant_builder_2dof_flipper_obs
     if environment_name == '3DOFFLIPPER':
@@ -421,7 +497,9 @@ def get_environment_builder(environment_name):
     return None
 
 def get_robot_instance_names(environment_name):
-    assert environment_name in env_names
+    assert environment_name in env_names+['MYCOBOT', '2DOFBLOCKS']
+    if environment_name == '2DOFBLOCKS':
+        return ["movable"]
     if environment_name == '2DOFFLIPPER':
         return ["iiwa7_twoDOF"]
     if environment_name == '3DOFFLIPPER':
