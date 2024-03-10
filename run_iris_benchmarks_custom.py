@@ -49,7 +49,7 @@ if not get_iris_handle:
     # Access and use the function from the module
     raise ValueError("cant import algorithm.py")
 
-for env_name in env_names[4:5]:
+for env_name in env_names[:5]:
     print(env_name)
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
