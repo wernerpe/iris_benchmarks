@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+    <model name="test_trimesh">
+        <link name="test_trimesh">
+        <visual name="test_trimesh_visual">
+            <geometry>
+            <mesh>
+                <uri>test_trimesh.obj</uri>
+            </mesh>
+            </geometry>
+        </visual>
+        <collision name="test_trimesh_visual">
+            <geometry>
+            <mesh>
+                <uri>test_trimesh.obj</uri>
+            </mesh>
+            </geometry>
+        </collision>
+        </link>
+    </model>
+</sdf>
