@@ -37,9 +37,10 @@ for conf in default_configs_to_plot:
 
 
 experiments_to_add = [
-    #'fast_iris/setting_1', 
-    # 'fast_iris/setting_2',
-    "sampled_iris/config_1"
+    #'fast_iris/setting_1',
+    'fast_iris/setting_2',
+    # 'fast_iris/new_bn_test_2',
+    'sampled_iris/config_1'
     ]
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 

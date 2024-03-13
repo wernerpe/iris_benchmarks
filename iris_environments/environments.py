@@ -44,6 +44,34 @@ def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius =
     urdf = f'''
 <robot name="ball_in_boxes">
   <link name="fixed">
+    <visual name="top_left_visual">
+      <origin rpy="0 0 0" xyz="{-pos:.2f} {pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+      <material name="blue">
+        <color rgba="1 0 0 0.9"/>
+      </material>
+    </visual>
+    <visual name="top_right_visual">
+      <origin rpy="0 0 0" xyz="{pos:.2f} {pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+      <material name="green">
+        <color rgba="1 0 0 0.9"/>
+      </material>
+    </visual>
+    <visual name="bottom_left_visual">
+      <origin rpy="0 0 0" xyz="{-pos:.2f} {-pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+      <material name="red">
+        <color rgba="1 0 0 0.9"/>
+      </material>
+    </visual>
+    <visual name="bottom_right_visual">
+      <origin rpy="0 0 0" xyz="{pos:.2f} {-pos:.2f} 0"/>
+      <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
+      <material name="yellow">
+        <color rgba="1 0 0 0.9"/>
+      </material>
+    </visual>
     <collision name="top_left">
       <origin rpy="0 0 0" xyz="{-pos:.2f} {pos:.2f} 0"/>
       <geometry><box size="{size:.2f} {size:.2f} {size:.2f}"/></geometry>
@@ -91,6 +119,7 @@ def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius =
     if usemeshcat:
         meshcat_params = MeshcatVisualizerParams()
         meshcat_params.role = Role.kIllustration
+        meshcat.Set2dRenderMode(RigidTransform(RotationMatrix.MakeXRotation(-np.pi/2)), xmin=-3, xmax=3, ymin=-3, ymax=3)
         visualizer = AddDefaultVisualization(builder.builder(), meshcat)
     diagram = builder.Build()
     diagram_context = diagram.CreateDefaultContext()
@@ -98,7 +127,7 @@ def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius =
     diagram.ForcedPublish(diagram_context)
     if usemeshcat:
         print(meshcat.web_url())
-    meshcat.SetProperty('/drake/proximity', "visible", True)
+    #meshcat.SetProperty('/drake/proximity', "visible", True)
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 
