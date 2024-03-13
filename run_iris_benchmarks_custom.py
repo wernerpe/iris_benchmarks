@@ -49,7 +49,7 @@ if not get_iris_handle:
     # Access and use the function from the module
     raise ValueError("cant import algorithm.py")
 
-for env_name in env_names[:5]:
+for env_name in env_names:
     print(env_name)
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
@@ -60,7 +60,8 @@ for env_name in env_names[:5]:
                                                                              diagram,
                                                                              diagram_context,
                                                                             )
-    if not f"{env_name}_{settings_hash}.pkl" in os.listdir(experiment_path):
+
+    if not f"{env_name}_{settings_hash}.pkl" in os.listdir(experiment_path + "/" + settings_name):
 
         results = run_custom_experiment(env_name, 
                                         plant,
