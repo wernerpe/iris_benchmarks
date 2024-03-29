@@ -42,6 +42,7 @@ def get_iris_handle(env_name,
 
     options.target_proportion_in_collision = 1e-3
     options.target_uncertainty = 1e-3
+    options.max_alternations = 1
 
     for k in settings.keys():
         if hasattr(options, k):
@@ -50,8 +51,11 @@ def get_iris_handle(env_name,
     def iris_handle(seed_point: np.ndarray) -> HPolyhedron:
         ctx = plant.GetMyMutableContextFromRoot(diagram_context)
         plant.SetPositions(ctx, seed_point)
-        # initial_hpoly = IrisInConfigurationSpace(plant, plant.GetMyContextFromRoot(diagram_context), init_options)
-        # options.bounding_region = initial_hpoly
-        return SampledIrisInConfigurationSpace(plant, diagram_context, options)
+        foo = SampledIrisInConfigurationSpace(plant, diagram_context, options)
+        n1 = len(foo.b())
+        foo = foo.ReduceInequalities(tol=0)
+        n2 = len(foo.b())
+        print("Reduced from %d to %d halfspaces" % (n1, n2))
+        return foo
 
     return iris_handle, configuration_space_margin, settings_hash
