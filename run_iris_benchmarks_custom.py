@@ -1,3 +1,21 @@
+use_drake_fork = True
+
+import sys
+normal_drake_path = '/home/rhjiang/Documents/code/drake-build/install/lib/python3.10/site-packages'
+fork_drake_path = '/home/rhjiang/Documents/code/drake_fork/drake-build/install/lib/python3.10/site-packages'
+
+if use_drake_fork:
+    drake_path = fork_drake_path
+    not_path = normal_drake_path
+else:
+    drake_path = normal_drake_path
+    not_path = fork_drake_path
+
+if not_path in sys.path:
+    sys.path.remove(not_path)
+if not drake_path in sys.path:
+    sys.path.insert(0,drake_path)
+
 from pydrake.all import IrisInConfigurationSpace, IrisOptions
 from iris_environments.environments import env_names, get_environment_builder
 from benchmarks.helpers import run_custom_experiment, get_experiment_name
@@ -7,9 +25,10 @@ from functools import partial
 import importlib
 import sys
 root = os.path.dirname(os.path.abspath(__file__)) 
-experiment_name = "fast_iris"
+# experiment_name = "fast_iris"
+experiment_name = "ray_iris"
 experiment_path = root+f"/logs/{experiment_name}"
-settings_name = 'new_bn_test_2'
+settings_name = 'setting_1'
 
 def import_function_with_spec(module_name, function_name, file_path):
     """
