@@ -25,7 +25,8 @@ env_names = ['2DOFFLIPPER',
              '7DOFIIWA', 
              '7DOF4SHELVES', 
              '7DOFBINS', 
-             '14DOFIIWAS']
+             '14DOFIIWAS',
+             '15DOFALLEGRO']
 
 
 def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius = 0.01):
@@ -376,6 +377,32 @@ def plant_builder_7dof_iiwa(usemeshcat = False):
     diagram.ForcedPublish(diagram_context)
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
+def plant_builder_15_dof_allegro_hand(usemeshcat = False):
+    if usemeshcat:
+        meshcat = StartMeshcat()
+    builder = RobotDiagramBuilder()
+    plant = builder.plant()
+    scene_graph = builder.scene_graph()
+    parser = builder.parser()
+    #parser.package_map().Add("cvisirisexamples", missing directory)
+    directives_file = os.path.dirname(os.path.abspath(__file__)) +"/directives/allegro_hand_directives.yaml"#FindResourceOrThrow() 
+    path_repo = os.path.dirname(os.path.abspath(__file__)) 
+    parser.package_map().Add("iris_environments", path_repo+"/assets")
+    directives = LoadModelDirectives(directives_file)
+    models = ProcessModelDirectives(directives, plant, parser)
+    plant.Finalize()
+    if usemeshcat:
+        meshcat_params = MeshcatVisualizerParams()
+        meshcat_params.role = Role.kIllustration
+        visualizer = AddDefaultVisualization(builder.builder(), meshcat)
+   
+    diagram = builder.Build()
+    diagram_context = diagram.CreateDefaultContext()
+    plant_context = plant.GetMyContextFromRoot(diagram_context)
+    diagram.ForcedPublish(diagram_context)
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
+
+
 def plant_builder_mycobot(usemeshcat = False):
     if usemeshcat:
         #meshcat = StartMeshcat()
@@ -523,6 +550,8 @@ def get_environment_builder(environment_name):
         return plant_builder_7dof_4shelves
     elif environment_name == '14DOFIIWAS':
         return environment_builder_14dof_iiwas
+    elif environment_name == '15DOFALLEGRO':
+        return plant_builder_15_dof_allegro_hand
     return None
 
 def get_robot_instance_names(environment_name):
@@ -544,4 +573,6 @@ def get_robot_instance_names(environment_name):
     elif environment_name == '7DOF4SHELVES':
         return ["iiwa", "wsg"]
     elif environment_name == '14DOFIIWAS':
+        return ["iiwa_left", "wsg_left", "iiwa_right", "wsg_right"]
+    elif environment_name == '15DOFALLEGRO':
         return ["iiwa_left", "wsg_left", "iiwa_right", "wsg_right"]
