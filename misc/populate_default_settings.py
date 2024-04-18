@@ -2,7 +2,9 @@ from iris_environments.environments import env_names
 import yaml
 import os
 
-config = 'config_5'
+config = 'config_6'
+
+
 default = {
     'require_sample_point_is_contained': True,
     'iteration_limit': 2,
@@ -11,7 +13,8 @@ default = {
     'configuration_space_margin': 0.01,
     'num_collision_infeasible_samples': 10,
     'num_additional_constraint_infeasible_samples': 1,
-    'random_seed': 1234
+    'random_seed': 1234,
+    'num_trials': 5
 }
 
 fio = {'num_particles': 50, 
@@ -25,7 +28,8 @@ fio = {'num_particles': 50,
        'configuration_space_margin': 0.01, 
        'termination_threshold': 0.02, 
        'relative_termination_threshold': 0.001, 
-       'random_seed': 1234}
+       'random_seed': 1234,
+       'num_trials': 5}
 
 
 sio = {
@@ -39,7 +43,8 @@ sio = {
 'configuration_space_margin': 0.01, 
 'termination_threshold': 0.02, 
 'relative_termination_threshold': 0.001, 
-'random_seed': 1234}
+'random_seed': 1234,
+'num_trials': 5}
 
 # root = os.path.dirname(os.path.abspath(__file__)) 
 # for e in env_names:
@@ -47,16 +52,16 @@ sio = {
 #         yaml.dump(default, f)
 
 
-# root = os.path.dirname(os.path.abspath(__file__)) 
-# for e in env_names:
-#     with open(root+f"/../logs/fast_iris/{config}/parameters/{e}_12312354.yml", "w") as f:
-#         yaml.dump(fio, f)
-
 root = os.path.dirname(os.path.abspath(__file__)) 
-assert len(os.listdir(root+f"/../logs/sampled_iris/{config}/parameters/"))==0
-    
 for e in env_names:
-    with open(root+f"/../logs/sampled_iris/{config}/parameters/{e}_params.yml", "w+") as f:
-        print(f"populating {root+f'/../logs/sampled_iris/{config}/parameters/{e}_params.yml'}")
-        yaml.dump(sio, f)
-print('done')
+    with open(root+f"/../logs/fast_iris/{config}/parameters/{e}_12312354.yml", "w") as f:
+        yaml.dump(fio, f)
+
+# root = os.path.dirname(os.path.abspath(__file__)) 
+# assert len(os.listdir(root+f"/../logs/sampled_iris/{config}/parameters/"))==0
+    
+# for e in env_names:
+#     with open(root+f"/../logs/sampled_iris/{config}/parameters/{e}_params.yml", "w+") as f:
+#         print(f"populating {root+f'/../logs/sampled_iris/{config}/parameters/{e}_params.yml'}")
+#         yaml.dump(sio, f)
+# print('done')

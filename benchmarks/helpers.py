@@ -28,10 +28,14 @@ def run_default_settings(env_name, config):
             settings_path = root+f"/default_experiments/{config}/parameters/"+c
             old_hash = c.split('_')[-1][:-4]
             break
+    num_trials = 1
     with open(settings_path, 'r') as f:
         settings = yaml.safe_load(f)
     for k in settings.keys():
-        setattr(iris_options, k, settings[k])
+        if k!='num_trials':
+            setattr(iris_options, k, settings[k])
+        else:
+            num_trials = settings[k]
 
     settings_hash = hashlib.sha1(
                         json.dumps(settings, 
@@ -56,7 +60,8 @@ def run_default_settings(env_name, config):
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
     mut_cont = plant.GetMyMutableContextFromRoot(diagram_context)
     
-    def iris_handle(pt):
+    def iris_handle(pt, random_seed = iris_options.random_seed):
+        iris_options.random_seed = random_seed
         plant.SetPositions(mut_cont, pt)
         return IrisInConfigurationSpace(plant, mut_cont, iris_options)
     
@@ -72,7 +77,9 @@ def run_default_settings(env_name, config):
                                    plant.GetPositionLowerLimits(), 
                                    plant.GetPositionUpperLimits(),
                                    iris_options.configuration_space_margin,
-                                   iris_handle)
+                                   iris_handle,
+                                   num_trials,
+                                   iris_options.random_seed)
     print("switching to evaluation")
     volumes, fraction_in_collision, num_faces = evaluate_regions(regions, checker)
     results = {'regions': regions, 
@@ -86,14 +93,19 @@ def run_custom_experiment(env_name,
                           plant, 
                           diagram, 
                           iris_handle, 
-                          configuration_space_margin):
-    
+                          configuration_space_margin,
+                          random_seed,
+                          num_trials):
+    assert num_trials > 0
+
     seed_points = load_seed_points(env_name)
     regions, times = build_regions(seed_points, 
                     plant.GetPositionLowerLimits(), 
                     plant.GetPositionUpperLimits(),
                     configuration_space_margin,
-                    iris_handle)
+                    iris_handle,
+                    num_trials,
+                    random_seed)
     
     rob_names = get_robot_instance_names(env_name)
     robot_instances = [plant.GetModelInstanceByName(n) for n in rob_names]
@@ -129,21 +141,33 @@ def build_regions(seed_points : np.ndarray,
                   lower_limits: np.ndarray,
                   upper_limits: np.ndarray,
                   cspace_margin: float, 
-                  iris_handle):
+                  iris_handle,
+                  num_trials: int,
+                  random_seed: int):
+    
+    assert num_trials>0
+    if num_trials>1:
+        np.random.seed(random_seed)
     regions = []
     times = []
     domain = HPolyhedron.MakeBox(lower_limits+cspace_margin, upper_limits-cspace_margin)
     for i, p in enumerate(seed_points):
-        current_time = datetime.datetime.now()
-        timestamp = current_time.strftime("[%H_%M_%S]")
-        print(timestamp)
-        p_proj = project_to_polytope(p, domain, lower_limits, upper_limits)
-        assert domain.PointInSet(p_proj)
-        t1 = time.time()
-        r = iris_handle(p_proj)
-        t2 = time.time()
-        times.append(t2-t1)
-        regions.append(r)
+        for _ in range(num_trials):
+            if num_trials>1:
+                #set random seed for iris for repeated trials
+                rand_seed_trial = np.random.randint(20000)
+            else:
+                rand_seed_trial = random_seed
+            current_time = datetime.datetime.now()
+            timestamp = current_time.strftime("[%H_%M_%S]")
+            print(timestamp)
+            p_proj = project_to_polytope(p, domain, lower_limits, upper_limits)
+            assert domain.PointInSet(p_proj)
+            t1 = time.time()
+            r = iris_handle(p_proj, rand_seed_trial)
+            t2 = time.time()
+            times.append(t2-t1)
+            regions.append(r)
         print(f"Seedpoint {i+1}/{len(seed_points)}")
     return regions, times
 
