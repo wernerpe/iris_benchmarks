@@ -16,6 +16,8 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
                            'config_3',
+                           # 'config_4',
+                           # 'config_5',
                            ]
 data = {}
 for e in env_names:

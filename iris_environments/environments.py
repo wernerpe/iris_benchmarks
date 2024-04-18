@@ -575,4 +575,4 @@ def get_robot_instance_names(environment_name):
     elif environment_name == '14DOFIIWAS':
         return ["iiwa_left", "wsg_left", "iiwa_right", "wsg_right"]
     elif environment_name == '15DOFALLEGRO':
-        return ["iiwa_left", "wsg_left", "iiwa_right", "wsg_right"]
+        return ["allegro_hand"]
