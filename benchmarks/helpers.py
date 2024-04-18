@@ -162,7 +162,10 @@ def evaluate_regions(regions: List[HPolyhedron],
         col_free = col_checker.CheckConfigsCollisionFree(np.array(samples), parallelize=True)
         fraction_in_collision.append(np.sum(1-1.0*np.array(col_free))/Ns)
     print('calculating volumes')
-    volumes = [r.CalcVolumeViaSampling(gen, 0.001, int(1e7)).volume for r in regions]
+    if regions[0].ambient_dimension() ==14:
+        volumes = [r.CalcVolumeViaSampling(gen, 0.01, int(5e7)).volume for r in regions]
+    else:
+        volumes = [r.CalcVolumeViaSampling(gen, 0.001, int(1e7)).volume for r in regions]
     return volumes, fraction_in_collision, num_faces 
 
 def get_experiment_name(env_name, config=None, settings= 'default'):
