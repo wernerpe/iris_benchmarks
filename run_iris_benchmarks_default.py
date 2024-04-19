@@ -3,7 +3,7 @@ from benchmarks.helpers import run_default_settings, get_experiment_name
 import os
 import pickle 
 
-config = 'config_3'
+config = 'config_6'
 for env_name in env_names:
     print(env_name)
     name = get_experiment_name(env_name, config, settings='default')

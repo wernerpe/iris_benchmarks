@@ -20,9 +20,12 @@ def get_iris_handle(env_name,
         settings = yaml.safe_load(f)
 
     iris_options = FastIrisOptions()
-
+    num_trials = 1
     for k in settings.keys():
-        setattr(iris_options, k, settings[k])
+        if k!='num_trials':
+            setattr(iris_options, k, settings[k])
+        else:
+            num_trials = settings[k]
 
     settings_hash = hashlib.sha1(
                         json.dumps(settings, 
@@ -37,8 +40,8 @@ def get_iris_handle(env_name,
     
     domain = HPolyhedron.MakeBox(plant.GetPositionLowerLimits(),
                                  plant.GetPositionUpperLimits())
-    def iris_handle(pt):
-        
+    def iris_handle(pt, random_seed = iris_options.random_seed):
+        iris_options.random_seed = random_seed
         return FastIris(checker, Hyperellipsoid.MakeHypersphere(1e-2, pt), domain, iris_options)
 
-    return iris_handle, iris_options.configuration_space_margin, settings_hash
+    return iris_handle, iris_options.configuration_space_margin, settings_hash, iris_options.random_seed, num_trials

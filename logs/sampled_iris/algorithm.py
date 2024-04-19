@@ -47,8 +47,11 @@ def get_iris_handle(env_name,
     for k in settings.keys():
         if hasattr(options, k):
             setattr(options, k, settings[k])
+
+    random_seed = 43
+    num_trials = 5
     
-    def iris_handle(seed_point: np.ndarray) -> HPolyhedron:
+    def iris_handle(seed_point: np.ndarray, random_seed = random_seed) -> HPolyhedron:
         ctx = plant.GetMyMutableContextFromRoot(diagram_context)
         plant.SetPositions(ctx, seed_point)
         foo = SampledIrisInConfigurationSpace(plant, diagram_context, options)
@@ -58,4 +61,4 @@ def get_iris_handle(env_name,
         print("Reduced from %d to %d halfspaces" % (n1, n2))
         return foo
 
-    return iris_handle, configuration_space_margin, settings_hash
+    return iris_handle, configuration_space_margin, settings_hash, random_seed, num_trials

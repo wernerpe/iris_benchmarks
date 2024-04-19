@@ -54,7 +54,7 @@ for env_name in env_names:
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
     
-    iris_handle, configuration_space_margin, settings_hash = get_iris_handle(env_name,
+    iris_handle, configuration_space_margin, settings_hash, random_seed, num_trials = get_iris_handle(env_name,
                                                                              settings_name,
                                                                              plant,
                                                                              diagram,
@@ -67,7 +67,9 @@ for env_name in env_names:
                                         plant,
                                         diagram,
                                         iris_handle,
-                                        configuration_space_margin)
+                                        configuration_space_margin,
+                                        random_seed,
+                                        num_trials)
         #name = get_experiment_name(env_name, settings='customBLAH')
         #save results
         with open(experiment_path+f"/{settings_name}/{env_name}_{settings_hash}.pkl", 'wb') as f:
