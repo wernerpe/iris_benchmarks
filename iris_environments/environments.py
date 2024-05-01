@@ -177,7 +177,7 @@ def plant_builder_2dof_flipper_obs(usemeshcat = False):
     # parser = Parser(plant)
     path_repo = os.path.dirname(os.path.abspath(__file__))
     #oneDOF_iiwa_asset = rel_path_cvisiris + "assets/oneDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/oneDOF_iiwa7_with_box_collision.sdf")
-    twoDOF_iiwa_asset = path_repo + "/assets/twoDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
+    twoDOF_iiwa_asset = path_repo + "/assets/twoDOF_iiwa7_with_skinny_box_coll.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
     #twoDOF_iiwa_asset = path_repo + "/assets/2dof_iiwa_translating_base.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
 
     box_asset = path_repo + "/assets/box_small.urdf" #FindResourceOrThrow("drake/C_Iris_Examples/assets/box_small.urdf")
@@ -221,8 +221,14 @@ def plant_builder_2dof_flipper_obs(usemeshcat = False):
     obs1 = plant.RegisterCollisionGeometry(frame, X1,
                                               cyl_shape, "obs1",
                                                proximity_properties)
-    box_shape = Box(0.05, 0.2, 0.05)
-    frame = plant.GetBodyByName("box1")
+    # cyl_shape2 = Cylinder(0.3, 0.3)
+    # X2 = RigidTransform(RollPitchYaw(0,np.pi/2,0).ToRotationMatrix(),np.array([0,1.35,0.15]))
+    # plant.RegisterVisualGeometry(frame,X2,
+    #                                           cyl_shape2, "obs2",
+    #                                           np.array([0.2, 0.2, 0.2, 1]))
+    # obs1 = plant.RegisterCollisionGeometry(frame, X2,
+    #                                           cyl_shape2, "obs2",
+    #                                            proximity_properties)
     # X2 = RigidTransform(np.array([0,0.75,-0.75]))
     
     # X3 = RigidTransform(RollPitchYaw(np.pi/2.5,0,0).ToRotationMatrix(), np.array([0,1.1,-0.78]))
@@ -242,6 +248,96 @@ def plant_builder_2dof_flipper_obs(usemeshcat = False):
         meshcat_params = MeshcatVisualizerParams()
         meshcat_params.role = Role.kIllustration
         visualizer = AddDefaultVisualization(builder.builder(), meshcat)
+        
+    diagram = builder.Build()
+    diagram_context = diagram.CreateDefaultContext()
+    plant_context = plant.GetMyMutableContextFromRoot(diagram_context)
+    diagram.ForcedPublish(diagram_context)
+    if usemeshcat:
+        print(meshcat.web_url())
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
+
+
+def plant_builder_2dof_flipper2_obs(usemeshcat = False):
+    if usemeshcat:
+        #meshcat = StartMeshcat()
+        meldis = Meldis()
+        meshcat = meldis.meshcat
+    builder = RobotDiagramBuilder()
+    plant = builder.plant()
+    scene_graph = builder.scene_graph()
+    parser = builder.parser()
+    # plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0.001)
+    # parser = Parser(plant)
+    path_repo = os.path.dirname(os.path.abspath(__file__))
+    #oneDOF_iiwa_asset = rel_path_cvisiris + "assets/oneDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/oneDOF_iiwa7_with_box_collision.sdf")
+    twoDOF_iiwa_asset = path_repo + "/assets/twoDOF_iiwa7_with_box_collision.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
+    #twoDOF_iiwa_asset = path_repo + "/assets/2dof_iiwa_translating_base.sdf"#FindResourceOrThrow("drake/C_Iris_Examples/assets/twoDOF_iiwa7_with_box_collision.sdf")
+
+    box_asset = path_repo + "/assets/box_small.urdf" #FindResourceOrThrow("drake/C_Iris_Examples/assets/box_small.urdf")
+    #box2_asset = path_repo + "/assets/box_long.urdf"
+    #obs_asset = path_repo + "/assets/2d_obs.urdf"
+    path_repo = os.path.dirname(os.path.abspath(__file__)) 
+    parser.package_map().Add("iris_environments", path_repo+"/assets")
+    parser.SetAutoRenaming(True)
+    models = []
+    models.append(parser.AddModels(box_asset)[0])
+    #models.append(parser.AddModels(box2_asset)[0])
+    #models.append(parser.AddModels(obs_asset)[0])
+    models.append(parser.AddModels(twoDOF_iiwa_asset)[0])
+    #models.append(parser.AddModels(roi_asset)[0])
+    
+    locs = [[0.,20,0],
+            [0.,0,0],
+            ]
+    plant.WeldFrames(plant.world_frame(), 
+        plant.GetFrameByName("base", models[0]),
+        RigidTransform(locs[0]))
+    from pydrake.geometry import ProximityProperties, AddContactMaterial
+    from pydrake.all import CoulombFriction
+    proximity_properties = ProximityProperties()
+    AddContactMaterial(dissipation=0.1,
+                        point_stiffness=250.0,
+                        friction=CoulombFriction(0.9, 0.5),
+                        properties=proximity_properties)
+    from pydrake.all import Sphere, Cylinder
+    cyl_shape = Cylinder(0.7, 0.3)
+    frame = plant.GetBodyByName("box1")
+    #X1 = RigidTransform(np.array([0,1.1,0.1]))
+    #X1 = RigidTransform(RollPitchYaw(0,0,0).ToRotationMatrix(),np.array([0,1.37,0.47]))
+    X1 = RigidTransform(RollPitchYaw(0,np.pi/2,0).ToRotationMatrix(),np.array([0,1.4,0.0+20]))
+    plant.RegisterVisualGeometry(frame,X1,
+                                              cyl_shape, "obs1",
+                                              np.array([0.2, 0.2, 0.2, 1]))
+    obs1 = plant.RegisterCollisionGeometry(frame, X1,
+                                              cyl_shape, "obs1",
+                                               proximity_properties)
+    # cyl_shape2 = Cylinder(0.3, 0.3)
+    # X2 = RigidTransform(RollPitchYaw(0,np.pi/2,0).ToRotationMatrix(),np.array([0,1.35,0.15]))
+    # plant.RegisterVisualGeometry(frame,X2,
+    #                                           cyl_shape2, "obs2",
+    #                                           np.array([0.2, 0.2, 0.2, 1]))
+    # obs1 = plant.RegisterCollisionGeometry(frame, X2,
+    #                                           cyl_shape2, "obs2",
+    #                                            proximity_properties)
+    # X2 = RigidTransform(np.array([0,0.75,-0.75]))
+    
+    # X3 = RigidTransform(RollPitchYaw(np.pi/2.5,0,0).ToRotationMatrix(), np.array([0,1.1,-0.78]))
+    
+    plant.WeldFrames(plant.world_frame(), 
+                    plant.GetFrameByName("iiwa_twoDOF_link_0", models[-1]), 
+                    RigidTransform(RollPitchYaw([0,0, -np.pi/2]).ToRotationMatrix(), locs[-1]))
+  
+    
+    plant.Finalize()
+    inspector = scene_graph.model_inspector()
+    if usemeshcat:
+        from pydrake.all import VisualizationConfig, ApplyVisualizationConfig
+        config = VisualizationConfig()
+        config.enable_alpha_sliders = True
+        
+        #visualizer = AddDefaultVisualization(builder.builder(), meshcat)
+        ApplyVisualizationConfig(config, builder.builder(), meshcat=meshcat)
         
     diagram = builder.Build()
     diagram_context = diagram.CreateDefaultContext()
@@ -484,7 +580,7 @@ def get_environment_builder(environment_name):
     if environment_name == '2DOFBLOCKS':
         return plant_builder_2dof_blocks
     if environment_name == '2DOFFLIPPER':
-        return plant_builder_2dof_flipper_obs
+        return plant_builder_2dof_flipper2_obs
     if environment_name == '3DOFFLIPPER':
         return plant_builder_3dof_flipper
     elif environment_name == '5DOFUR3':
