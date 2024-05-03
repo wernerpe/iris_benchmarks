@@ -2,7 +2,7 @@ from iris_environments.environments import env_names
 import yaml
 import os
 
-config = 'config_6'
+config = 'unadaptive_test_cfg_0'
 
 
 default = {
@@ -17,9 +17,10 @@ default = {
     'num_trials': 5
 }
 
-fio = {'num_particles': 50, 
-       'target_uncertainty': 0.1, 
-       'admissible_proportion_in_collision': 0.05, 
+fio = {'num_particles': 100, 
+       'tau': 0.5, 
+       'delta': 0.05, 
+       'admissible_proportion_in_collision': 0.01, 
        'max_iterations': 2, 
        'max_iterations_separating_planes': 100,
        'max_separating_planes_per_iteration': -1, 

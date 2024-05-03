@@ -281,7 +281,7 @@ def plant_builder_2dof_flipper2_obs(usemeshcat = False):
     parser.package_map().Add("iris_environments", path_repo+"/assets")
     parser.SetAutoRenaming(True)
     models = []
-    models.append(parser.AddModels(box_asset)[0])
+    #models.append(parser.AddModels(box_asset)[0])
     #models.append(parser.AddModels(box2_asset)[0])
     #models.append(parser.AddModels(obs_asset)[0])
     models.append(parser.AddModels(twoDOF_iiwa_asset)[0])
@@ -290,9 +290,9 @@ def plant_builder_2dof_flipper2_obs(usemeshcat = False):
     locs = [[0.,20,0],
             [0.,0,0],
             ]
-    plant.WeldFrames(plant.world_frame(), 
-        plant.GetFrameByName("base", models[0]),
-        RigidTransform(locs[0]))
+    # plant.WeldFrames(plant.world_frame(), 
+    #     plant.GetFrameByName("base", models[0]),
+    #     RigidTransform(locs[0]))
     from pydrake.geometry import ProximityProperties, AddContactMaterial
     from pydrake.all import CoulombFriction
     proximity_properties = ProximityProperties()
@@ -302,14 +302,14 @@ def plant_builder_2dof_flipper2_obs(usemeshcat = False):
                         properties=proximity_properties)
     from pydrake.all import Sphere, Cylinder
     cyl_shape = Cylinder(0.7, 0.3)
-    frame = plant.GetBodyByName("box1")
+    #frame = plant.GetBodyByName("box1")
     #X1 = RigidTransform(np.array([0,1.1,0.1]))
     #X1 = RigidTransform(RollPitchYaw(0,0,0).ToRotationMatrix(),np.array([0,1.37,0.47]))
-    X1 = RigidTransform(RollPitchYaw(0,np.pi/2,0).ToRotationMatrix(),np.array([0,1.4,0.0+20]))
-    plant.RegisterVisualGeometry(frame,X1,
+    X1 = RigidTransform(RollPitchYaw(np.pi/2,np.pi/2,0).ToRotationMatrix(),np.array([0,0,1.4]))
+    plant.RegisterVisualGeometry(plant.GetBodyByName("iiwa_twoDOF_link_0"),X1,
                                               cyl_shape, "obs1",
                                               np.array([0.2, 0.2, 0.2, 1]))
-    obs1 = plant.RegisterCollisionGeometry(frame, X1,
+    obs1 = plant.RegisterCollisionGeometry(plant.GetBodyByName("iiwa_twoDOF_link_0"), X1,
                                               cyl_shape, "obs1",
                                                proximity_properties)
     # cyl_shape2 = Cylinder(0.3, 0.3)
@@ -542,7 +542,8 @@ def environment_builder_14dof_iiwas(usemeshcat = False):
 
     parser = builder.parser()
     parser.package_map().Add("bimanual", os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/iris_environments/assets_bimanual")
-
+    path_repo = os.path.dirname(os.path.abspath(__file__))
+    parser.package_map().Add("iris_environments", path_repo+"/assets")
     directives = LoadModelDirectives(os.path.dirname(os.path.abspath(__file__)) +
                                      "/assets_bimanual/models/bimanual_iiwa_with_shelves.yaml")
     models = ProcessModelDirectives(directives, plant, parser)
@@ -574,11 +575,13 @@ def environment_builder_14dof_iiwas(usemeshcat = False):
     return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 def get_environment_builder(environment_name):
-    valid_names = env_names + ['MYCOBOT', '2DOFBLOCKS']
+    valid_names = env_names + ['MYCOBOT', '2DOFBLOCKS', '2DOFFLIPPER2']
     if not environment_name in valid_names:
         raise ValueError(f"Choose a valid environment {valid_names}")
     if environment_name == '2DOFBLOCKS':
         return plant_builder_2dof_blocks
+    if environment_name == '2DOFFLIPPER2':
+        return plant_builder_2dof_flipper2_obs
     if environment_name == '2DOFFLIPPER':
         return plant_builder_2dof_flipper2_obs
     if environment_name == '3DOFFLIPPER':
@@ -602,10 +605,12 @@ def get_environment_builder(environment_name):
     return None
 
 def get_robot_instance_names(environment_name):
-    assert environment_name in env_names+['MYCOBOT', '2DOFBLOCKS']
+    assert environment_name in env_names+['MYCOBOT', '2DOFBLOCKS', '2DOFFLIPPER2']
     if environment_name == '2DOFBLOCKS':
         return ["ball_in_boxes"]
     if environment_name == '2DOFFLIPPER':
+        return ["iiwa7_twoDOF"]
+    if environment_name == '2DOFFLIPPER2':
         return ["iiwa7_twoDOF"]
     if environment_name == '3DOFFLIPPER':
         return ['iiwa7_oneDOF', 'iiwa7_twoDOF']
