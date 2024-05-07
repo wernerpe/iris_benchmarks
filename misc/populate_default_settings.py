@@ -2,19 +2,19 @@ from iris_environments.environments import env_names
 import yaml
 import os
 
-config = 'unadaptive_test_cfg_0'
+config = 'config_precise'
 
 
 default = {
     'require_sample_point_is_contained': True,
-    'iteration_limit': 2,
+    'iteration_limit': 1,
     'termination_threshold': 0.02,
     'relative_termination_threshold': 0.001,
     'configuration_space_margin': 0.01,
-    'num_collision_infeasible_samples': 10,
+    'num_collision_infeasible_samples': 50,
     'num_additional_constraint_infeasible_samples': 1,
     'random_seed': 1234,
-    'num_trials': 5
+    'num_trials': 10
 }
 
 fio = {'num_particles': 100, 
@@ -47,16 +47,16 @@ sio = {
 'random_seed': 1234,
 'num_trials': 5}
 
-# root = os.path.dirname(os.path.abspath(__file__)) 
-# for e in env_names:
-#     with open(root+f"/../benchmarks/default_experiments/{config}/parameters/{e}_12312354.yml", "w") as f:
-#         yaml.dump(default, f)
-
-
 root = os.path.dirname(os.path.abspath(__file__)) 
 for e in env_names:
-    with open(root+f"/../logs/fast_iris/{config}/parameters/{e}_12312354.yml", "w") as f:
-        yaml.dump(fio, f)
+    with open(root+f"/../benchmarks/default_experiments/{config}/parameters/{e}_12312354.yml", "w") as f:
+        yaml.dump(default, f)
+
+
+# root = os.path.dirname(os.path.abspath(__file__)) 
+# for e in env_names:
+#     with open(root+f"/../logs/fast_iris/{config}/parameters/{e}_12312354.yml", "w") as f:
+#         yaml.dump(fio, f)
 
 # root = os.path.dirname(os.path.abspath(__file__)) 
 # assert len(os.listdir(root+f"/../logs/sampled_iris/{config}/parameters/"))==0

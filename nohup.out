@@ -1,0 +1,71 @@
+3DOFFLIPPER
+Traceback (most recent call last):
+  File "/home/peter/git/iris_benchmarks/run_iris_benchmarks_default.py", line 27, in <module>
+    main()
+  File "/home/peter/git/iris_benchmarks/run_iris_benchmarks_default.py", line 20, in main
+    result, is_new, settings_hash = run_default_settings(env_name, config)
+  File "/home/peter/git/iris_benchmarks/benchmarks/helpers.py", line 32, in run_default_settings
+    with open(settings_path, 'r') as f:
+UnboundLocalError: local variable 'settings_path' referenced before assignment
+INFO:drake:Meshcat listening for connections at http://localhost:7000
+INFO:drake:Allocating contexts to support implicit context parallelism 20
+INFO:drake:IrisInConfigurationSpace iteration 0
+Set parameter Username
+Academic license - for non-commercial use only - expires 2024-06-11
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0
+INFO:drake:IrisInConfigurationSpace: Terminating because the iteration limit 1 has been reached.
+INFO:drake:IrisInConfigurationSpace iteration 0

@@ -1,5 +1,5 @@
 configuration_space_margin: 0.01
-iteration_limit: 2
+iteration_limit: 1
 num_additional_constraint_infeasible_samples: 1
 num_collision_infeasible_samples: 10
 num_trials: 5

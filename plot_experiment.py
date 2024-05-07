@@ -15,7 +15,10 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
-                           'config_3',
+                        #    'config_3',
+                        'config_vfast',
+                        #'config_fast',
+                        #'config_medium',
                            ]
 data = {}
 for e in env_names:
@@ -40,11 +43,13 @@ experiments_to_add = [
     #'fast_iris/setting_1', 
     #'fast_iris/setting_2',
     #'fast_iris/config_1',
-    'sampled_iris/config_4',
+    #'sampled_iris/config_4',
     #'fast_iris/config_3',
-    'fast_iris/config_2'
+    #'fast_iris/config_2',
+    #'fast_iris/unadaptive_test_cfg_0',
+    #'fast_iris/unadaptive_newtest_cfg_1'
     ]
-names = ['IrisInConfigurationSpace', 'GreedyIris', 'FastIris']
+names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 
 for exp_name in experiments_to_add:
@@ -61,7 +66,17 @@ for exp_name in experiments_to_add:
             data[env_name][exp_name]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
             data[env_name][exp_name]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
             data[env_name][exp_name]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+            print(result)
 
+
+
+with open('iris_environments/env_statistics.txt', 'r') as f:
+    lines = f.readlines()
+env_stats = {}
+for l in lines[1:]:
+    chunks = l.split(',')
+    stats = [int(chunks[0]), float(chunks[1]), float(chunks[2])]
+    env_stats[chunks[-1].strip('\n').strip(' ')] = stats
 
 fig, axs = plt.subplots(nrows=2, ncols=2, figsize= (15,10))
 axs_squeezed = [axs[0][0], axs[0][1], axs[1][0], axs[1][1]]
@@ -72,16 +87,23 @@ for statid, (k, ax) in enumerate(zip(keys_stats, axs_squeezed)):
         min_stats = []
         max_stats = []
         mean_stats = []
+        vols = []
         for xl, e in enumerate(env_names):
             if 'mean_stats' in data[e][exp].keys():
                 xloc.append(xl)
                 min_stats.append(data[e][exp]['min_stats'][statid])
                 max_stats.append(data[e][exp]['max_stats'][statid])
                 mean_stats.append(data[e][exp]['max_stats'][statid])
-        ax.scatter(xloc, mean_stats, label = names[i_exp], s= 80)
+                vols.append(env_stats[e][2])
+        vols = np.array(vols)
         ax.set_yscale('log')
-        err = [np.array(min_stats),
-               np.array(max_stats)]
+        if 'volume' in axis_labels[statid]:
+            mean_stats /= vols
+            min_stats /= vols
+            max_stats /= vols
+        ax.scatter(xloc, mean_stats, label = names[i_exp], s= 80)    
+        err = [np.array(mean_stats) - np.array(min_stats),
+               np.array(max_stats)- np.array(mean_stats)]#
         artist = ax.errorbar(xloc, mean_stats, yerr = err, fmt='o', capsize=5, capthick=2)
         ax.plot(xloc, mean_stats, linewidth = 0.5, color= artist.lines[0].get_color())
         ax.set_xlabel('Environment')

@@ -9,7 +9,7 @@ import sys
 root = os.path.dirname(os.path.abspath(__file__)) 
 experiment_name = "fast_iris"
 experiment_path = root+f"/logs/{experiment_name}"
-settings_name = 'unadaptive_test_cfg_0'
+settings_name = 'unadaptive_newtest_cfg_1'
 
 def import_function_with_spec(module_name, function_name, file_path):
     """
@@ -49,7 +49,7 @@ if not get_iris_handle:
     # Access and use the function from the module
     raise ValueError("cant import algorithm.py")
 
-for env_name in [env_names[-2]]:
+for env_name in env_names[1:]:
     print('#'*20+env_name+'#'*20)
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
