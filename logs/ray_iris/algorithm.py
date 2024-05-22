@@ -2,6 +2,7 @@ import hashlib
 import json
 import yaml
 from pydrake.all import (IrisInConfigurationSpace,
+                         RayIris,
                          IrisOptions,
                          SceneGraphCollisionChecker,
                          HPolyhedron,
@@ -41,6 +42,6 @@ def get_iris_handle(env_name,
                                  plant.GetPositionUpperLimits())
     def iris_handle(pt):
         plant.SetPositions(context, pt)
-        return IrisInConfigurationSpace(plant, context, context, checker, iris_options)
+        return RayIris(plant, context, context, checker, iris_options)
 
     return iris_handle, iris_options.configuration_space_margin, settings_hash

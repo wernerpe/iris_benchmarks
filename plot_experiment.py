@@ -39,8 +39,21 @@ for conf in default_configs_to_plot:
 experiments_to_add = [
     #'fast_iris/setting_1', 
     'fast_iris/setting_2',
-    'fast_iris/new_bn_test_2',
-    'sampled_iris/config_1'
+    # 'fast_iris/new_bn_test_2',
+    # 'sampled_iris/config_1',
+    # 'ray_iris/setting_1',
+    # 'ray_iris/setting_2',
+    # 'ray_iris/setting_3',
+    # 'ray_iris/setting_4',
+    # 'ray_iris/setting_5',
+    # 'ray_iris/setting_6',
+    # 'ray_iris/setting_7',
+    # 'ray_iris/greedy_iris',
+    # 'ray_iris/greedy_iris_recheck'
+    'ray_iris/setting_7_parallelized',
+    # 'ray_iris/setting_7_parallelized_16',
+    # 'ray_iris/setting_7_parallelized_1',
+    "ray_iris/setting_7_old_commit_recheck"
     ]
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 

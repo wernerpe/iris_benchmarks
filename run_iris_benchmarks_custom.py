@@ -1,8 +1,8 @@
 use_drake_fork = True
 
 import sys
-normal_drake_path = '/home/rhjiang/Documents/code/drake-build/install/lib/python3.10/site-packages'
-fork_drake_path = '/home/rhjiang/Documents/code/drake_fork/drake-build/install/lib/python3.10/site-packages'
+normal_drake_path = '/home/rebecca/Documents/code/drake-build/install/lib/python3.10/site-packages'
+fork_drake_path = '/home/rebecca/Documents/code/fork_drake/drake-build/install/lib/python3.10/site-packages'
 
 if use_drake_fork:
     drake_path = fork_drake_path
@@ -15,8 +15,7 @@ if not_path in sys.path:
     sys.path.remove(not_path)
 if not drake_path in sys.path:
     sys.path.insert(0,drake_path)
-
-from pydrake.all import IrisInConfigurationSpace, IrisOptions
+from pydrake.all import IrisInConfigurationSpace, IrisOptions, RayIris
 from iris_environments.environments import env_names, get_environment_builder
 from benchmarks.helpers import run_custom_experiment, get_experiment_name
 import os
@@ -28,7 +27,10 @@ root = os.path.dirname(os.path.abspath(__file__))
 # experiment_name = "fast_iris"
 experiment_name = "ray_iris"
 experiment_path = root+f"/logs/{experiment_name}"
-settings_name = 'setting_1'
+# settings_name = 'greedy_iris_recheck'
+# settings_name = 'setting_7_parallelized_16'
+# settings_name = 'setting_7_parallelized_1'
+settings_name = "setting_7_old_commit_recheck"
 
 def import_function_with_spec(module_name, function_name, file_path):
     """
@@ -68,7 +70,7 @@ if not get_iris_handle:
     # Access and use the function from the module
     raise ValueError("cant import algorithm.py")
 
-for env_name in env_names[:5]:
+for env_name in env_names:
     print(env_name)
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
