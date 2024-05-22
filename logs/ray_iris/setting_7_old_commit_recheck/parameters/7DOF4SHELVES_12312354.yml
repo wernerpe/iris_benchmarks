@@ -1,0 +1,6 @@
+face_ray_steps: 60
+iteration_limit: 1
+particle_batch_size: 50
+require_sample_point_is_contained: True
+relative_termination_threshold: 0.01
+termination_threshold: 0.02
