@@ -16,7 +16,7 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
                         #    'config_3',
-                        'config_vfast',
+                        #'config_vfast',
                         #'config_fast',
                         #'config_medium',
                            ]
@@ -48,6 +48,8 @@ experiments_to_add = [
     #'fast_iris/config_2',
     #'fast_iris/unadaptive_test_cfg_0',
     #'fast_iris/unadaptive_newtest_cfg_1'
+    'fast_iris/unadaptive_fast',
+    'fast_iris/unadaptive_fast_2',
     ]
 names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
