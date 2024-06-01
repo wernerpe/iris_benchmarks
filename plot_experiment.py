@@ -16,9 +16,9 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
                         #    'config_3',
-                        'config_vfast',
+                        # 'config_vfast',
                         #'config_fast',
-                        #'config_medium',
+                        'config_medium',
                            ]
 data = {}
 for e in env_names:
@@ -47,9 +47,26 @@ experiments_to_add = [
     #'fast_iris/config_3',
     #'fast_iris/config_2',
     #'fast_iris/unadaptive_test_cfg_0',
-    #'fast_iris/unadaptive_newtest_cfg_1'
+    #'fast_iris/unadaptive_newtest_cfg_1',
+    # 'ray_iris/setting_1',
+    # 'ray_iris/max_iter_sep_planes_999',
+    # 'ray_iris/face_ray_steps_20',
+    'ray_iris/batch_size_500',
+    # 'ray_iris/batch_size_1500'
+    # 'ray_iris/face_ray_steps_10_batch_size_500',
+    # 'ray_iris/only_walk_toward_collisions'
     ]
-names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
+# names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
+names = [
+         'default medium', 
+        #  'ray iris 1', 
+        #  'max_iter_sep_planes = 40', 
+        #  'face_ray_steps = 20',
+         'batch_size = 500',
+        #  'batch_size = 1500',
+        #  'face_ray_steps_10_batch_size_500',
+        #  'only_walk_toward_collisions'
+        ]
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 
 for exp_name in experiments_to_add:

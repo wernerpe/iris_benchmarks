@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0,'/home/rebecca/Documents/code/fork_drake/drake-build/install/lib/python3.10/site-packages')
+
 from pydrake.all import IrisInConfigurationSpace, IrisOptions
 from iris_environments.environments import env_names, get_environment_builder
 from benchmarks.helpers import run_custom_experiment, get_experiment_name
@@ -5,11 +8,19 @@ import os
 import pickle 
 from functools import partial
 import importlib
-import sys
 root = os.path.dirname(os.path.abspath(__file__)) 
-experiment_name = "fast_iris"
+# experiment_name = "fast_iris"
+experiment_name = "ray_iris"
 experiment_path = root+f"/logs/{experiment_name}"
-settings_name = 'unadaptive_newtest_cfg_1'
+# settings_name = 'unadaptive_newtest_cfg_1'
+# settings_name = 'setting_1'
+# settings_name = 'max_iter_sep_planes_999'
+# settings_name = 'face_ray_steps_20'
+# settings_name = 'batch_size_500'
+# settings_name = 'batch_size_1500'
+# settings_name = 'face_ray_steps_10_batch_size_500'
+settings_name = 'only_walk_toward_collisions'
+
 
 def import_function_with_spec(module_name, function_name, file_path):
     """
