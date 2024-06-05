@@ -16,8 +16,8 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
                         #    'config_3',
-                        'config_vfast',
-                        #'config_medium',
+                        #'config_vfast',
+                        'config_precise',
                            ]
 data = {}
 for e in env_names:
@@ -49,7 +49,7 @@ experiments_to_add = [
     #'fast_iris/config_3',
     #'fast_iris/config_2',
     #'fast_iris/unadaptive_test_cfg_0',
-    #'fast_iris/unadaptive_newtest_cfg_1'
+    'fast_iris/unadaptive_balanced_3'
     ]
 names = ['IICS_vf', 'IICS_f', 'FastIris_doubletest']
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
@@ -95,28 +95,28 @@ def get_statid(colname):
         if substr in k:
             return i
         
-cfg_names = ['config_vfast']
-
+cfg_names = ['unadaptive_balanced_3']
+dirname = 'fast_iris'
 data_iris_np = {}
 i = 0
 for col_idx, colum_name in enumerate(column_names_iris_np):
     corresp_cfg = cfg_names[i]
     column_data = []
     for env_name in env_names:
-        if len(data[env_name][f"default/{corresp_cfg}"])==0:
+        if len(data[env_name][f"{dirname}/{corresp_cfg}"])==0:
             column_data.append(0)
         else:
             statid = get_statid(colum_name)
             if 'mean' in colum_name:
-                dat = data[env_name][f"default/{corresp_cfg}"]['mean_stats'][statid]
+                dat = data[env_name][f"{dirname}/{corresp_cfg}"]['mean_stats'][statid]
             if '_err_minus' in colum_name:
                 
-                min = data[env_name][f"default/{corresp_cfg}"]['min_stats'][statid]
-                mean = data[env_name][f"default/{corresp_cfg}"]['mean_stats'][statid]
+                min = data[env_name][f"{dirname}/{corresp_cfg}"]['min_stats'][statid]
+                mean = data[env_name][f"{dirname}/{corresp_cfg}"]['mean_stats'][statid]
                 dat = mean-min
             if '_err_plus' in colum_name:
-                max = data[env_name][f"default/{corresp_cfg}"]['max_stats'][statid]
-                mean = data[env_name][f"default/{corresp_cfg}"]['mean_stats'][statid]
+                max = data[env_name][f"{dirname}/{corresp_cfg}"]['max_stats'][statid]
+                mean = data[env_name][f"{dirname}/{corresp_cfg}"]['mean_stats'][statid]
                 dat = max-mean
             if 'volume' in colum_name:
                 dat/=env_stats[env_name][2]
@@ -134,7 +134,7 @@ def save_dict_to_dat(data_dict, file_path):
         for row in zip(*data_dict.values()):
             f.write("\t".join(map(str, row)) + "\n")
 
-save_dict_to_dat(data_iris_np, f'iris_np_{cfg_names[0].split("_")[1]}.tex')
+save_dict_to_dat(data_iris_np, f'{dirname}_{cfg_names[0].split("_")[1:]}_3.tex')
 # fig, axs = plt.subplots(nrows=2, ncols=2, figsize= (15,10))
 # axs_squeezed = [axs[0][0], axs[0][1], axs[1][0], axs[1][1]]
 # for statid, (k, ax) in enumerate(zip(keys_stats, axs_squeezed)):

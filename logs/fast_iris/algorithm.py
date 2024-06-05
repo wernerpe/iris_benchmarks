@@ -42,7 +42,6 @@ def get_iris_handle(env_name,
                                  plant.GetPositionUpperLimits())
     def iris_handle(pt, random_seed = iris_options.random_seed):
         iris_options.random_seed = random_seed
-        iris_options.verbose = True
         return FastIris(checker, Hyperellipsoid.MakeHypersphere(1e-2, pt), domain, iris_options)
 
     return iris_handle, iris_options.configuration_space_margin, settings_hash, iris_options.random_seed, num_trials
