@@ -181,7 +181,7 @@ def evaluate_regions(regions: List[HPolyhedron],
         samples = []
         prev = r.UniformSample(gen)
         for _ in range(Ns):
-            prev = r.UniformSample(gen, prev, mixing_steps=10)
+            prev = r.UniformSample(gen, prev, mixing_steps=50)
             samples.append(prev)
         col_free = col_checker.CheckConfigsCollisionFree(np.array(samples), parallelize=True)
         fraction_in_collision.append(np.sum(1-1.0*np.array(col_free))/Ns)

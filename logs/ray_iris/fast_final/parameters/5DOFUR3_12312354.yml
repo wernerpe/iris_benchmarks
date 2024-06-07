@@ -1,0 +1,14 @@
+admissible_proportion_in_collision: 0.1
+delta: 0.1
+tau: 0.5
+
+face_ray_steps: 8
+iteration_limit: 1
+particle_batch_size: 100
+mixing_steps: 50
+
+require_sample_point_is_contained: True
+relative_termination_threshold: 0.01
+termination_threshold: 0.02
+max_iterations_separating_planes: 999
+num_trials: 10
