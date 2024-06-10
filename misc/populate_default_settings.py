@@ -2,7 +2,7 @@ from iris_environments.environments import env_names
 import yaml
 import os
 
-config = 'unadaptive_balanced_3'
+config = 'unadaptive_precise_4'
 
 
 default = {
@@ -17,13 +17,13 @@ default = {
     'num_trials': 10
 }
 
-fio = {'num_particles': 800, 
+fio = {'num_particles':2000, ##00, a
        'tau': 0.5, 
        'delta': 0.05, 
-       'admissible_proportion_in_collision': 0.05, 
+       'admissible_proportion_in_collision': 0.01, 
        'max_iterations': 1, 
        'max_iterations_separating_planes': 100,
-       'max_separating_planes_per_iteration': 20, 
+       'max_separating_planes_per_iteration': 50, 
        'bisection_steps': 9, 
        'verbose': True, 
        'configuration_space_margin': 0.01, 

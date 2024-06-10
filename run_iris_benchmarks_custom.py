@@ -9,7 +9,7 @@ import sys
 root = os.path.dirname(os.path.abspath(__file__)) 
 experiment_name = "fast_iris"
 experiment_path = root+f"/logs/{experiment_name}"
-settings_name = 'unadaptive_balanced_3'
+settings_name = 'final_precise'
 
 def import_function_with_spec(module_name, function_name, file_path):
     """
