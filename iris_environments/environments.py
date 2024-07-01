@@ -25,7 +25,7 @@ env_names = ['2DOFFLIPPER',
              '7DOFIIWA', 
              '7DOF4SHELVES', 
              '7DOFBINS', 
-             '14DOFIIWAS',
+             # '14DOFIIWAS',
              '15DOFALLEGRO']
 
 

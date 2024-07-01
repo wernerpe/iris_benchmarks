@@ -16,9 +16,9 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
                         #    'config_3',
-                        'config_precise',
-                        'config_vfast',
-                        'config_fast',
+                        # 'config_precise',
+                        # 'config_vfast',
+                        # 'config_fast',
                         # 'config_medium',
                            ]
 data = {}
@@ -35,29 +35,25 @@ for conf in default_configs_to_plot:
         with open(root + f"/benchmarks/default_experiments/{conf}/"+exp, 'rb') as f:
             result = pickle.load(f)
             
-            data[env_name][f"default/{conf}"]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
-            data[env_name][f"default/{conf}"]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
-            data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+            try:
+                data[env_name][f"default/{conf}"]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
+                data[env_name][f"default/{conf}"]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
+                data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+            except:
+                pass
 
 
 experiments_to_add = [
-    #'fast_iris/setting_1', 
-    #'fast_iris/setting_2',
-    #'fast_iris/config_1',
-    #'sampled_iris/config_4',
-    #'fast_iris/config_3',
-    #'fast_iris/config_2',
-    #'fast_iris/unadaptive_test_cfg_0',
-    #'fast_iris/unadaptive_newtest_cfg_1',
-    # 'ray_iris/setting_1',
-    # 'ray_iris/max_iter_sep_planes_999',
-    # 'ray_iris/face_ray_steps_20',
-    'ray_iris/batch_size_500',
-    # 'ray_iris/batch_size_1500'
-    # 'ray_iris/face_ray_steps_10_batch_size_500',
-    # 'ray_iris/only_walk_toward_collisions'
-    'fast_iris/unadaptive_balanced_final',
-    'fast_iris/unadaptive_fast_final',
+    # "greedy_iris/precise_after_sort",
+    # "ray_iris/precise_final",
+    # "ray_iris/precise_all_samples",
+    # "ray_iris/precise_only_collisions",
+    # "fast_iris/unadaptive_balanced_final",
+    "greedy_iris/fast_after_sort",
+    "ray_iris/fast_final",
+    "ray_iris/fast_all_samples",
+    "ray_iris/fast_only_collisions",
+    # "fast_iris/unadaptive_fast_final",
     ]
 # names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 # names = [
@@ -84,10 +80,12 @@ for exp_name in experiments_to_add:
         env_name = get_env_name(exp)
         with open(root + f"/logs/{exp_name}/"+exp, 'rb') as f:
             result = pickle.load(f)
-            data[env_name][exp_name]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
-            data[env_name][exp_name]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
-            data[env_name][exp_name]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
-            print(result)
+            try:
+                data[env_name][exp_name]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
+                data[env_name][exp_name]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
+                data[env_name][exp_name]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+            except:
+                pass
 
 
 
