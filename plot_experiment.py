@@ -45,15 +45,19 @@ for conf in default_configs_to_plot:
 
 experiments_to_add = [
     # "greedy_iris/precise_after_sort",
+    # "greedy_iris/precise_cap_planes",
     # "ray_iris/precise_final",
     # "ray_iris/precise_all_samples",
     # "ray_iris/precise_only_collisions",
     # "fast_iris/unadaptive_balanced_final",
     "greedy_iris/fast_after_sort",
+    "greedy_iris/fast_cap_planes",
     "ray_iris/fast_final",
-    "ray_iris/fast_all_samples",
-    "ray_iris/fast_only_collisions",
+    # "ray_iris/fast_all_samples",
+    # "ray_iris/fast_only_collisions",
     # "fast_iris/unadaptive_fast_final",
+    # "greedy_iris/very_precise",
+    # "ray_iris/very_precise",
     ]
 # names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 # names = [
@@ -115,7 +119,8 @@ for statid, (k, ax) in enumerate(zip(keys_stats, axs_squeezed)):
                 mean_stats.append(data[e][exp]['max_stats'][statid])
                 vols.append(env_stats[e][2])
         vols = np.array(vols)
-        ax.set_yscale('log')
+        if "faces" not in axis_labels[statid]:
+            ax.set_yscale('log')
         if 'volume' in axis_labels[statid]:
             mean_stats /= vols
             min_stats /= vols

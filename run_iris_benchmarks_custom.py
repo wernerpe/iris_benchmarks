@@ -10,7 +10,7 @@ from functools import partial
 import importlib
 root = os.path.dirname(os.path.abspath(__file__)) 
 # experiment_name = "fast_iris"
-experiment_name = "ray_iris"
+experiment_name = "greedy_iris"
 experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'unadaptive_newtest_cfg_1'
 # settings_name = 'setting_1'
@@ -19,7 +19,7 @@ experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'batch_size_500'
 # settings_name = 'batch_size_1500'
 # settings_name = 'face_ray_steps_10_batch_size_500'
-settings_name = 'precise_final'
+settings_name = 'fast_cap_planes'
 
 
 def import_function_with_spec(module_name, function_name, file_path):
