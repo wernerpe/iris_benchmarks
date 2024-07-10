@@ -19,7 +19,7 @@ default_configs_to_plot = [#'config_1',
                         # 'config_precise',
                         # 'config_vfast',
                         # 'config_fast',
-                        # 'config_medium',
+                        'config_medium',
                            ]
 data = {}
 for e in env_names:
@@ -45,14 +45,14 @@ for conf in default_configs_to_plot:
 
 experiments_to_add = [
     # "greedy_iris/precise_after_sort",
-    # "greedy_iris/precise_cap_planes",
-    # "ray_iris/precise_final",
+    "greedy_iris/precise_cap_planes",
+    "ray_iris/precise_final",
     # "ray_iris/precise_all_samples",
     # "ray_iris/precise_only_collisions",
-    # "fast_iris/unadaptive_balanced_final",
-    "greedy_iris/fast_after_sort",
-    "greedy_iris/fast_cap_planes",
-    "ray_iris/fast_final",
+    "fast_iris/unadaptive_balanced_final",
+    # "greedy_iris/fast_after_sort",
+    # "greedy_iris/fast_cap_planes",
+    # "ray_iris/fast_final",
     # "ray_iris/fast_all_samples",
     # "ray_iris/fast_only_collisions",
     # "fast_iris/unadaptive_fast_final",
@@ -116,11 +116,12 @@ for statid, (k, ax) in enumerate(zip(keys_stats, axs_squeezed)):
                 xloc.append(xl)
                 min_stats.append(data[e][exp]['min_stats'][statid])
                 max_stats.append(data[e][exp]['max_stats'][statid])
-                mean_stats.append(data[e][exp]['max_stats'][statid])
+                mean_stats.append(data[e][exp]['mean_stats'][statid])
                 vols.append(env_stats[e][2])
         vols = np.array(vols)
-        if "faces" not in axis_labels[statid]:
-            ax.set_yscale('log')
+        # if "faces" not in axis_labels[statid]:
+        #     ax.set_yscale('log')
+        ax.set_yscale('log')
         if 'volume' in axis_labels[statid]:
             mean_stats /= vols
             min_stats /= vols

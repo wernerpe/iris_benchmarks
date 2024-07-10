@@ -5,9 +5,9 @@ tau: 0.5
 face_ray_steps: 1
 only_walk_toward_collisions: True
 iteration_limit: 1
-particle_batch_size: 5000
+particle_batch_size: 10000
 mixing_steps: 50
-max_hyperplanes_per_iteration: 3
+max_hyperplanes_per_iteration: 5
 
 # 5000, 3 is good
 # 5000, 1 is good but a little slower
