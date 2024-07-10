@@ -5,9 +5,9 @@ tau: 0.5
 face_ray_steps: 1
 only_walk_toward_collisions: True
 iteration_limit: 1
-particle_batch_size: 100
+particle_batch_size: 500
 mixing_steps: 50
-max_hyperplanes_per_iteration: 5
+max_hyperplanes_per_iteration: 1
 
 require_sample_point_is_contained: True
 relative_termination_threshold: 0.01
