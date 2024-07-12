@@ -7,9 +7,9 @@ from functools import partial
 import importlib
 import sys
 root = os.path.dirname(os.path.abspath(__file__)) 
-experiment_name = "fast_iris"
+experiment_name = "ray_iris"
 experiment_path = root+f"/logs/{experiment_name}"
-settings_name = 'final_precise'
+settings_name = 'balanced_final'
 
 def import_function_with_spec(module_name, function_name, file_path):
     """

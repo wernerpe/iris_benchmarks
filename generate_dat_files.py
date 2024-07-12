@@ -32,14 +32,24 @@ for conf in default_configs_to_plot:
         env_name = get_env_name(exp)
         with open(root + f"/benchmarks/default_experiments/{conf}/"+exp, 'rb') as f:
             result = pickle.load(f)
-            #write code here that computes the volumes of the inscribed ellipsoids
-
 
             data[env_name][f"default/{conf}"]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
             data[env_name][f"default/{conf}"]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
             data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+
+            regs = result['regions']
+            vols_ellipsoids= [r.MaximumVolumeInscribedEllipsoid().Volume() for r in regs]
+            mean_vol = np.mean(vols_ellipsoids)
+            min_vol = np.min(vols_ellipsoids)
+            max_vol = np.max(vols_ellipsoids)
+
+            data[env_name][f"default/{conf}"]['mean_stats'][1] = mean_vol
+            data[env_name][f"default/{conf}"]['min_stats'][1] = min_vol
+            data[env_name][f"default/{conf}"]['max_stats'][1] = max_vol
+
             print(f'env {env_name}')
             print(result['fraction_in_collision'])
+            print('OVERWRITNGIN VOLUMES WITH ELLIPSOID VOLUMES')
 #build irisNP table
 
 
