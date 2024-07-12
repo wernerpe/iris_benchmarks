@@ -19,7 +19,7 @@ experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'batch_size_500'
 # settings_name = 'batch_size_1500'
 # settings_name = 'face_ray_steps_10_batch_size_500'
-settings_name = 'precise_cap_planes'
+settings_name = 'precise_after_sort' # Change to "fast_after_sort"
 
 
 def import_function_with_spec(module_name, function_name, file_path):

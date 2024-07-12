@@ -44,8 +44,8 @@ for conf in default_configs_to_plot:
 
 
 experiments_to_add = [
-    # "greedy_iris/precise_after_sort",
-    "greedy_iris/precise_cap_planes",
+    "greedy_iris/precise_after_sort",
+    # "greedy_iris/precise_cap_planes",
     "ray_iris/precise_final",
     # "ray_iris/precise_all_samples",
     # "ray_iris/precise_only_collisions",
@@ -57,6 +57,7 @@ experiments_to_add = [
     # "ray_iris/fast_only_collisions",
     # "fast_iris/unadaptive_fast_final",
     # "greedy_iris/very_precise",
+    # "greedy_iris/very_precise_cap_planes",
     # "ray_iris/very_precise",
     ]
 # names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
