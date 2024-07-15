@@ -62,11 +62,13 @@ root = os.path.abspath('')
 
 
 experiments_to_add = [
-    # "greedy_iris/precise_after_sort",
+    "greedy_iris/precise_after_sort",
     # "ray_iris/precise_final",
-    "ray_iris/precise_final_sample_dist_step_size",
-    "ray_iris/precise_final_sample_dist_step_size_half_batch",
-    "ray_iris/precise_final_sample_dist_step_size_quarter_batch",
+    # "ray_iris/precise_final_sample_dist_step_size",
+    # "ray_iris/precise_final_sample_dist_step_size_half_batch",
+    # "ray_iris/precise_final_sample_dist_step_size_quarter_batch",
+    # "ray_iris/precise_final_2",
+    "ray_iris/precise_final_2",
     # "ray_iris/precise_final_more_steps",
     # "ray_iris/precise_all_samples",
     # "ray_iris/precise_only_collisions",
@@ -76,6 +78,7 @@ experiments_to_add = [
     # "ray_iris/fast_final_sample_dist_step_size",
     # "ray_iris/fast_final_sample_dist_step_size_half_batch",
     # "ray_iris/fast_final_sample_dist_step_size_quarter_batch",
+    # "ray_iris/fast_final_2"
     # "ray_iris/fast_all_samples",
     # "ray_iris/fast_only_collisions",
     # "fast_iris/unadaptive_fast_final",
