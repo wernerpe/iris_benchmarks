@@ -24,7 +24,7 @@ experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'precise_final_more_steps'
 # settings_name = 'precise_final_sample_dist_step_size'
 # settings_name = 'fast_final_sample_dist_step_size'
-settings_name = 'precise_final_sample_dist_step_size_half_batch'
+settings_name = 'precise_final_2'
 
 
 def import_function_with_spec(module_name, function_name, file_path):

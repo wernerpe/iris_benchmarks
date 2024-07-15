@@ -10,8 +10,19 @@ import matplotlib.pyplot as plt
 
 # i_seed = 1
 seed_nums = {}
-for env_name in env_names:
-    seed_nums[env_name] = [i for i in range(10)]
+# for env_name in env_names:
+#     seed_nums[env_name] = [i for i in range(10)]
+
+# seeds for paper:
+seed_nums["5DOFUR3"] = [1]
+seed_nums["3DOFFLIPPER"] = [7]
+seed_nums["6DOFUR3"] = [1]
+seed_nums["7DOFIIWA"] = [1]
+seed_nums["7DOF4SHELVES"] = [1]
+seed_nums["7DOFBINS"] = [1]
+seed_nums["14DOFIIWAS"] = [7]
+seed_nums["15DOFALLEGRO"] = [7]
+
 
 def get_env_name(path):
     for e in env_names:
@@ -52,14 +63,19 @@ root = os.path.abspath('')
 
 experiments_to_add = [
     # "greedy_iris/precise_after_sort",
-    "ray_iris/precise_final",
-    "ray_iris/precise_final_sample_dist_step_size"
+    # "ray_iris/precise_final",
+    "ray_iris/precise_final_sample_dist_step_size",
+    "ray_iris/precise_final_sample_dist_step_size_half_batch",
+    "ray_iris/precise_final_sample_dist_step_size_quarter_batch",
     # "ray_iris/precise_final_more_steps",
     # "ray_iris/precise_all_samples",
     # "ray_iris/precise_only_collisions",
     # "fast_iris/unadaptive_balanced_final",
     # "greedy_iris/fast_after_sort",
     # "ray_iris/fast_final",
+    # "ray_iris/fast_final_sample_dist_step_size",
+    # "ray_iris/fast_final_sample_dist_step_size_half_batch",
+    # "ray_iris/fast_final_sample_dist_step_size_quarter_batch",
     # "ray_iris/fast_all_samples",
     # "ray_iris/fast_only_collisions",
     # "fast_iris/unadaptive_fast_final",
@@ -120,8 +136,8 @@ for exp_name in experiments_to_add:
 
 
 bar_width = 10
-# colors = ['red', 'blue', 'green', 'orange']
-colors = ['blue', 'orange']
+colors = ['red', 'blue', 'green', 'orange']
+# colors = ['blue', 'orange']
 
 with open('iris_environments/env_statistics.txt', 'r') as f:
     lines = f.readlines()
