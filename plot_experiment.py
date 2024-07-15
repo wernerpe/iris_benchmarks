@@ -16,9 +16,9 @@ stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 
 default_configs_to_plot = [#'config_1', 
                            #'config_2',
                         #    'config_3',
-                        'config_precise',
-                        'config_vfast',
-                        'config_fast',
+                        # 'config_precise',
+                        # 'config_vfast',
+                        # 'config_fast',
                         # 'config_medium',
                            ]
 data = {}
@@ -41,35 +41,21 @@ for conf in default_configs_to_plot:
 
 
 experiments_to_add = [
-    #'fast_iris/setting_1', 
-    #'fast_iris/setting_2',
-    #'fast_iris/config_1',
-    #'sampled_iris/config_4',
-    #'fast_iris/config_3',
-    #'fast_iris/config_2',
-    #'fast_iris/unadaptive_test_cfg_0',
-    #'fast_iris/unadaptive_newtest_cfg_1',
-    # 'ray_iris/setting_1',
-    # 'ray_iris/max_iter_sep_planes_999',
-    # 'ray_iris/face_ray_steps_20',
-    'ray_iris/batch_size_500',
-    # 'ray_iris/batch_size_1500'
-    # 'ray_iris/face_ray_steps_10_batch_size_500',
-    # 'ray_iris/only_walk_toward_collisions'
-    'fast_iris/unadaptive_balanced_final',
-    'fast_iris/unadaptive_fast_final',
+    # "greedy_iris/precise_after_sort",
+    "ray_iris/precise_final",
+    "ray_iris/precise_final_sample_dist_step_size",
+    # "ray_iris/precise_final_sample_dist_step_size_half_batch",
+    # "ray_iris/precise_all_samples",
+    # "ray_iris/precise_only_collisions",
+    # "fast_iris/unadaptive_balanced_final",
+    # "greedy_iris/fast_after_sort",
+    # "ray_iris/fast_final",
+    # "ray_iris/fast_final_sample_dist_step_size",
+    # "ray_iris/fast_final_sample_dist_step_size_half_batch"
+    # "ray_iris/fast_all_samples",
+    # "ray_iris/fast_only_collisions",
+    # "fast_iris/unadaptive_fast_final",
     ]
-# names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
-# names = [
-#          'default medium', 
-#         #  'ray iris 1', 
-#         #  'max_iter_sep_planes = 40', 
-#         #  'face_ray_steps = 20',
-#          'batch_size = 500',
-#         #  'batch_size = 1500',
-#         #  'face_ray_steps_10_batch_size_500',
-#         #  'only_walk_toward_collisions'
-#         ]
 names = default_configs_to_plot + experiments_to_add
 #"['2DOFFLIPPER_641ed63424.pkl', '3DOFFLIPPER_a33a92c6d1.pkl']
 
@@ -87,7 +73,10 @@ for exp_name in experiments_to_add:
             data[env_name][exp_name]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
             data[env_name][exp_name]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
             data[env_name][exp_name]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
-            print(result)
+            # print(result)
+            print(env_name)
+            print(exp_name)
+            print(data[env_name][exp_name]['mean_stats'])
 
 
 
@@ -114,7 +103,7 @@ for statid, (k, ax) in enumerate(zip(keys_stats, axs_squeezed)):
                 xloc.append(xl)
                 min_stats.append(data[e][exp]['min_stats'][statid])
                 max_stats.append(data[e][exp]['max_stats'][statid])
-                mean_stats.append(data[e][exp]['max_stats'][statid])
+                mean_stats.append(data[e][exp]['mean_stats'][statid])
                 vols.append(env_stats[e][2])
         vols = np.array(vols)
         ax.set_yscale('log')

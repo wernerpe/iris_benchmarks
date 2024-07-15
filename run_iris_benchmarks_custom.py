@@ -20,7 +20,11 @@ experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'batch_size_1500'
 # settings_name = 'face_ray_steps_10_batch_size_500'
 # settings_name = 'only_walk_toward_collisions'
-settings_name = 'fast_final_only_walk_toward_collisions'
+# settings_name = 'fast_final_only_walk_toward_collisions'
+# settings_name = 'precise_final_more_steps'
+# settings_name = 'precise_final_sample_dist_step_size'
+# settings_name = 'fast_final_sample_dist_step_size'
+settings_name = 'precise_final_sample_dist_step_size_half_batch'
 
 
 def import_function_with_spec(module_name, function_name, file_path):
