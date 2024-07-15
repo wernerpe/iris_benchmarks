@@ -8,7 +8,10 @@ import matplotlib.gridspec as gridspec
 import matplotlib.ticker as ticker
 import matplotlib.pyplot as plt
 
-i_seed = 4
+# i_seed = 1
+seed_nums = {}
+for env_name in env_names:
+    seed_nums[env_name] = [i for i in range(10)]
 
 def get_env_name(path):
     for e in env_names:
@@ -30,77 +33,36 @@ default_configs_to_plot = [#'config_1',
 data = {}
 for e in env_names:
     data[e] = {}
-    for c in default_configs_to_plot:
-        data[e][f"default/{c}"] = {}
+    # for c in default_configs_to_plot:
+    #     data[e][f"default/{c}"] = {}
 
 # root = os.path.dirname(os.path.abspath(__file__))
 root = os.path.abspath('')
-for conf in default_configs_to_plot:
-    default_exp_path = [e for e in os.listdir(root + f"/benchmarks/default_experiments/{conf}") if e.endswith('pkl')]
-    for exp in default_exp_path:
-        env_name = get_env_name(exp)
-        with open(root + f"/benchmarks/default_experiments/{conf}/"+exp, 'rb') as f:
-            result = pickle.load(f)
+# for conf in default_configs_to_plot:
+#     default_exp_path = [e for e in os.listdir(root + f"/benchmarks/default_experiments/{conf}") if e.endswith('pkl')]
+#     for exp in default_exp_path:
+#         env_name = get_env_name(exp)
+#         with open(root + f"/benchmarks/default_experiments/{conf}/"+exp, 'rb') as f:
+#             result = pickle.load(f)
             
-            data[env_name][f"default/{conf}"]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
-            data[env_name][f"default/{conf}"]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
-            data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
+#             data[env_name][f"default/{conf}"]['mean_stats'] = [ np.mean(result[k]) for k in keys_stats]
+#             data[env_name][f"default/{conf}"]['min_stats'] = [ np.min(result[k]) for k in keys_stats]
+#             data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
 
 
 experiments_to_add = [
-    #'fast_iris/setting_1', 
-    #'fast_iris/setting_2',
-    #'fast_iris/config_1',
-    #'sampled_iris/config_4',
-    # 'fast_iris/config_3',
-    #'fast_iris/config_2',
-    #'fast_iris/unadaptive_test_cfg_0',
-    #'fast_iris/unadaptive_newtest_cfg_1',
-    # 'ray_iris/setting_1',
-    # 'ray_iris/max_iter_sep_planes_999',
-    # 'ray_iris/face_ray_steps_20',
-    # 'ray_iris/batch_size_500',
-    # 'ray_iris/fast',
-    # 'ray_iris/fast_1',
-    # 'ray_iris/fast_2',
-    # 'ray_iris/fast_3',
-    # 'ray_iris/fast_4',
-    # 'ray_iris/fast_5',
-    # 'ray_iris/fast_6',
-    # 'ray_iris/fast_final_original',
-    # 'ray_iris/fast_final',
-    # 'ray_iris/balanced_2',
-    # 'ray_iris/balanced_3',
-    # 'ray_iris/balanced_4',
-    # 'ray_iris/balanced_final_original',
-    # 'ray_iris/balanced_final',
-    # 'greedy_iris/balanced'
-    # 'ray_iris/fast_final_insufficient_mixing',
-    'ray_iris/fast_final',
-    # 'ray_iris/fast_final_only_walk_toward_collisions'
-    # 'greedy_iris/fast',
-    'greedy_iris/fast_after_sort',
-    # 'greedy_iris/balanced_after_sort',
-    # 'ray_iris/fast_final_smaller_batches',
-    # 'ray_iris/batch_size_1500'
-    # 'ray_iris/face_ray_steps_10_batch_size_500',
-    # 'ray_iris/only_walk_toward_collisions'
-    # 'ray_iris/balanced_final',
-    # 'ray_iris/balanced_4',
-    # 'ray_iris/precise_1',
-    # 'ray_iris/precise_2',
-    # 'ray_iris/precise_3',
-    # 'ray_iris/precise_4',
-    # 'ray_iris/precise_5',
-    # 'ray_iris/precise_6',
-    # 'ray_iris/precise_final',
-    # 'greedy_iris/precise',
-    # 'ray_iris/precise_3_mix_more',
-    # 'ray_iris/precise_3_mix_medium',
-    # 'ray_iris/precise_3_mix_medium_minus'
-    # 'fast_iris/unadaptive_balanced_final',
-    # 'fast_iris/unadaptive_fast_final',
-    # 'greedy_iris/precise_after_sort',
+    # "greedy_iris/precise_after_sort",
+    "ray_iris/precise_final",
+    "ray_iris/precise_final_sample_dist_step_size"
+    # "ray_iris/precise_final_more_steps",
+    # "ray_iris/precise_all_samples",
+    # "ray_iris/precise_only_collisions",
+    # "fast_iris/unadaptive_balanced_final",
+    # "greedy_iris/fast_after_sort",
+    # "ray_iris/fast_final",
+    # "ray_iris/fast_all_samples",
+    # "ray_iris/fast_only_collisions",
+    # "fast_iris/unadaptive_fast_final",
     ]
 # names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 # names = [
@@ -136,12 +98,30 @@ for exp_name in experiments_to_add:
         with open(root + f"/logs/{exp_name}/"+exp, 'rb') as f:
             num_trials_env = num_trials[env_name]
             result = pickle.load(f)
-            data[env_name][exp_name]['mean_stats'] = [ np.mean(result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]) for k in keys_stats]
-            data[env_name][exp_name]['min_stats'] = [ np.min(result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]) for k in keys_stats]
-            data[env_name][exp_name]['max_stats'] = [ np.max(result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]) for k in keys_stats]
+            # data[env_name][exp_name]['mean_stats'] = [ np.mean(result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]) for k in keys_stats]
+            # data[env_name][exp_name]['min_stats'] = [ np.min(result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]) for k in keys_stats]
+            # data[env_name][exp_name]['max_stats'] = [ np.max(result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]) for k in keys_stats]
+            data[env_name][exp_name]['mean_stats'] = []
+            data[env_name][exp_name]['min_stats'] = []
+            data[env_name][exp_name]['max_stats']= []
+            for k in keys_stats:
+                stats = np.array([])
+                for i_seed in seed_nums[env_name]:
+                    stats = np.hstack((stats, result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]))
+                    print(env_name)
+                    print(exp_name)
+                    print(k)
+                    print(i_seed)
+                    print(stats)
+                
+                data[env_name][exp_name]['mean_stats'].append(np.mean(stats)) 
+                data[env_name][exp_name]['min_stats'].append(np.min(stats)) 
+                data[env_name][exp_name]['max_stats'].append(np.max(stats)) 
+
 
 bar_width = 10
-colors = ['red', 'blue', 'green', 'orange']
+# colors = ['red', 'blue', 'green', 'orange']
+colors = ['blue', 'orange']
 
 with open('iris_environments/env_statistics.txt', 'r') as f:
     lines = f.readlines()
@@ -151,7 +131,7 @@ for l in lines[1:]:
     stats = [int(chunks[0]), float(chunks[1]), float(chunks[2])]
     env_stats[chunks[-1].strip('\n').strip(' ')] = stats
 
-fig = plt.figure(figsize=(25, 10))
+fig = plt.figure(figsize=(25, 12))
 outer_grid = gridspec.GridSpec(2, 2, wspace=0.05, hspace=0.17)
 for statid, k in enumerate(keys_stats):
     experiments = list(data[env_names[0]].keys())
@@ -169,12 +149,13 @@ for statid, k in enumerate(keys_stats):
                 min_stats = data[e][exp]['min_stats'][statid]
                 max_stats = data[e][exp]['max_stats'][statid]
                 mean_stats = data[e][exp]['mean_stats'][statid]
-                vols = 1 # replace with appropriate value or logic if needed
+                vols.append(env_stats[e][2])
                 ax.set_yscale('log')
                 if 'volume' in axis_labels[statid]:
-                    mean_stats /= vols
-                    min_stats /= vols
-                    max_stats /= vols
+                    assert len(vols) == 1
+                    mean_stats /= vols[0]
+                    min_stats /= vols[0]
+                    max_stats /= vols[0]
 
                 err = np.array([[mean_stats - min_stats], [max_stats - mean_stats]])
         
@@ -186,8 +167,8 @@ for statid, k in enumerate(keys_stats):
                 # ax.yaxis.get_major_formatter().set_powerlimits((0, 0))
 
                 # Reduce the number of y-ticks
-                ax.yaxis.set_major_locator(ticker.MaxNLocator(nbins=3, prune=None))
-                ax.yaxis.set_minor_locator(ticker.MaxNLocator(nbins=3, prune=None))
+                # ax.yaxis.set_major_locator(ticker.MaxNLocator(nbins=3, prune=None))
+                # ax.yaxis.set_minor_locator(ticker.MaxNLocator(nbins=3, prune=None))
                 # ax.yaxis.set_major_locator(ticker.LogLocator(base=10, numticks=2))
                 # ax.yaxis.set_minor_locator(ticker.LogLocator(base=10, subs='auto', numticks=1))
 
@@ -213,6 +194,6 @@ plt.subplots_adjust(top=0.85)
 # Add a single legend for the entire figure
 handles = [plt.Rectangle((0,0),1,1, color=colors[i], alpha=0.6, edgecolor='none') for i in range(len(experiments))]
 labels = experiments
-fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.05), fontsize='large', title='Experiments')
+fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.03), fontsize='large', title='Experiments')
 
 plt.show()
