@@ -23,11 +23,23 @@ seed_nums["7DOFBINS"] = [1]
 seed_nums["14DOFIIWAS"] = [7]
 seed_nums["15DOFALLEGRO"] = [7]
 
+paper_names = {}
+paper_names["5DOFUR3"] = "UR3"
+paper_names["3DOFFLIPPER"] = "Flipper"
+paper_names["6DOFUR3"] = "UR3Wrist"
+paper_names["7DOFIIWA"] = "IIWAShelf"
+paper_names["7DOF4SHELVES"] = "IIWA4Shelves"
+paper_names["7DOFBINS"] = "IIWABins"
+paper_names["14DOFIIWAS"] = "2IIWAs"
+paper_names["15DOFALLEGRO"] = "Allegro"
+
 
 def get_env_name(path):
     for e in env_names:
         if e in path:
             return e    
+        
+do_legend = False
 
 keys_stats = ['times', 'volumes', 'fraction_in_collision', 'num_faces']
 axis_labels = ['time [s]', 'volume [rad^dof]', 'fraction_in_collision', 'num_faces']
@@ -61,14 +73,14 @@ root = os.path.abspath('')
 #             data[env_name][f"default/{conf}"]['max_stats'] = [ np.max(result[k]) for k in keys_stats]
 
 
-experiments_to_add = [
-    "greedy_iris/precise_after_sort",
+# experiments_to_add = [
+    # "greedy_iris/precise_after_sort",
     # "ray_iris/precise_final",
     # "ray_iris/precise_final_sample_dist_step_size",
     # "ray_iris/precise_final_sample_dist_step_size_half_batch",
     # "ray_iris/precise_final_sample_dist_step_size_quarter_batch",
     # "ray_iris/precise_final_2",
-    "ray_iris/precise_final_2",
+    # "ray_iris/precise_final_2",
     # "ray_iris/precise_final_more_steps",
     # "ray_iris/precise_all_samples",
     # "ray_iris/precise_only_collisions",
@@ -82,7 +94,15 @@ experiments_to_add = [
     # "ray_iris/fast_all_samples",
     # "ray_iris/fast_only_collisions",
     # "fast_iris/unadaptive_fast_final",
-    ]
+    # ]
+# experiments_to_add = ["paper_plots/fast/final_fast_paper",
+#                       "paper_plots/greedy/fast_after_sort",
+#                       "paper_plots/ray/fast_final_2"]
+
+experiments_to_add = ["paper_plots/fast/final_precise",
+                      "paper_plots/greedy/precise_after_sort",
+                      "paper_plots/ray/precise_final_2"]
+
 # names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 # names = [
 #          'default medium', 
@@ -150,8 +170,8 @@ for l in lines[1:]:
     stats = [int(chunks[0]), float(chunks[1]), float(chunks[2])]
     env_stats[chunks[-1].strip('\n').strip(' ')] = stats
 
-fig = plt.figure(figsize=(25, 12))
-outer_grid = gridspec.GridSpec(2, 2, wspace=0.05, hspace=0.17)
+fig = plt.figure(figsize=(20, 6))
+outer_grid = gridspec.GridSpec(2, 2, wspace=-0.04, hspace=0.3)
 for statid, k in enumerate(keys_stats):
     experiments = list(data[env_names[0]].keys())
     inner_grid = gridspec.GridSpecFromSubplotSpec(1, len(env_names), subplot_spec=outer_grid[statid], wspace=0.5)
@@ -191,7 +211,7 @@ for statid, k in enumerate(keys_stats):
                 # ax.yaxis.set_major_locator(ticker.LogLocator(base=10, numticks=2))
                 # ax.yaxis.set_minor_locator(ticker.LogLocator(base=10, subs='auto', numticks=1))
 
-                ax.set_title(e, fontsize=9)
+                ax.set_title(paper_names[e], fontsize=10.5)
                 ax.tick_params(axis='y', which='both', labelrotation=90, labelsize=7.5)
 
                 fig.add_subplot(ax)
@@ -203,16 +223,17 @@ for statid, k in enumerate(keys_stats):
         #     label.set_rotation(90)
 
     ax_outer = fig.add_subplot(outer_grid[statid])
-    ax_outer.set_title(axis_labels[statid], pad=20, fontweight='bold')
+    ax_outer.set_title(axis_labels[statid], pad=20, fontweight='bold', fontsize=14)
     ax_outer.axis('off')  # Hide the axis to make it clean
 
 # Adjust layout to make space for the main title
 plt.tight_layout()
 plt.subplots_adjust(top=0.85)
 
-# Add a single legend for the entire figure
-handles = [plt.Rectangle((0,0),1,1, color=colors[i], alpha=0.6, edgecolor='none') for i in range(len(experiments))]
-labels = experiments
-fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.03), fontsize='large', title='Experiments')
+if do_legend:
+    # Add a single legend for the entire figure
+    handles = [plt.Rectangle((0,0),1,1, color=colors[i], alpha=0.6, edgecolor='none') for i in range(len(experiments))]
+    labels = experiments
+    fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.03), fontsize='large', title='Experiments')
 
 plt.show()
