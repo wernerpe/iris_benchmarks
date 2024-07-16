@@ -97,11 +97,14 @@ root = os.path.abspath('')
     # ]
 # experiments_to_add = ["paper_plots/fast/final_fast_paper",
 #                       "paper_plots/greedy/fast_after_sort",
-#                       "paper_plots/ray/fast_final_2"]
+#                       "paper_plots/ray/fast_final_2_pete"]
 
 experiments_to_add = ["paper_plots/fast/final_precise",
                       "paper_plots/greedy/precise_after_sort",
-                      "paper_plots/ray/precise_final_2"]
+                      "paper_plots/ray/precise_final_2_pete"]
+
+# experiments_to_add = ["paper_plots/ray/precise_final_2_pete",
+#                       "ray_iris/precise_final_2"]
 
 # names = ['vf', 'IICS_f', 'medium','FastIris_doubletest']
 # names = [
