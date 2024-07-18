@@ -10,18 +10,18 @@ import matplotlib.pyplot as plt
 
 # # i_seed = 1
 seed_nums = {}
-for env_name in env_names:
-    seed_nums[env_name] = [i for i in range(10)]
+# for env_name in env_names:
+#     seed_nums[env_name] = [i for i in range(10)]
 
-# # seeds for paper:
-# seed_nums["5DOFUR3"] = [1]
-# seed_nums["3DOFFLIPPER"] = [7]
-# seed_nums["6DOFUR3"] = [1]
-# seed_nums["7DOFIIWA"] = [1]
-# seed_nums["7DOF4SHELVES"] = [1]
-# seed_nums["7DOFBINS"] = [1]
-# seed_nums["14DOFIIWAS"] = [7]
-# seed_nums["15DOFALLEGRO"] = [7]
+# seeds for paper:
+seed_nums["5DOFUR3"] = [1]
+seed_nums["3DOFFLIPPER"] = [7]
+seed_nums["6DOFUR3"] = [1]
+seed_nums["7DOFIIWA"] = [1]
+seed_nums["7DOF4SHELVES"] = [1]
+seed_nums["7DOFBINS"] = [1]
+seed_nums["14DOFIIWAS"] = [7]
+seed_nums["15DOFALLEGRO"] = [7]
 
 paper_names = {}
 paper_names["5DOFUR3"] = "UR3"
@@ -40,7 +40,8 @@ def get_env_name(path):
             return e    
         
 do_legend = False
-stats_to_plot = ["times", "num_faces"]
+
+use_ellipsoid_volume = True
 
 keys_stats = ['times', 'volumes', 'fraction_in_collision', 'num_faces']
 axis_labels = {}
@@ -50,6 +51,9 @@ axis_labels["fraction_in_collision"] = 'Frac Region in Collision'
 axis_labels["num_faces"] = "Number of hyperplanes"
 # ['time [s]', 'vol($\mathcal{P}$)/vol($\mathcal{C}^{free}$)', 'fraction_in_collision', 'num_faces']
 stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 'Number Faces']
+
+stats_to_plot = ["times", "num_faces", "volumes"]
+# stats_to_plot = keys_stats
 
 data = {}
 for e in env_names:
@@ -62,13 +66,14 @@ experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper"
                       "paper_plots/greedy/fast_after_sort",
                       "paper_plots/ray/fast_final_2_pete"]
 
-# experiments_to_add = ["paper_plots/np/config_medium",
-#                       "paper_plots/fast/final_precise",
+# settings_name = "Precise"
+# iris_np_experiment = "paper_plots/np/config_precise_tuned"
+# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
 #                       "paper_plots/greedy/precise_after_sort",
 #                       "paper_plots/ray/precise_final_2_pete"]
 
 # settings_name = "Precise"
-# iris_np_experiment = "../benchmarks/default_experiments/config_medium"
+# iris_np_experiment = "../benchmarks/default_experiments/config_precise_tuned"
 # experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
 #                       "paper_plots/greedy/precise_after_sort",
 #                       "paper_plots/ray/precise_final_2_pete"]
@@ -145,13 +150,17 @@ for exp_name in experiments_to_add:
             data[env_name][exp_name]['err']= {}
             for k in keys_stats:
                 stats = np.array([])
-                for i_seed in seed_nums[env_name]:                    
-                    stats = np.hstack((stats, result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]))
-
+                for i_seed in seed_nums[env_name]:    
+                    stats_for_seed = result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]
+                
                     if 'volume' in k:
-                        mean_volume[exp_name][env_name][i_seed] = np.mean(stats)
+                        # if use_ellipsoid_volume:
+                        #     polytopes = 
+
+                        mean_volume[exp_name][env_name][i_seed] = np.mean(stats_for_seed)
                         print(mean_volume.keys())
-                        stats /= mean_volume[iris_np_experiment][env_name][i_seed]
+                        # stats_for_seed /= mean_volume[iris_np_experiment][env_name][i_seed]
+                    stats = np.hstack((stats, stats_for_seed))
 
                 # print(env_name)
                 # print(exp_name)
