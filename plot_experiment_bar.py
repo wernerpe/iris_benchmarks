@@ -10,18 +10,18 @@ import matplotlib.pyplot as plt
 
 # # i_seed = 1
 seed_nums = {}
-# for env_name in env_names:
-#     seed_nums[env_name] = [i for i in range(10)]
+for env_name in env_names:
+    seed_nums[env_name] = [i for i in range(10)]
 
-# seeds for paper:
-seed_nums["5DOFUR3"] = [1]
-seed_nums["3DOFFLIPPER"] = [7]
-seed_nums["6DOFUR3"] = [1]
-seed_nums["7DOFIIWA"] = [1]
-seed_nums["7DOF4SHELVES"] = [1]
-seed_nums["7DOFBINS"] = [1]
-seed_nums["14DOFIIWAS"] = [7]
-seed_nums["15DOFALLEGRO"] = [7]
+# # seeds for paper:
+# seed_nums["5DOFUR3"] = [1]
+# seed_nums["3DOFFLIPPER"] = [7]
+# seed_nums["6DOFUR3"] = [1]
+# seed_nums["7DOFIIWA"] = [1]
+# seed_nums["7DOF4SHELVES"] = [1]
+# seed_nums["7DOFBINS"] = [1]
+# seed_nums["14DOFIIWAS"] = [7]
+# seed_nums["15DOFALLEGRO"] = [7]
 
 paper_names = {}
 paper_names["5DOFUR3"] = "UR3"
@@ -154,12 +154,15 @@ for exp_name in experiments_to_add:
                     stats_for_seed = result[k][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]
                 
                     if 'volume' in k:
-                        # if use_ellipsoid_volume:
-                        #     polytopes = 
+                        if use_ellipsoid_volume:
+                            polytopes_for_seed = result["regions"][i_seed * num_trials_env:(i_seed + 1) * num_trials_env]
+                            stats_for_seed = []
+                            for polytope in polytopes_for_seed:
+                                stats_for_seed.append(polytope.MaximumVolumeInscribedEllipsoid().CalcVolume())
+                            stats_for_seed = np.array(stats_for_seed)
 
                         mean_volume[exp_name][env_name][i_seed] = np.mean(stats_for_seed)
-                        print(mean_volume.keys())
-                        # stats_for_seed /= mean_volume[iris_np_experiment][env_name][i_seed]
+                        stats_for_seed /= mean_volume[iris_np_experiment][env_name][i_seed]
                     stats = np.hstack((stats, stats_for_seed))
 
                 # print(env_name)
