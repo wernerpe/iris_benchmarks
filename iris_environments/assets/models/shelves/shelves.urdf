@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<robot name="shelves">
+  <link name="shelves_body">
+    <collision name="right_wall">
+      <geometry>
+        <box size="0.3 0.016 0.783"/>
+      </geometry>
+    </collision>
+    <collision name="left_wall">
+      <geometry>
+        <box size="0.3 0.016 0.783"/>
+      </geometry>
+    </collision>
+    <collision name="back_wall">
+      <geometry>
+        <box size="0.6 0.016 0.783"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="top_and_bottom">
+    <collision name="top">
+      <geometry>
+        <box size="0.3 0.6 0.016"/>
+      </geometry>
+    </collision>
+    <collision name="shelf_lower">
+      <geometry>
+        <box size="0.3 0.6 0.016"/>
+      </geometry>
+    </collision>
+    <collision name="shelf_upper">
+      <geometry>
+        <box size="0.3 0.6 0.016"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="top_and_bottom_shelves_body" type="fixed">
+    <parent link="shelves_body"/>
+    <child link="top_and_bottom"/>
+  </joint>
+</robot>
