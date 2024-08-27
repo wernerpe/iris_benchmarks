@@ -3,8 +3,25 @@ import xml.dom.minidom
 import math
 import numpy as np
 
-input = "iris_environments/assets/models/wsg_50_description/sdf/schunk_wsg_50_welded_fingers.sdf"
-output = "iris_environments/assets/models/wsg_50_description/sdf/schunk_wsg_50_welded_fingers.urdf"
+input = "iris_environments/assets/models/iiwa_description/iiwa7/iiwa7_with_box_collision.sdf"
+output = "iris_environments/assets/models/iiwa_description/iiwa7/iiwa7_with_box_collision.urdf"
+rotation_x = np.array([
+    [1, 0, 0],
+    [0, np.cos(np.pi/2), -np.sin(np.pi/2)],
+    [0, np.sin(np.pi/2), np.cos(np.pi/2)]
+])
+
+rotation_y = np.array([
+    [np.cos(np.pi/2), 0, np.sin(np.pi/2)],
+    [0, 1, 0],
+    [-np.sin(np.pi/2), 0, np.cos(np.pi/2)]
+])
+
+rotation_z = np.array([
+    [np.cos(np.pi/2), -np.sin(np.pi/2), 0],
+    [np.sin(np.pi/2), np.cos(np.pi/2), 0],
+    [0, 0, 1]
+])
 
 def convert_pose(pose_string):
     pose = [float(x) for x in pose_string.split()]
@@ -27,13 +44,19 @@ def map_joint_type(sdf_type):
     }
     return type_map.get(sdf_type, "fixed")
 
+def parse_vector3(vector_string):
+    return np.array([float(x) for x in vector_string.split()])
+
+def rotate_vector(vector, rotation_matrix):
+    return rotation_matrix.dot(vector)
+
 def pose_to_matrix(pose):
     x, y, z, roll, pitch, yaw = pose
     c = np.cos
     s = np.sin
     R = np.array([
-        [c(yaw)*c(pitch), -s(yaw)*c(roll)+c(yaw)*s(pitch)*s(roll), s(yaw)*s(roll)+c(yaw)*s(pitch)*c(roll)],
-        [s(yaw)*c(pitch), c(yaw)*c(roll)+s(yaw)*s(pitch)*s(roll), -c(yaw)*s(roll)+s(yaw)*s(pitch)*c(roll)],
+        [c(yaw)*c(pitch), c(yaw)*s(pitch)*s(roll) - s(yaw)*c(roll), c(yaw)*s(pitch)*c(roll) + s(yaw)*s(roll)],
+        [s(yaw)*c(pitch), s(yaw)*s(pitch)*s(roll) + c(yaw)*c(roll), s(yaw)*s(pitch)*c(roll) - c(yaw)*s(roll)],
         [-s(pitch), c(pitch)*s(roll), c(pitch)*c(roll)]
     ])
     T = np.eye(4)
@@ -44,7 +67,7 @@ def pose_to_matrix(pose):
 def matrix_to_pose(matrix):
     x, y, z = matrix[:3, 3]
     R = matrix[:3, :3]
-    pitch = math.atan2(-R[2, 0], math.sqrt(R[2, 1]**2 + R[2, 2]**2))
+    pitch = math.atan2(-R[2, 0], math.sqrt(R[0, 0]**2 + R[1, 0]**2))
     if abs(pitch) == math.pi/2:
         yaw = 0
         roll = math.atan2(R[0, 1], R[1, 1])
@@ -58,6 +81,12 @@ def parse_pose(pose_string):
 
 def split_pose(pose_array):
     return list(pose_array[:3]), list(pose_array[3:])
+
+sdf_to_urdf = np.array([
+        [0, -1, 0],
+        [1, 0, 0],
+        [0, 0, 1]
+    ])
 
 def convert_sdf_to_urdf(sdf_file, urdf_file):
     # Parse the SDF file
@@ -144,7 +173,7 @@ def convert_sdf_to_urdf(sdf_file, urdf_file):
                 )
 
      # Third pass: create URDF joints
-    for sdf_joint in root.findall(".//joint"):
+    for i,sdf_joint in enumerate(root.findall(".//joint")):
         urdf_joint = ET.SubElement(urdf_root, "joint")
         urdf_joint.set("name", sdf_joint.get("name"))
         urdf_joint.set("type", sdf_joint.get("type"))
@@ -169,8 +198,27 @@ def convert_sdf_to_urdf(sdf_file, urdf_file):
 
         sdf_axis = sdf_joint.find("axis/xyz")
         if sdf_axis is not None:
+            axis_vec = parse_vector3(sdf_axis.text)
+            
+            # Transform axis from model frame to joint frame
+            child_rotation = child_pose[:3, :3]
+            joint_rotation = joint_pose[:3, :3]
+            transformed_axis = rotate_vector(axis_vec, np.linalg.inv(child_rotation) @ joint_rotation)
+            transformed_axis = transformed_axis / np.linalg.norm(transformed_axis)
+            # transformed_axis = sdf_to_urdf @ transformed_axis
+            if i>0:
+                transformed_axis = rotation_x@transformed_axis
             axis = ET.SubElement(urdf_joint, "axis")
-            axis.set("xyz", sdf_axis.text)
+            axis.set("xyz", f"{transformed_axis[0]} {transformed_axis[1]} {transformed_axis[2]}")
+        
+        # Handle joint limits
+        sdf_limit = sdf_joint.find("axis/limit")
+        if sdf_limit is not None:
+            urdf_limit = ET.SubElement(urdf_joint, "limit")
+            for attr in ["lower", "upper", "effort", "velocity"]:
+                value = sdf_limit.find(attr)
+                if value is not None:
+                    urdf_limit.set(attr, value.text)
 
     # Convert the ElementTree to a string and prettify
     xml_string = ET.tostring(urdf_root, encoding="unicode")

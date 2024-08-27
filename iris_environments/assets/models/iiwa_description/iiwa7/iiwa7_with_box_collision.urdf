@@ -172,42 +172,49 @@
     <parent link="iiwa_link_0"/>
     <child link="iiwa_link_1"/>
     <origin xyz="0.0 0.0 0.1575" rpy="0.0 -0.0 0.0"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit lower="-2.96706" upper="2.96706" effort="300" velocity="10"/>
   </joint>
   <joint name="iiwa_joint_2" type="revolute">
     <parent link="iiwa_link_1"/>
     <child link="iiwa_link_2"/>
     <origin xyz="0.0 0.0 0.18300000000000002" rpy="1.5708 -0.0 -3.14159"/>
-    <axis xyz="-0 1 0"/>
+    <axis xyz="-2.260097275516194e-27 6.123270170149069e-17 1.0"/>
+    <limit lower="-2.0944" upper="2.0944" effort="300" velocity="10"/>
   </joint>
   <joint name="iiwa_joint_3" type="revolute">
     <parent link="iiwa_link_2"/>
     <child link="iiwa_link_3"/>
-    <origin xyz="-4.434786682550889e-28 0.18399999999875866 -6.758697390157694e-07" rpy="1.5708 2.653589793337943e-06 -3.1415926535800462"/>
-    <axis xyz="0 0 1"/>
+    <origin xyz="-4.434786682550889e-28 0.18399999999875866 -6.758697390157694e-07" rpy="1.5708 2.6535897933379433e-06 -3.1415926535800462"/>
+    <axis xyz="-1.61558713389832e-27 3.6732051034078064e-06 0.9999999999932537"/>
+    <limit lower="-2.96706" upper="2.96706" effort="300" velocity="10"/>
   </joint>
   <joint name="iiwa_joint_4" type="revolute">
     <parent link="iiwa_link_3"/>
     <child link="iiwa_link_4"/>
     <origin xyz="0.0 0.0 0.21550000000000002" rpy="1.5708 -0.0 0.0"/>
-    <axis xyz="0 -1 0"/>
+    <axis xyz="0.0 -6.123270170149069e-17 -1.0"/>
+    <limit lower="-2.0944" upper="2.0944" effort="300" velocity="10"/>
   </joint>
   <joint name="iiwa_joint_5" type="revolute">
     <parent link="iiwa_link_4"/>
     <child link="iiwa_link_5"/>
     <origin xyz="0.0 0.18399999999875882 -6.758697390157703e-07" rpy="1.5708 -2.6535897933379425e-06 3.1415926535800462"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="-2.6535897933348283e-06 3.6732051032853415e-06 -0.999999999989733"/>
+    <limit lower="-2.96706" upper="2.96706" effort="300" velocity="10"/>
   </joint>
   <joint name="iiwa_joint_6" type="revolute">
     <parent link="iiwa_link_5"/>
     <child link="iiwa_link_6"/>
     <origin xyz="0.0 0.0 0.2154999999999999" rpy="1.5708 -0.0 1.7565425622120319e-22"/>
-    <axis xyz="-0 1 -0"/>
+    <axis xyz="9.747179571131627e-12 7.3464102066918875e-06 0.9999999999730153"/>
+    <limit lower="-2.0944" upper="2.0944" effort="300" velocity="10"/>
   </joint>
   <joint name="iiwa_joint_7" type="revolute">
     <parent link="iiwa_link_6"/>
     <child link="iiwa_link_7"/>
-    <origin xyz="-1.9710163033559505e-27 0.08049999999945712 -2.956930108193996e-07" rpy="1.5708 2.653589793337943e-06 -3.1415926535800462"/>
-    <axis xyz="0 0 1"/>
+    <origin xyz="-1.9710163033559505e-27 0.08049999999945712 -2.956930108193996e-07" rpy="1.5708 2.6535897933379433e-06 -3.1415926535800462"/>
+    <axis xyz="-1.61558713389832e-27 3.6732051034078064e-06 0.9999999999932537"/>
+    <limit lower="-3.05433" upper="3.05433" effort="300" velocity="10"/>
   </joint>
 </robot>
