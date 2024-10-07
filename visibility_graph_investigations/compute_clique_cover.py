@@ -46,19 +46,34 @@ def get_clique_cover(adj,
 checker = load_bins_environment()
 
 approach = 'double_greedy_drake'
-
+short_name_approach = approach_short_name[approach_long_name.index(approach)]
 dir_vgs = cwd+'/graphs/iiwa_bins/vg_7_dof_bins'
 vg_names = os.listdir(dir_vgs)
 
-for vg in vg_names:
+for vg in vg_names[::-1]:
     res_name = cwd + '/graphs/iiwa_bins/clique_covers'
+    run_string = res_name+f"/{short_name_approach}_{vg}"
+    if f"{short_name_approach}_{vg}" in os.listdir(res_name):
+        continue
+    # if not "4000" in vg:
+    #     continue
+
     with open(dir_vgs+f"/{vg}" , 'rb') as f:
         data = pickle.load(f)    
     vertices = data['nodes']
     adjacency = data['adjacency']
     clique_cover = get_clique_cover(adjacency, vertices, approach)
-    stats = evaluate_clique_cover(data, clique_cover, checker, 1000)
+    stats = evaluate_clique_cover(data,
+                                  True if 'uniform' in vg_names else False, 
+                                  clique_cover, 
+                                  checker, 1000)
     print(stats)
-    print('d')
+    data = {'cliques': clique_cover, 
+            'adjacency': adjacency, 
+            'vertices': vertices,
+            'stats': stats}
+    
+    with open(run_string, 'wb') as f:
+        pickle.dump(data, f)
 
 

@@ -28,6 +28,150 @@ env_names = ['2DOFFLIPPER',
              '14DOFIIWAS',
              '15DOFALLEGRO']
 
+def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
+    if usemeshcat:
+        meshcat = StartMeshcat()
+    builder = RobotDiagramBuilder()
+    plant = builder.plant()
+    scene_graph = builder.scene_graph()
+    parser = builder.parser()
+    
+    path_repo = os.path.dirname(os.path.abspath(__file__))
+    parser.package_map().Add("iris_environments", path_repo+"/assets")
+    obstacle_path = "models/triangle_env_meshes/triangle_and_hole.obj"
+    inner_obstacle_path = "models/triangle_env_meshes/inner_obs.obj"
+
+    urdf_string = f'''<?xml version="1.0"?>
+<robot name="cspace_robot">
+  <!-- Base Link (Robot) -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="for_joint"/>
+  <joint name="x" type="prismatic">
+    <axis xyz="1 0 0"/>
+    <limit lower="-6" upper="6"/>
+    <parent link="world"/>
+    <child link="for_joint"/>
+  </joint>
+
+  <joint name="z" type="prismatic">
+    <axis xyz="0 0 1"/>
+    <limit lower="-6" upper="6"/>
+    <parent link="for_joint"/>
+    <child link="base_link"/>
+  </joint>
+
+
+  <!-- Outer Boundary -->
+  <link name="obstacle">
+    <visual>
+      <origin xyz="-6.6 0 6.6" rpy="3.1415 0 0"/>
+      <geometry>
+        <mesh filename="package://iris_environments/{obstacle_path}"/>
+      </geometry>
+      <material name="transparent_green">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  
+  <link name="box1">
+    <collision>
+      <geometry>
+        <box size="14. 3. 6.5"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="box2">
+    <collision>
+      <geometry>
+        <box size="14. 3. 6.5"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="box3">
+    <collision>
+      <geometry>
+        <box size="14. 3. 6.5"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="w2b1" type="fixed">
+    <parent link="world"/>
+    <child link="box1"/>
+    <origin xyz="0 -1 -6.15" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="w2b2" type="fixed">
+    <parent link="world"/>
+    <child link="box2"/>
+    <origin xyz="5.95 -1 2.0" rpy="0 1.05 0"/>
+  </joint>
+  
+    <joint name="w2b3" type="fixed">
+    <parent link="world"/>
+    <child link="box3"/>
+    <origin xyz="-5.95 -1 2.0" rpy="0 -1.05 0"/>
+  </joint>
+
+  <joint name="obsjtacle_joint" type="fixed">
+    <parent link="world"/>
+    <child link="obstacle"/>
+  </joint>
+
+  <link name="inner_obstacle">
+    
+    <visual>
+      <origin xyz="-6.6 0 6.6" rpy="3.1415 0 0"/>
+      <geometry>
+        <mesh filename="package://iris_environments/{inner_obstacle_path}"/>
+      </geometry>
+      <material name="transparent_green">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-6.6 0 6.6" rpy="3.1415 0 0"/>
+      <geometry>
+        <mesh filename="package://iris_environments/{inner_obstacle_path}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="obsjtacle_joint2" type="fixed">
+    <parent link="world"/>
+    <child link="inner_obstacle"/>
+  </joint>
+</robot>
+    '''
+    parser.AddModelsFromString(urdf_string, "urdf")
+    plant.Finalize()
+    if usemeshcat: 
+        visualizer = AddDefaultVisualization(builder.builder(), meshcat)
+    diagram = builder.Build()
+    diagram_context = diagram.CreateDefaultContext()
+    plant_context = plant.GetMyMutableContextFromRoot(diagram_context)
+    diagram.ForcedPublish(diagram_context)
+    if usemeshcat:
+        print(meshcat.web_url())
+    #meshcat.SetProperty('/drake/proximity', "visible", True)
+    return plant, scene_graph, diagram, diagram_context, plant_context, meshcat if usemeshcat else None
 
 def plant_builder_2dof_blocks(usemeshcat = False, size = 1.4, pos =1.0, radius = 0.01):
     if usemeshcat:

@@ -111,7 +111,7 @@ def convert_sdf_to_urdf(sdf_file, urdf_file):
         urdf_link = ET.SubElement(urdf_root, "link", name=link.attrib["name"])
 
         xyz, rpy = split_pose(link_poses[link.attrib["name"]])
-        ET.SubElement(urdf_link, "origin", xyz=f"{xyz[0]} {xyz[1]} {xyz[2]}", rpy=f"{rpy[0]} {rpy[1]} {rpy[2]}")
+        # ET.SubElement(urdf_link, "origin", xyz=f"{xyz[0]} {xyz[1]} {xyz[2]}", rpy=f"{rpy[0]} {rpy[1]} {rpy[2]}")
 
         # Convert inertial
         inertial = link.find("inertial")
@@ -128,13 +128,20 @@ def convert_sdf_to_urdf(sdf_file, urdf_file):
                                          iyy=inertia.find("iyy").text,
                                          iyz=inertia.find("iyz").text,
                                          izz=inertia.find("izz").text)
+            ET.SubElement(urdf_inertial, "origin", xyz=f"{xyz[0]} {xyz[1]} {xyz[2]}", rpy=f"{rpy[0]} {rpy[1]} {rpy[2]}")
 
         # Convert visual elements
         for visual in link.findall("visual"):
             urdf_visual = ET.SubElement(urdf_link, "visual")
             if visual.find("pose") is not None:
                 v_xyz, v_rpy = convert_pose(visual.find("pose").text)
-                ET.SubElement(urdf_visual, "origin", xyz=f"{v_xyz[0]} {v_xyz[1]} {v_xyz[2]}", rpy=f"{v_rpy[0]} {v_rpy[1]} {v_rpy[2]}")
+                #compose transforms
+                # X_tot = pose_to_matrix(np.array(xyz+rpy))@
+                X_tot = pose_to_matrix(np.array(v_xyz+v_rpy))
+                print("link name" + link.attrib["name"]+f" \n X_tot\n {X_tot}")
+                pose = matrix_to_pose(X_tot)
+                t_xyz, t_rpy = split_pose(pose)
+                ET.SubElement(urdf_visual, "origin", xyz=f"{t_xyz[0]} {t_xyz[1]} {t_xyz[2]}", rpy=f"{t_rpy[0]} {t_rpy[1]} {t_rpy[2]}")
 
             geometry = visual.find("geometry")
             urdf_geometry = ET.SubElement(urdf_visual, "geometry")
@@ -202,15 +209,14 @@ def convert_sdf_to_urdf(sdf_file, urdf_file):
             
             # Transform axis from model frame to joint frame
             child_rotation = child_pose[:3, :3]
+            parent_rotation = parent_pose[:3, :3]
             joint_rotation = joint_pose[:3, :3]
-            transformed_axis = rotate_vector(axis_vec, np.linalg.inv(child_rotation) @ joint_rotation)
+            transformed_axis = rotate_vector(axis_vec, parent_rotation@ np.linalg.inv(joint_rotation))
+            # transformed_axis = rotate_vector(axis_vec, np.linalg.inv(joint_rotation))
             transformed_axis = transformed_axis / np.linalg.norm(transformed_axis)
-            # transformed_axis = sdf_to_urdf @ transformed_axis
-            if i>0:
-                transformed_axis = rotation_x@transformed_axis
             axis = ET.SubElement(urdf_joint, "axis")
             axis.set("xyz", f"{transformed_axis[0]} {transformed_axis[1]} {transformed_axis[2]}")
-        
+            #axis.set("xyz", f"{axis_vec[0]} {axis_vec[1]} {axis_vec[2]}")
         # Handle joint limits
         sdf_limit = sdf_joint.find("axis/limit")
         if sdf_limit is not None:

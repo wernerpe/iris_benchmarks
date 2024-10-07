@@ -16,17 +16,6 @@ directives:
     #child: iiwa::base_link
     child: iiwa::iiwa_link_0
 
-
-# # Add iiwa
-# - add_model:
-#     name: iiwa_urdf
-#     #file: package://iris_environments/models/iiwa_description/urdf/iiwa14_spheres_collision.urdf
-#     file: package://iris_environments/models/iiwa_description/iiwa7/iiwa7_with_box_collision.urdf
-# - add_weld:
-#     parent: world
-#     #child: iiwa::base
-#     child: iiwa_urdf::iiwa_link_0
-
 # Add schunk
 - add_model:
     name: wsg
@@ -46,13 +35,14 @@ directives:
 # Add shelves
 - add_model:
     name: shelves
-    file: package://iris_environments/models/shelves/shelves.sdf
+    file: package://iris_environments/models/shelves/shelves.urdf
 
 - add_frame:
     name: shelf_origin
     X_PF:
       base_frame: world
       translation: [0.85, 0, 0.4]
+      rotation: !Rpy { deg: [0., 0., 00]}
 
 - add_weld:
     parent: shelf_origin
