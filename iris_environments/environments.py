@@ -67,8 +67,8 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
     <child link="for_joint"/>
   </joint>
 
-  <joint name="z" type="prismatic">
-    <axis xyz="0 0 1"/>
+  <joint name="y" type="prismatic">
+    <axis xyz="0 1 0"/>
     <limit lower="-6" upper="6"/>
     <parent link="for_joint"/>
     <child link="base_link"/>
@@ -78,12 +78,12 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
   <!-- Outer Boundary -->
   <link name="obstacle">
     <visual>
-      <origin xyz="-6.6 0 6.6" rpy="3.1415 0 0"/>
+      <origin xyz="-6.6 6.6 -1" rpy="1.57 0 0"/>
       <geometry>
         <mesh filename="package://iris_environments/{obstacle_path}"/>
       </geometry>
-      <material name="transparent_green">
-        <color rgba="0 0 0 1"/>
+      <material name="transparent_bl">
+        <color rgba="0 0 0 0.5"/>
       </material>
     </visual>
   </link>
@@ -99,7 +99,7 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
   <link name="box2">
     <collision>
       <geometry>
-        <box size="14. 3. 6.5"/>
+        <box size="14. 6.5 3."/>
       </geometry>
     </collision>
   </link>
@@ -107,7 +107,7 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
   <link name="box3">
     <collision>
       <geometry>
-        <box size="14. 3. 6.5"/>
+        <box size="14. 6.5 3."/>
       </geometry>
     </collision>
   </link>
@@ -115,19 +115,19 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
   <joint name="w2b1" type="fixed">
     <parent link="world"/>
     <child link="box1"/>
-    <origin xyz="0 -1 -6.15" rpy="0 0 0"/>
+    <origin xyz="0 -6.15 0" rpy="1.57 0 0"/>
   </joint>
 
   <joint name="w2b2" type="fixed">
     <parent link="world"/>
     <child link="box2"/>
-    <origin xyz="5.95 -1 2.0" rpy="0 1.05 0"/>
+    <origin xyz="5.95 2 .0" rpy="0 0 -1.05"/>
   </joint>
   
     <joint name="w2b3" type="fixed">
     <parent link="world"/>
     <child link="box3"/>
-    <origin xyz="-5.95 -1 2.0" rpy="0 -1.05 0"/>
+    <origin xyz="-5.95 2 .0" rpy="0 0 1.05"/>
   </joint>
 
   <joint name="obsjtacle_joint" type="fixed">
@@ -138,7 +138,7 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
   <link name="inner_obstacle">
     
     <visual>
-      <origin xyz="-6.6 0 6.6" rpy="3.1415 0 0"/>
+      <origin xyz="-6.6 6.6 -1" rpy="1.57 0 0"/>
       <geometry>
         <mesh filename="package://iris_environments/{inner_obstacle_path}"/>
       </geometry>
@@ -147,7 +147,7 @@ def plant_builder_2dof_triangle_with_hole(usemeshcat= False):
       </material>
     </visual>
     <collision>
-      <origin xyz="-6.6 0 6.6" rpy="3.1415 0 0"/>
+      <origin xyz="-6.6 6.6 -1" rpy="1.57 0 0"/>
       <geometry>
         <mesh filename="package://iris_environments/{inner_obstacle_path}"/>
       </geometry>
