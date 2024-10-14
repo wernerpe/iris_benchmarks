@@ -7,6 +7,10 @@ import yaml
 import matplotlib.gridspec as gridspec
 import matplotlib.ticker as ticker
 import matplotlib.pyplot as plt
+from matplotlib import rcParams
+
+rcParams['pdf.fonttype'] = 42  # Use TrueType fonts
+rcParams['ps.fonttype'] = 42   # For saving as EPS (if needed)
 
 # # # i_seed = 1
 seed_nums = {}
@@ -60,17 +64,17 @@ for e in env_names:
     data[e] = {}
 root = os.path.abspath('')
 
-# settings_name = "Fast"
-# iris_np_experiment = "paper_plots/np/config_vfast"
-# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper",
-#                       "paper_plots/greedy/fast_after_sort",
-#                       "paper_plots/ray/fast_final_2_pete"]
+settings_name = "Fast"
+iris_np_experiment = "paper_plots/np/config_vfast"
+experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper",
+                      "paper_plots/greedy/fast_after_sort",
+                      "paper_plots/ray/fast_final_2_pete"]
 
-settings_name = "Precise"
-iris_np_experiment = "paper_plots/np/config_precise_tuned"
-experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
-                      "paper_plots/greedy/precise_after_sort",
-                      "paper_plots/ray/precise_final_2_pete"]
+# settings_name = "Precise"
+# iris_np_experiment = "paper_plots/np/config_precise_tuned"
+# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
+#                       "paper_plots/greedy/precise_after_sort",
+#                       "paper_plots/ray/precise_final_2_pete"]
 
 # settings_name = "Precise"
 # iris_np_experiment = "../benchmarks/default_experiments/config_precise_tuned"
