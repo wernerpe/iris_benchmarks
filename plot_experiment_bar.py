@@ -8,20 +8,20 @@ import matplotlib.gridspec as gridspec
 import matplotlib.ticker as ticker
 import matplotlib.pyplot as plt
 
-# # i_seed = 1
+# # # i_seed = 1
 seed_nums = {}
-for env_name in env_names:
-    seed_nums[env_name] = [i for i in range(10)]
+# for env_name in env_names:
+#     seed_nums[env_name] = [i for i in range(10)]
 
-# # seeds for paper:
-# seed_nums["5DOFUR3"] = [1]
-# seed_nums["3DOFFLIPPER"] = [7]
-# seed_nums["6DOFUR3"] = [1]
-# seed_nums["7DOFIIWA"] = [1]
-# seed_nums["7DOF4SHELVES"] = [1]
-# seed_nums["7DOFBINS"] = [1]
-# seed_nums["14DOFIIWAS"] = [7]
-# seed_nums["15DOFALLEGRO"] = [7]
+# seeds for paper:
+seed_nums["5DOFUR3"] = [1]
+seed_nums["3DOFFLIPPER"] = [7]
+seed_nums["6DOFUR3"] = [1]
+seed_nums["7DOFIIWA"] = [1]
+seed_nums["7DOF4SHELVES"] = [1]
+seed_nums["7DOFBINS"] = [1]
+seed_nums["14DOFIIWAS"] = [7]
+seed_nums["15DOFALLEGRO"] = [7]
 
 paper_names = {}
 paper_names["5DOFUR3"] = "UR3"
@@ -45,14 +45,14 @@ use_ellipsoid_volume = True
 
 keys_stats = ['times', 'volumes', 'fraction_in_collision', 'num_faces']
 axis_labels = {}
-axis_labels["times"] = 'time [s]'
+axis_labels["times"] = 'Time [s]'
 axis_labels["volumes"] = 'relative volume'
 axis_labels["fraction_in_collision"] = 'Frac Region in Collision'
 axis_labels["num_faces"] = "Number of hyperplanes"
 # ['time [s]', 'vol($\mathcal{P}$)/vol($\mathcal{C}^{free}$)', 'fraction_in_collision', 'num_faces']
 stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 'Number Faces']
 
-stats_to_plot = ["times", "num_faces", "volumes"]
+stats_to_plot = ["times", "num_faces"]
 # stats_to_plot = keys_stats
 
 data = {}
@@ -60,17 +60,17 @@ for e in env_names:
     data[e] = {}
 root = os.path.abspath('')
 
-settings_name = "Fast"
-iris_np_experiment = "paper_plots/np/config_vfast"
-experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper",
-                      "paper_plots/greedy/fast_after_sort",
-                      "paper_plots/ray/fast_final_2_pete"]
+# settings_name = "Fast"
+# iris_np_experiment = "paper_plots/np/config_vfast"
+# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper",
+#                       "paper_plots/greedy/fast_after_sort",
+#                       "paper_plots/ray/fast_final_2_pete"]
 
-# settings_name = "Precise"
-# iris_np_experiment = "paper_plots/np/config_precise_tuned"
-# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
-#                       "paper_plots/greedy/precise_after_sort",
-#                       "paper_plots/ray/precise_final_2_pete"]
+settings_name = "Precise"
+iris_np_experiment = "paper_plots/np/config_precise_tuned"
+experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
+                      "paper_plots/greedy/precise_after_sort",
+                      "paper_plots/ray/precise_final_2_pete"]
 
 # settings_name = "Precise"
 # iris_np_experiment = "../benchmarks/default_experiments/config_precise_tuned"
@@ -174,8 +174,11 @@ for exp_name in experiments_to_add:
                 data[env_name][exp_name]['min_stats'][k] = np.min(stats)
                 data[env_name][exp_name]['max_stats'][k] = np.max(stats)
 
-                data[env_name][exp_name]['err'][k] = [np.array([np.mean(stats) - np.percentile(stats, 25)]), 
-                                                      np.array([np.percentile(stats, 75) - np.mean(stats)])]
+                # data[env_name][exp_name]['err'][k] = [np.array([np.mean(stats) - np.percentile(stats, 25)]), 
+                #                                       np.array([np.percentile(stats, 75) - np.mean(stats)])]
+                std_dev = np.std(stats)
+                data[env_name][exp_name]['err'][k] = [np.array([std_dev]), np.array([std_dev])]
+
 
 
 bar_width = 10
@@ -190,14 +193,14 @@ for l in lines[1:]:
     stats = [int(chunks[0]), float(chunks[1]), float(chunks[2])]
     env_stats[chunks[-1].strip('\n').strip(' ')] = stats
 
-fig = plt.figure(figsize=(11, 10 * len(stats_to_plot)/4))
-outer_grid = gridspec.GridSpec(len(stats_to_plot), 1, wspace=-0.04, hspace=0.4)
+fig = plt.figure(figsize=(11, 7 * len(stats_to_plot)/4))
+outer_grid = gridspec.GridSpec(len(stats_to_plot), 1, wspace=-0.04, hspace=0.53)
 
 
 for statid, k in enumerate(stats_to_plot):
     experiments = list(data[env_names[0]].keys())
-    inner_grid = gridspec.GridSpecFromSubplotSpec(1, len(env_names), subplot_spec=outer_grid[statid], wspace=0.5, hspace=0.25)
-    for i_env, e in enumerate(env_names):
+    inner_grid = gridspec.GridSpecFromSubplotSpec(1, len(env_names) - 1, subplot_spec=outer_grid[statid], wspace=0.5, hspace=0.25)
+    for i_env, e in enumerate(env_names[1:]):
         ax = plt.Subplot(fig, inner_grid[i_env])
         
         for i_exp, exp in enumerate(experiments):
@@ -210,6 +213,7 @@ for statid, k in enumerate(stats_to_plot):
                 min_stats = data[e][exp]['min_stats'][k]
                 max_stats = data[e][exp]['max_stats'][k]
                 mean_stats = data[e][exp]['mean_stats'][k]
+                
                 vols.append(env_stats[e][2])
                 ax.set_yscale('log')
                 if 'volume' in axis_labels[k]:
@@ -238,18 +242,80 @@ for statid, k in enumerate(stats_to_plot):
 
                 # ax.set_title(paper_names[e], fontsize=10.5)
                 ax.set_xlabel(paper_names[e], fontsize=11, labelpad = 0.5)
-                ax.tick_params(axis='y', which='both', labelrotation=50, labelsize=9, pad = -3)
+                ax.tick_params(axis='y', which='both', labelrotation=50, labelsize=11, pad = 0)
 
-                fig.add_subplot(ax)
+        # ax.yaxis.set_major_locator(ticker.LogLocator(base=10.0, numticks=10))
+        # ax.yaxis.set_minor_locator(ticker.LogLocator(base=10.0, subs='auto', numticks=10))
+        # ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
+        # ax.yaxis.set_minor_formatter(ticker.NullFormatter())
+
+        all_minor_ticks = ax.get_yticks(minor = True)
+        all_major_ticks = ax.get_yticks(minor = False)
+        ylim = ax.get_ylim()
+
+        # ax_tol = (ylim[1] - ylim[0])/20
+        ax_tol = 0
+        minor_ticks = [tick for tick in all_minor_ticks if ylim[0] + ax_tol <= tick <= ylim[1] - ax_tol]
+        major_ticks = [tick for tick in all_major_ticks if ylim[0] + ax_tol <= tick <= ylim[1] - ax_tol]
+
+        fig.add_subplot(ax)
+        # print(e)
+        # print("minor ticks")
+        # print(minor_ticks)
+        # print("major ticks")
+        # print(major_ticks)
+
+        if len(major_ticks) > 1:
+            ticks_to_label = [major_ticks[0], major_ticks[-1]]
+            any_major = True
+            any_minor = False
+        elif len(major_ticks) < 1:
+            ticks_to_label = [np.min(minor_ticks), np.max(minor_ticks)]
+            any_major = False
+            any_minor = True
+        elif np.max(minor_ticks) / major_ticks[0] > major_ticks[0] / np.min(minor_ticks):
+            ticks_to_label = [major_ticks[0], np.max(minor_ticks)]
+            any_major = True
+            any_minor = True
+        else:
+            ticks_to_label = [np.min(minor_ticks), major_ticks[0]]
+            any_major = True
+            any_minor = True
+        # print(ticks_to_label)
+        # ax.set_yticks(ticks_to_label, minor=True)
+        # ax.set_yticklabels([f'asdffds{tick:.1f}' for tick in ticks_to_label])
+        # ax.get_xaxis().set_major_formatter(ticker.ScalarFormatter())
+        # ax.set_yticklabels(["a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f"])
+        # ax.set_yticks()
+
+        minor_labels = [''] * len(all_minor_ticks)
+        major_labels = [''] * len(all_major_ticks)
+
+        for i in range(len(all_minor_ticks)):
+            if all_minor_ticks[i] in ticks_to_label:
+                # minor_labels[i] = f'{all_minor_ticks[i]:.1f}'
+                minor_labels[i] = f'{all_minor_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+                # minor_labels[i] = str(all_minor_ticks[i])
+        for i in range(len(all_major_ticks)):
+            if all_major_ticks[i] in ticks_to_label:
+                # major_labels[i] = f'{all_major_ticks[i]:.1f}'
+                major_labels[i] = f'{all_major_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+                # major_labels[i] = str(all_major_ticks[i])
+        ax.set_yticklabels(major_labels, minor=False)
+        ax.set_yticklabels(minor_labels, minor=True)
         
         ax.set_xticklabels([])
+
+        ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.5, zorder = -10, axis="y")
+
+        ax.grid(True, which='minor', color='gray', linestyle='-', linewidth=0.5, alpha=0.3, zorder = 0, axis="y")
         
         # # Rotate y-axis tick labels
         # for label in ax.get_yticklabels():
         #     label.set_rotation(90)
 
     ax_outer = fig.add_subplot(outer_grid[statid])
-    ax_outer.set_title(settings_name + " settings: " + axis_labels[k], pad=10, fontweight='bold', fontsize=14)
+    ax_outer.set_title(settings_name + " settings: " + axis_labels[k], pad=5, fontweight='bold', fontsize=12)
     ax_outer.axis('off')  # Hide the axis to make it clean
 
 # Adjust layout to make space for the main title
@@ -263,7 +329,7 @@ if do_legend:
     fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.03), fontsize='large', title='Experiments')
 
 plt.tight_layout()
-plt.subplots_adjust(top=0.85, left=-0.09, right=0.95, bottom=0.05)
+# plt.subplots_adjust(top=0.85, left=-0.09, right=0.95, bottom=0.05)
 
 plt.savefig(filename + '.pdf', bbox_inches='tight', pad_inches=0)
 
