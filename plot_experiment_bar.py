@@ -14,18 +14,18 @@ rcParams['ps.fonttype'] = 42   # For saving as EPS (if needed)
 
 # # # i_seed = 1
 seed_nums = {}
-# for env_name in env_names:
-#     seed_nums[env_name] = [i for i in range(10)]
+for env_name in env_names:
+    seed_nums[env_name] = [i for i in range(10)]
 
-# seeds for paper:
-seed_nums["5DOFUR3"] = [1]
-seed_nums["3DOFFLIPPER"] = [7]
-seed_nums["6DOFUR3"] = [1]
-seed_nums["7DOFIIWA"] = [1]
-seed_nums["7DOF4SHELVES"] = [1]
-seed_nums["7DOFBINS"] = [1]
-seed_nums["14DOFIIWAS"] = [7]
-seed_nums["15DOFALLEGRO"] = [7]
+# # seeds for paper:
+# seed_nums["5DOFUR3"] = [1]
+# seed_nums["3DOFFLIPPER"] = [7]
+# seed_nums["6DOFUR3"] = [1]
+# seed_nums["7DOFIIWA"] = [1]
+# seed_nums["7DOF4SHELVES"] = [1]
+# seed_nums["7DOFBINS"] = [1]
+# seed_nums["14DOFIIWAS"] = [7]
+# seed_nums["15DOFALLEGRO"] = [7]
 
 paper_names = {}
 paper_names["5DOFUR3"] = "UR3"
@@ -64,17 +64,17 @@ for e in env_names:
     data[e] = {}
 root = os.path.abspath('')
 
-settings_name = "Fast"
-iris_np_experiment = "paper_plots/np/config_vfast"
-experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper",
-                      "paper_plots/greedy/fast_after_sort",
-                      "paper_plots/ray/fast_final_2_pete"]
+# settings_name = "Fast"
+# iris_np_experiment = "paper_plots/np/config_vfast"
+# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper",
+#                       "paper_plots/greedy/fast_after_sort",
+#                       "paper_plots/ray/fast_final_2_pete"]
 
-# settings_name = "Precise"
-# iris_np_experiment = "paper_plots/np/config_precise_tuned"
-# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
-#                       "paper_plots/greedy/precise_after_sort",
-#                       "paper_plots/ray/precise_final_2_pete"]
+settings_name = "Precise"
+iris_np_experiment = "paper_plots/np/config_precise_tuned"
+experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
+                      "paper_plots/greedy/precise_after_sort",
+                      "paper_plots/ray/precise_final_2_pete"]
 
 # settings_name = "Precise"
 # iris_np_experiment = "../benchmarks/default_experiments/config_precise_tuned"
@@ -84,6 +84,12 @@ experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_fast_paper"
 
 # experiments_to_add = ["paper_plots/ray/precise_final_2_pete",
 #                       "ray_iris/precise_final_2"]
+
+# settings_name = "Fast"
+# experiments_to_add = ["ray_iris/fast_final_2_rerun_snopt",
+#                       "ray_iris/fast_final_2_with_collision_points",
+#                     #   "ray_iris/fast_final_2_with_collision_points_matrix_constraints"
+#                       ]
 
 # experiments_to_add = [
     # "greedy_iris/precise_after_sort",
@@ -166,7 +172,7 @@ for exp_name in experiments_to_add:
                             stats_for_seed = np.array(stats_for_seed)
 
                         mean_volume[exp_name][env_name][i_seed] = np.mean(stats_for_seed)
-                        stats_for_seed /= mean_volume[iris_np_experiment][env_name][i_seed]
+                        # stats_for_seed /= mean_volume[iris_np_experiment][env_name][i_seed]
                     stats = np.hstack((stats, stats_for_seed))
 
                 # print(env_name)
@@ -273,6 +279,11 @@ for statid, k in enumerate(stats_to_plot):
             ticks_to_label = [major_ticks[0], major_ticks[-1]]
             any_major = True
             any_minor = False
+        elif len(minor_ticks) < 2:
+            print("No labels!")
+            ticks_to_label = []
+            any_major = False
+            any_minor = False
         elif len(major_ticks) < 1:
             ticks_to_label = [np.min(minor_ticks), np.max(minor_ticks)]
             any_major = False
@@ -292,23 +303,23 @@ for statid, k in enumerate(stats_to_plot):
         # ax.set_yticklabels(["a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f"])
         # ax.set_yticks()
 
-        minor_labels = [''] * len(all_minor_ticks)
-        major_labels = [''] * len(all_major_ticks)
+        # minor_labels = [''] * len(all_minor_ticks)
+        # major_labels = [''] * len(all_major_ticks)
 
-        for i in range(len(all_minor_ticks)):
-            if all_minor_ticks[i] in ticks_to_label:
-                # minor_labels[i] = f'{all_minor_ticks[i]:.1f}'
-                minor_labels[i] = f'{all_minor_ticks[i]:.1f}'.rstrip('0').rstrip('.')
-                # minor_labels[i] = str(all_minor_ticks[i])
-        for i in range(len(all_major_ticks)):
-            if all_major_ticks[i] in ticks_to_label:
-                # major_labels[i] = f'{all_major_ticks[i]:.1f}'
-                major_labels[i] = f'{all_major_ticks[i]:.1f}'.rstrip('0').rstrip('.')
-                # major_labels[i] = str(all_major_ticks[i])
-        ax.set_yticklabels(major_labels, minor=False)
-        ax.set_yticklabels(minor_labels, minor=True)
+        # for i in range(len(all_minor_ticks)):
+        #     if all_minor_ticks[i] in ticks_to_label:
+        #         # minor_labels[i] = f'{all_minor_ticks[i]:.1f}'
+        #         minor_labels[i] = f'{all_minor_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+        #         # minor_labels[i] = str(all_minor_ticks[i])
+        # for i in range(len(all_major_ticks)):
+        #     if all_major_ticks[i] in ticks_to_label:
+        #         # major_labels[i] = f'{all_major_ticks[i]:.1f}'
+        #         major_labels[i] = f'{all_major_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+        #         # major_labels[i] = str(all_major_ticks[i])
+        # ax.set_yticklabels(major_labels, minor=False)
+        # ax.set_yticklabels(minor_labels, minor=True)
         
-        ax.set_xticklabels([])
+        # ax.set_xticklabels([])
 
         ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.5, zorder = -10, axis="y")
 

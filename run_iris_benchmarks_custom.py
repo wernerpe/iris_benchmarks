@@ -24,7 +24,10 @@ experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'precise_final_more_steps'
 # settings_name = 'precise_final_sample_dist_step_size'
 # settings_name = 'fast_final_sample_dist_step_size'
-settings_name = 'precise_final_2'
+# settings_name = 'precise_final_2'
+# settings_name = "fast_final_2_IPOPT_more_iters"
+# settings_name = "fast_final_2_rerun_snopt"
+settings_name = "fast_final_2_with_collision_points_matrix_constraints"
 
 
 def import_function_with_spec(module_name, function_name, file_path):

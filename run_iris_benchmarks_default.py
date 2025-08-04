@@ -9,11 +9,12 @@ def main():
     parser.add_argument('env', type=int, help='an integer for the environment')
     args = parser.parse_args()
     
-    config = 'config_precise'
+    config = 'config_precise_test'
     if args.env ==-1:
         envs = env_names[1:]
     else:
         envs = [env_names[args.env]]
+    envs = [envs[-1]]
     for env_name in envs:
         print(env_name)
         name = get_experiment_name(env_name, config, settings='default')

@@ -6,7 +6,9 @@ from pydrake.all import (IrisInConfigurationSpace,
                          IrisOptions,
                          SceneGraphCollisionChecker,
                          HPolyhedron,
-                         Hyperellipsoid)
+                         Hyperellipsoid,
+                         IpoptSolver,
+                         SolverOptions)
 from iris_environments.environments import get_robot_instance_names
 import os
 
@@ -28,6 +30,13 @@ def get_iris_handle(env_name,
             setattr(iris_options, k, settings[k])
         else:
             num_trials = settings[k]
+
+        ## messing around with IPOPT settings:
+    solver_options = SolverOptions()
+    solver_options.SetOption(IpoptSolver().solver_id(), "max_iter", int(1e9))
+    iris_options.solver_options = solver_options
+    # setattr(iris_options, "solver_options", solver_options)
+    # print(iris_options)
 
     settings_hash = hashlib.sha1(
                         json.dumps(settings, 
