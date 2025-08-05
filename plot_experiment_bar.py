@@ -43,7 +43,7 @@ def get_env_name(path):
         if e in path:
             return e    
         
-do_legend = False
+do_legend = True
 
 use_ellipsoid_volume = True
 
@@ -56,8 +56,8 @@ axis_labels["num_faces"] = "Number of hyperplanes"
 # ['time [s]', 'vol($\mathcal{P}$)/vol($\mathcal{C}^{free}$)', 'fraction_in_collision', 'num_faces']
 stat_titles = ['Computation Time', 'Region Volume', 'Frac Region in Collision', 'Number Faces']
 
-stats_to_plot = ["times", "num_faces"]
-# stats_to_plot = keys_stats
+# stats_to_plot = ["times", "num_faces"]
+stats_to_plot = keys_stats
 
 data = {}
 for e in env_names:
@@ -70,11 +70,17 @@ root = os.path.abspath('')
 #                       "paper_plots/greedy/fast_after_sort",
 #                       "paper_plots/ray/fast_final_2_pete"]
 
-settings_name = "Precise"
-iris_np_experiment = "paper_plots/np/config_precise_tuned"
-experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
-                      "paper_plots/greedy/precise_after_sort",
-                      "paper_plots/ray/precise_final_2_pete"]
+settings_name = "Fast"
+iris_np_experiment = "paper_plots/np/config_vfast"
+experiments_to_add = [iris_np_experiment] + ["fast_iris/unadaptive_fast_final",
+                                             "greedy_iris/fast_after_sort_drake",
+                      "ray_iris/fast_final_2_rerun_snopt_drake_ray_iris"]
+
+# settings_name = "Precise"
+# iris_np_experiment = "paper_plots/np/config_precise_tuned"
+# experiments_to_add = [iris_np_experiment] + ["paper_plots/fast/final_precise",
+#                       "paper_plots/greedy/precise_after_sort",
+#                       "paper_plots/ray/precise_final_2_pete"]
 
 # settings_name = "Precise"
 # iris_np_experiment = "../benchmarks/default_experiments/config_precise_tuned"

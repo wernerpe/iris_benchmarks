@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,'/home/rebecca/Documents/code/fork_drake/drake-build/install/lib/python3.10/site-packages')
 
-from pydrake.all import IrisInConfigurationSpace, IrisOptions
+from pydrake.all import IrisInConfigurationSpace, IrisOptions, IrisNp2Options, IrisNp2SamplingStrategy
 from iris_environments.environments import env_names, get_environment_builder
 from benchmarks.helpers import run_custom_experiment, get_experiment_name
 import os
@@ -10,7 +10,7 @@ from functools import partial
 import importlib
 root = os.path.dirname(os.path.abspath(__file__)) 
 # experiment_name = "fast_iris"
-experiment_name = "ray_iris"
+experiment_name = "greedy_iris"
 experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'unadaptive_newtest_cfg_1'
 # settings_name = 'setting_1'
@@ -27,7 +27,10 @@ experiment_path = root+f"/logs/{experiment_name}"
 # settings_name = 'precise_final_2'
 # settings_name = "fast_final_2_IPOPT_more_iters"
 # settings_name = "fast_final_2_rerun_snopt"
-settings_name = "fast_final_2_with_collision_points_matrix_constraints"
+# settings_name = "fast_final_2_with_collision_points_matrix_constraints"
+# settings_name = "fast_final_2_rerun_snopt_drake_ray_iris"
+settings_name = "fast_after_sort_drake"
+
 
 
 def import_function_with_spec(module_name, function_name, file_path):
