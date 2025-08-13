@@ -1,0 +1,4 @@
+bisection_steps: 9
+max_iterations_separating_planes: 1000
+max_separating_planes_per_iteration: 20
+num_particles: 800

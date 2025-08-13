@@ -1,0 +1,6 @@
+ray_search_num_steps: 50
+num_particles_to_walk_towards: 25
+
+max_iterations_separating_planes: 999
+only_walk_toward_collisions: False
+
