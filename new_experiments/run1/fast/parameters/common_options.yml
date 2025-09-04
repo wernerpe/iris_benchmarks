@@ -1,0 +1,30 @@
+num_particles: 100
+tau: 0.5
+delta: 0.1
+epsilon: 0.1
+max_iterations: 1
+max_iterations_separating_planes: 500
+max_separating_planes_per_iteration: 5
+verbose: false
+configuration_space_margin: 0.01
+remove_all_collisions_possible: false
+require_sample_point_is_contained: true
+mixing_steps: 10
+
+alg_opts:
+  iris_zo:
+    bisection_steps: 9
+  
+  iris_np2_ray:
+    num_particles_to_walk_towards: 50
+    only_walk_toward_collisions: false
+    ray_search_num_steps: 20
+
+  iris_np:
+    configuration_space_margin: 0.01
+    iteration_limit: 1
+    num_additional_constraint_infeasible_samples: 1
+    num_collision_infeasible_samples: 1
+    require_sample_point_is_contained: true
+    #relative_termination_threshold: 0.001
+    #termination_threshold: 0.02

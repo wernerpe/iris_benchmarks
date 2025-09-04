@@ -1,0 +1,22 @@
+[tool.poetry]
+version = "0.1.0"
+name = "iris_environments"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+numpy = "^2.0.0"
+ipywidgets = "8.1.2"
+matplotlib = "^3.10.3"
+jupyter = "^1.1.1"
+cspace_utils = {git = "git@github.com:wernerpe/cspace_utils.git", rev = "a75593b84ade4a360876f2c3dc5b731e55f643d6"}
+#drake = {path = "/home/peter/gitcspace/fastirisjournal/drake/drake-build/install/lib/python3.10/site-packages", develop = true}
+#drake is added via activate script
+#export PYTHONPATH=/home/peter/gitcspace/fastirisjournal/drake/drake-build/install/lib/python3.10/site-packages:${PYTHONPATH}
+
+[tool.pylsp-mypy]
+enabled = true
+
+[tool.pyright]
+extraPaths = [
+    "/home/peter/gitcspace/fastirisjournal/drake/drake-build/install/lib/python3.10/site-packages"
+]

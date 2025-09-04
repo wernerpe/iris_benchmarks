@@ -120,6 +120,11 @@ def run_custom_experiment(env_name,
                'volumes': volumes, 
                'fraction_in_collision': fraction_in_collision,
                'num_faces': num_faces}
+    print(f""" RES {env_name}: 
+avg time {np.mean(times):.3f} 
+vol {np.mean(volumes):.3f} 
+hyp {np.mean([r.A().shape[0] for r in regions])} 
+frac in col {np.mean(fraction_in_collision):3f}""")
     return results
 
 
@@ -185,11 +190,11 @@ def evaluate_regions(regions: List[HPolyhedron],
             samples.append(prev)
         col_free = col_checker.CheckConfigsCollisionFree(np.array(samples), parallelize=True)
         fraction_in_collision.append(np.sum(1-1.0*np.array(col_free))/Ns)
-    print('calculating volumes')
-    if regions[0].ambient_dimension() >=14:
-        volumes = [r.MaximumVolumeInscribedEllipsoid().CalcVolume() for r in regions]
-    else:
-        volumes = [r.CalcVolumeViaSampling(gen, 0.001, int(1e7)).volume for r in regions]
+    print('calculating volumes of inscribed ellipsoids')
+    #if regions[0].ambient_dimension() >=14:
+    volumes = [r.MaximumVolumeInscribedEllipsoid().CalcVolume() for r in regions]
+    # else:
+    #     volumes = [r.CalcVolumeViaSampling(gen, 0.001, int(1e7)).volume for r in regions]
     return volumes, fraction_in_collision, num_faces 
 
 def get_experiment_name(env_name, config=None, settings= 'default'):

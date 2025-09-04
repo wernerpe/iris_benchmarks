@@ -10,3 +10,6 @@ Setup
 4. Run `python run_iris_benchmarks_custom.py`. Make sure to set the correct experiment and configuration.
 
 An example is included for fast iris
+
+
+export PYTHONPATH=/home/peter/gitcspace/fastirisjournal/drake/drake-build/install/lib/python3.10/site-packages:${PYTHONPATH}
