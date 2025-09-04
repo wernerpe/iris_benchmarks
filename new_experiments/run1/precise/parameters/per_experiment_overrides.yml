@@ -1,0 +1,32 @@
+3DOFFLIPPER:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 7
+5DOFUR3:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 6
+6DOFUR3:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 4
+7DOFIIWA:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 7
+7DOF4SHELVES:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 20
+7DOFBINS:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 10
+14DOFIIWAS:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 7
+15DOFALLEGRO:
+  alg_opts:
+    iris_np:
+      num_collision_infeasible_samples: 1

@@ -5,13 +5,13 @@ from utils import import_function_with_spec
 from benchmarks.helpers import run_custom_experiment
 
 experiment_name = 'run1'
-settings = 'fast'
+settings = 'precise'
 with open(f"new_experiments/{experiment_name}/experiment_opts.yml", 'r') as f:
     experiment_opts = yaml.safe_load(f)
 num_trials = 10#experiment_opts['num_trials']
 
 algs = ['iris_zo', 'iris_np', 'iris_np2_greedy', 'iris_np2_ray']
-alg = algs[3]
+alg = algs[1]
 get_iris_handle = import_function_with_spec(f'{alg}_factory', 'get_iris_handle',
                                             f'new_experiments/{alg}_factory.py')
 

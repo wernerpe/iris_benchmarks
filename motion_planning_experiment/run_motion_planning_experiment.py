@@ -11,13 +11,13 @@ from functools import partial
 from typing import Dict
 
 import sys
-sys.path.insert(0,'/home/rebecca/Documents/code/fork_drake/drake-build/install/lib/python3.10/site-packages')
+#sys.path.insert(0,'/home/rebecca/Documents/code/fork_drake/drake-build/install/lib/python3.10/site-packages')
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
 from iris_environments.environments import env_names, get_environment_builder, get_robot_instance_names
 
 import numpy as np
-import pydot
+#import pydot
 from IPython.display import SVG, display
 from pydrake.all import (
     Context,
@@ -30,7 +30,7 @@ from pydrake.all import (
     SceneGraph,
     SceneGraphCollisionChecker,
     RandomGenerator,
-    IrisNp2Options, IrisNp2SamplingStrategy, IrisNp2,
+    IrisNp2Options, IrisNp2,
     IrisZo,
     IrisZoOptions,
     GurobiSolver,
@@ -122,9 +122,10 @@ target_q = ellipsoids[parameters["vertex_sequence"][-1]].center()
 
 
 ray_options = IrisNp2Options()
-ray_options.sampling_strategy = IrisNp2SamplingStrategy.kRaySampler
+ray_options.sampling_strategy = "ray"
+ray_options.ray_sampler_options = ...
 greedy_options = IrisNp2Options()
-greedy_options.sampling_strategy = IrisNp2SamplingStrategy.kGreedySampler
+greedy_options.sampling_strategy = "greedy"
 zo_options = IrisZoOptions()
 
 for k in parameters.keys():
