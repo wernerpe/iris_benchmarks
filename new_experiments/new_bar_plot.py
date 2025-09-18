@@ -237,6 +237,53 @@ def create_bar_plots(data, env_names, algs, settings_name):
             major_ticks = [tick for tick in all_major_ticks if ylim[0] + ax_tol <= tick <= ylim[1] - ax_tol]
             
             fig.add_subplot(ax)
+            if len(major_ticks) > 1:
+                ticks_to_label = [major_ticks[0], major_ticks[-1]]
+                any_major = True
+                any_minor = False
+            elif len(minor_ticks) < 2:
+                print("No labels!")
+                ticks_to_label = []
+                any_major = False
+                any_minor = False
+            elif len(major_ticks) < 1:
+                ticks_to_label = [np.min(minor_ticks), np.max(minor_ticks)]
+                any_major = False
+                any_minor = True
+            elif np.max(minor_ticks) / major_ticks[0] > major_ticks[0] / np.min(minor_ticks):
+                ticks_to_label = [major_ticks[0], np.max(minor_ticks)]
+                any_major = True
+                any_minor = True
+            else:
+                ticks_to_label = [np.min(minor_ticks), major_ticks[0]]
+                any_major = True
+                any_minor = True
+            print(ticks_to_label)
+            ax.set_yticks(ticks_to_label, minor=True)
+            ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useOffset=False))
+            ax.yaxis.set_minor_formatter(ticker.ScalarFormatter(useOffset=False))
+            ax.yaxis.get_major_formatter().set_scientific(False)
+            ax.yaxis.get_minor_formatter().set_scientific(False)
+            # ax.set_yticklabels([f'asdffds{tick:.1f}' for tick in ticks_to_label])
+            # ax.get_xaxis().set_major_formatter(ticker.ScalarFormatter())
+            # ax.set_yticklabels(["a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f"])
+            # ax.set_yticks()
+
+            minor_labels = [''] * len(all_minor_ticks)
+            major_labels = [''] * len(all_major_ticks)
+
+            for i in range(len(all_minor_ticks)):
+                if all_minor_ticks[i] in ticks_to_label:
+                    # minor_labels[i] = f'{all_minor_ticks[i]:.1f}'
+                    minor_labels[i] = f'{all_minor_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+                    # minor_labels[i] = str(all_minor_ticks[i])
+            for i in range(len(all_major_ticks)):
+                if all_major_ticks[i] in ticks_to_label:
+                    # major_labels[i] = f'{all_major_ticks[i]:.1f}'
+                    major_labels[i] = f'{all_major_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+                    # major_labels[i] = str(all_major_ticks[i])
+            ax.set_yticklabels(major_labels, minor=False)
+            #ax.set_yticklabels(minor_labels, minor=True)
         
         # Add outer axis for the statistic title
         ax_outer = fig.add_subplot(outer_grid[statid])

@@ -195,7 +195,7 @@ def generate_latex_table(data, env_names, algs, settings_name):
 def main():
     # Configuration
     experiment_name = 'run1'
-    settings = 'fast'
+    settings = 'precise'
     algs = ['iris_np', 'iris_zo','iris_np2_greedy', 'iris_np2_ray']
     
     # You'll need to define your env_names list here
@@ -218,18 +218,18 @@ def main():
     print(latex_table)
     print("="*80)
 
-    time_zo = np.mean([data[en]['iris_zo']['mean_stats']['time'] for en in env_names])
-    time_np = np.mean([data[en]['iris_np']['mean_stats']['time'] for en in env_names])
-    time_greedy = np.mean([data[en]['iris_np2_greedy']['mean_stats']['time'] for en in env_names])
-    time_ray = np.mean([data[en]['iris_np2_ray']['mean_stats']['time'] for en in env_names])
+    time_zo = np.array([data[en]['iris_zo']['mean_stats']['time'] for en in env_names])
+    time_np = np.array([data[en]['iris_np']['mean_stats']['time'] for en in env_names])
+    time_greedy = np.array([data[en]['iris_np2_greedy']['mean_stats']['time'] for en in env_names])
+    time_ray = np.array([data[en]['iris_np2_ray']['mean_stats']['time'] for en in env_names])
     
-    hyp_zo = np.mean([data[en]['iris_zo']['mean_stats']['num_faces'] for en in env_names])
-    hyp_np = np.mean([data[en]['iris_np']['mean_stats']['num_faces'] for en in env_names])
-    hyp_greedy = np.mean([data[en]['iris_np2_greedy']['mean_stats']['num_faces'] for en in env_names])
-    hyp_ray = np.mean([data[en]['iris_np2_ray']['mean_stats']['num_faces'] for en in env_names])
+    hyp_zo = np.array([data[en]['iris_zo']['mean_stats']['num_faces'] for en in env_names])
+    hyp_np = np.array([data[en]['iris_np']['mean_stats']['num_faces'] for en in env_names])
+    hyp_greedy = np.array([data[en]['iris_np2_greedy']['mean_stats']['num_faces'] for en in env_names])
+    hyp_ray = np.array([data[en]['iris_np2_ray']['mean_stats']['num_faces'] for en in env_names])
     
-    print(f" zo speedup {time_np/time_zo} greedy speedup {time_np/time_greedy} ray speedup {time_np/time_ray}")
-    print(f" zo face_red {hyp_np/hyp_zo} greedy face_red {hyp_np/hyp_greedy} ray face_red {hyp_np/hyp_ray}")
+    print(f" zo speedup {np.mean(time_np/time_zo)} greedy speedup {np.mean(time_np/time_greedy)} ray speedup {np.mean(time_np/time_ray)}")
+    print(f" zo face_red {np.mean(hyp_np/hyp_zo)} greedy face_red {np.mean(hyp_np/hyp_greedy)} ray face_red {np.mean(hyp_np/hyp_ray)}")
 
     # Optionally save to file
     output_file = f"new_experiments/{experiment_name}/{settings}_table.tex"
