@@ -222,7 +222,7 @@ def create_bar_plots(data, env_names, algs, settings_name):
                           )
             
             ax.set_yscale('log')
-            ax.set_xlabel(paper_names.get(env_name, env_name), fontsize=11, labelpad=0.5)
+            ax.set_xlabel(paper_names.get(env_name, env_name), fontsize=11, labelpad=8)
             ax.tick_params(axis='y', which='both', labelrotation=50, labelsize=11, pad=0)
             ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.5, zorder=-10, axis="y")
             ax.grid(True, which='minor', color='gray', linestyle='-', linewidth=0.5, alpha=0.3, zorder=0, axis="y")
@@ -266,9 +266,9 @@ def create_bar_plots(data, env_names, algs, settings_name):
             ax.yaxis.get_major_formatter().set_scientific(False)
             ax.yaxis.get_minor_formatter().set_scientific(False)
             # ax.set_yticklabels([f'asdffds{tick:.1f}' for tick in ticks_to_label])
-            # ax.get_xaxis().set_major_formatter(ticker.ScalarFormatter())
+            #ax.get_xaxis().set_major_formatter(ticker.ScalarFormatter())
             # ax.set_yticklabels(["a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f"])
-            #ax.set_yticks()
+            ax.set_xticks([])
 
             minor_labels = [''] * len(all_minor_ticks)
             major_labels = [''] * len(all_major_ticks)
@@ -343,7 +343,7 @@ def create_bar_plots(data, env_names, algs, settings_name):
 def main():
     # Configuration
     experiment_name = 'run1'
-    settings = 'fast'
+    settings = 'precise'
     algs = ['iris_np', 'iris_zo','iris_np2_greedy', 'iris_np2_ray']
     
     # You'll need to define your env_names list here
