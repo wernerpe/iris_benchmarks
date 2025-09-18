@@ -227,16 +227,18 @@ def create_bar_plots(data, env_names, algs, settings_name):
             ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.5, zorder=-10, axis="y")
             ax.grid(True, which='minor', color='gray', linestyle='-', linewidth=0.5, alpha=0.3, zorder=0, axis="y")
             
+            ax.set_yscale('log')
+
             # Handle tick formatting like in original code
             all_minor_ticks = ax.get_yticks(minor=True)
             all_major_ticks = ax.get_yticks(minor=False)
             ylim = ax.get_ylim()
             ax_tol = 0
-            
+
             minor_ticks = [tick for tick in all_minor_ticks if ylim[0] + ax_tol <= tick <= ylim[1] - ax_tol]
             major_ticks = [tick for tick in all_major_ticks if ylim[0] + ax_tol <= tick <= ylim[1] - ax_tol]
-            
-            fig.add_subplot(ax)
+
+            # Determine which ticks to label (your existing logic)
             if len(major_ticks) > 1:
                 ticks_to_label = [major_ticks[0], major_ticks[-1]]
                 any_major = True
@@ -258,49 +260,48 @@ def create_bar_plots(data, env_names, algs, settings_name):
                 ticks_to_label = [np.min(minor_ticks), major_ticks[0]]
                 any_major = True
                 any_minor = True
+
             print(ticks_to_label)
-            # ax.set_yticklabels(ticks_to_label, minor=True)
-            ax.set_yticks(ticks_to_label, minor=True)
+
+            # Set up all ticks to be visible
+            ax.tick_params(axis='y', which='major', length=6, width=1, direction='out')
+            ax.tick_params(axis='y', which='minor', length=3, width=0.5, direction='out')
+
+            # Create labels - empty strings for unlabeled ticks
+            major_labels = [''] * len(all_major_ticks)
+            minor_labels = [''] * len(all_minor_ticks)
+
+            # Only add labels for the selected ticks
+            for i in range(len(all_major_ticks)):
+                if all_major_ticks[i] in ticks_to_label:
+                    major_labels[i] = f'{all_major_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+
+            for i in range(len(all_minor_ticks)):
+                if all_minor_ticks[i] in ticks_to_label:
+                    minor_labels[i] = f'{all_minor_ticks[i]:.1f}'.rstrip('0').rstrip('.')
+
+            # Apply the labels
+            ax.set_yticklabels(major_labels, minor=False)
+            ax.set_yticklabels(minor_labels, minor=True)
+
+            # Set formatters
             ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useOffset=False))
             ax.yaxis.set_minor_formatter(ticker.ScalarFormatter(useOffset=False))
             ax.yaxis.get_major_formatter().set_scientific(False)
             ax.yaxis.get_minor_formatter().set_scientific(False)
-            # ax.set_yticklabels([f'asdffds{tick:.1f}' for tick in ticks_to_label])
-            # ax.get_xaxis().set_major_formatter(ticker.ScalarFormatter())
-            # ax.set_yticklabels(["a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f", "a", "b","c","d","e", "f"])
-            #ax.set_yticks()
 
-            minor_labels = [''] * len(all_minor_ticks)
-            major_labels = [''] * len(all_major_ticks)
-
-            for i in range(len(all_minor_ticks)):
-                if all_minor_ticks[i] in ticks_to_label:
-                    # minor_labels[i] = f'{all_minor_ticks[i]:.1f}'
-                    minor_labels[i] = f'{all_minor_ticks[i]:.1f}'.rstrip('0').rstrip('.')
-                    # minor_labels[i] = str(all_minor_ticks[i])
-            for i in range(len(all_major_ticks)):
-                if all_major_ticks[i] in ticks_to_label:
-                    # major_labels[i] = f'{all_major_ticks[i]:.1f}'
-                    major_labels[i] = f'{all_major_ticks[i]:.1f}'.rstrip('0').rstrip('.')
-                    # major_labels[i] = str(all_major_ticks[i])
-
-            minor_labels = []
-            for tick in all_minor_ticks:
-                if tick in ticks_to_label:
-                    minor_labels.append(f'{tick:.1f}'.rstrip('0').rstrip('.'))
-                else:
-                    minor_labels.append('')
-            ax.set_yticklabels(major_labels, minor=False)
-            from matplotlib.ticker import LogLocator
-            ax.yaxis.set_minor_locator(LogLocator(subs='all'))
-            ax.set_yticklabels(minor_labels, minor=True)
-        
+            # Continue with your existing code for xlabel, grid, etc.
+            ax.set_xlabel(paper_names.get(env_name, env_name), fontsize=11, labelpad=0.5)
+            ax.tick_params(axis='y', which='both', labelrotation=50, labelsize=11, pad=0)
+            ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.5, zorder=-10, axis="y")
+            ax.grid(True, which='minor', color='gray', linestyle='-', linewidth=0.5, alpha=0.3, zorder=0, axis="y")
+            
         # Add outer axis for the statistic title
         ax_outer = fig.add_subplot(outer_grid[statid])
         ax_outer.set_title(f"{settings_name} settings: {axis_labels[k]}", 
                           pad=5, fontweight='bold', fontsize=12)
         ax_outer.axis('off')
-        
+
     plt.tight_layout()
     
     if do_legend:
@@ -343,7 +344,7 @@ def create_bar_plots(data, env_names, algs, settings_name):
 def main():
     # Configuration
     experiment_name = 'run1'
-    settings = 'fast'
+    settings = 'precise'
     algs = ['iris_np', 'iris_zo','iris_np2_greedy', 'iris_np2_ray']
     
     # You'll need to define your env_names list here
