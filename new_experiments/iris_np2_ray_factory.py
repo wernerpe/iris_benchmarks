@@ -22,6 +22,11 @@ def get_iris_handle(env_name,
         if k !="alg_opts":
             setattr(common_opts, k, common_settings[k])
     
+    if 'iris_np2_ray' in common_settings['alg_opts'].keys():
+        for k in common_settings['alg_opts']['iris_np2_ray']:
+            if hasattr(common_opts, k):
+                setattr(common_opts, k, common_settings['alg_opts']['iris_np2_ray'][k])
+
     iris_opts = pd.IrisNp2Options()
     iris_opts.sampled_iris_options = common_opts
     iris_opts.sampling_strategy = "ray"
@@ -29,7 +34,8 @@ def get_iris_handle(env_name,
     ray_opts = pd.RaySamplerOptions()
     ray_settings = common_settings["alg_opts"]["iris_np2_ray"]
     for k in ray_settings.keys():
-        setattr(ray_opts, k, ray_settings[k])
+        if hasattr(ray_opts, k):
+            setattr(ray_opts, k, ray_settings[k])
     iris_opts.ray_sampler_options = ray_opts
 
     rob_names = get_robot_instance_names(env_name)

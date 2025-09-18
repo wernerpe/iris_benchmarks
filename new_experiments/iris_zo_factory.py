@@ -22,7 +22,13 @@ def get_iris_handle(env_name,
     for k in common_settings.keys():
         if k !="alg_opts":
             setattr(common_opts, k, common_settings[k])
-    
+
+    if 'iris_zo' in common_settings['alg_opts'].keys():
+        for k in common_settings['alg_opts']['iris_zo']:
+            if hasattr(common_opts, k):
+                print(f"######################### iris zo override {k}")
+                setattr(common_opts, k, common_settings['alg_opts']['iris_zo'][k])
+
     iris_opts = pd.IrisZoOptions()
     iris_opts.bisection_steps = common_settings['alg_opts']['iris_zo']['bisection_steps']
     iris_opts.sampled_iris_options = common_opts

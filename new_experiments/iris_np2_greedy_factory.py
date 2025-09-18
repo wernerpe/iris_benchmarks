@@ -22,6 +22,11 @@ def get_iris_handle(env_name,
         if k !="alg_opts":
             setattr(common_opts, k, common_settings[k])
     
+    if 'iris_np2_greedy' in common_settings['alg_opts'].keys():
+        for k in common_settings['alg_opts']['iris_np2_greedy']:
+            if hasattr(common_opts, k):
+                setattr(common_opts, k, common_settings['alg_opts']['iris_np2_greedy'][k])
+
     iris_opts = pd.IrisNp2Options()
     iris_opts.sampled_iris_options = common_opts
     iris_opts.sampling_strategy = "greedy"

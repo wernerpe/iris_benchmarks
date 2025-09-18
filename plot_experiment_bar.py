@@ -28,8 +28,8 @@ for env_name in env_names:
 # seed_nums["15DOFALLEGRO"] = [7]
 
 paper_names = {}
-paper_names["5DOFUR3"] = "UR3"
 paper_names["3DOFFLIPPER"] = "Flipper"
+paper_names["5DOFUR3"] = "UR3"
 paper_names["6DOFUR3"] = "UR3Wrist"
 paper_names["7DOFIIWA"] = "IIWAShelf"
 paper_names["7DOF4SHELVES"] = "4Shelves"

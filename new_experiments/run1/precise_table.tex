@@ -1,0 +1,26 @@
+\begin{table*}
+\centering
+\begin{minipage}{1\linewidth}
+        \resizebox{\linewidth}{!}{
+\begin{tabular}{c l cccc | cccc | cccc | cccc}
+\hline
+\multirow{2}{*}{}&\multirow{2}{*}{Environment} & \multicolumn{4}{c}{Time [s]} & \multicolumn{4}{c}{Num Hyperplanes} & \multicolumn{4}{c}{Rel Volume} & \multicolumn{4}{c}{Frac in collision} \\
+ &&NP & ZO & Greedy & Ray & NP & ZO & Greedy & Ray & NP & ZO & Greedy & Ray & NP & ZO & Greedy & Ray \\
+\hline
+\multirow{8}{*}{\rotatebox[]{90}{\textbf{Precise}}\;} 
+&\texttt{Flipper} &0.988 & 0.169 & \textbf{0.077} & 0.144 & 26 & 17.5 & 14.3 & \textbf{14.1} & 1.000 & 0.565 & 1.093 & \textbf{1.119} & 0.003 & 0.001 & 0.001 & 0.001\\
+&\texttt{UR3} &5.253 & 0.267 & \textbf{0.134} & 0.368 & 52.8 & 39.8 & 29.4 & \textbf{28.3} & 1.000 & 0.616 & 1.584 & \textbf{1.848} & 0.001 & 0.002 & 0.001 & 0.003\\
+&\texttt{UR3Wrist} &4.517 & 0.312 & \textbf{0.165} & 0.432 & 62.4 & 45.5 & 33.1 & \textbf{31.6} & 1.000 & 0.462 & 3.565 & \textbf{4.023} & 0.002 & 0.003 & 0.002 & 0.003\\
+&\texttt{IIWAShelf} &10.800 & 0.991 & \textbf{0.596} & 1.178 & 126 & 77.3 & 41.7 & \textbf{39} & 1.000 & 0.498 & \textbf{1.849} & 1.839 & 0.006 & 0.003 & 0.002 & 0.004\\
+&\texttt{4Shelves} &24.054 & 0.818 & \textbf{0.392} & 1.002 & 86.6 & 69.6 & 40.1 & \textbf{35.9} & 1.000 & 0.270 & 2.735 & \textbf{3.398} & 0.007 & 0.003 & 0.002 & 0.003\\
+&\texttt{IIWABins} &15.278 & 0.821 & \textbf{0.710} & 0.971 & 129 & 88.3 & 43.3 & \textbf{38.1} & 1.000 & 0.584 & \textbf{2.072} & 1.995 & 0.003 & 0.003 & 0.003 & 0.004\\
+&\texttt{2IIWAs} &214.238 & 27.455 & \textbf{2.642} & 9.191 & 396 & 512 & 94.8 & \textbf{86} & 1.000 & 0.002 & \textbf{15.758} & 13.382 & 0.004 & 0.005 & 0.003 & 0.006\\
+&\texttt{Allegro} &2.214 & 3.703 & \textbf{0.214} & 0.462 & 75.4 & 210 & 45.1 & \textbf{42.9} & 1.000 & 0.011 & 2.604 & \textbf{3.181} & 0.001 & 0.005 & 0.001 & 0.003\\
+\hline
+\end{tabular}
+}
+\end{minipage}
+\vspace{0.2cm}
+\caption{New experiments}
+\label{tab:results}
+\end{table*}

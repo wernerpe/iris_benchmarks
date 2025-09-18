@@ -1,0 +1,1 @@
+pip install --force-reinstall --no-deps ../../dev/csdecomp/bazel-bin/csdecomp/src/pybind/pycsdecomp/pycsdecomp-0.1-cp310-none-manylinux2014_x86_64.whl

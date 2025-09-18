@@ -11,13 +11,18 @@ with open(f"new_experiments/{experiment_name}/experiment_opts.yml", 'r') as f:
 num_trials = 10#experiment_opts['num_trials']
 
 algs = ['iris_zo', 'iris_np', 'iris_np2_greedy', 'iris_np2_ray']
-alg = algs[1]
+alg = algs[3]
 get_iris_handle = import_function_with_spec(f'{alg}_factory', 'get_iris_handle',
                                             f'new_experiments/{alg}_factory.py')
 
-
+import os
 for env_name in env_names[1:]:
     print('#'*20+env_name+'#'*20)
+    run_name = f"new_experiments/{experiment_name}/{settings}/{alg}/{env_name}.pkl"
+    if os.path.exists(run_name):
+        print("not recompting")
+        print(run_name)
+        continue
     plant_builder = get_environment_builder(env_name)
     plant, scene_graph, diagram, diagram_context, plant_context, _ = plant_builder(usemeshcat=False)
     

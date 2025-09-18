@@ -1,4 +1,4 @@
-experiment_name = "precise_parameters_fewer_zo_particles"
+experiment_name = "precise_parameters_initial"
 
 import contextlib
 import io
@@ -99,7 +99,12 @@ ray_parameters_path = experiment_path + "/ray_parameters.yml"
 with open(ray_parameters_path, 'r') as f:
     ray_parameters = yaml.safe_load(f)
 
-ray_sampler_parameters_path = experiment_path + "/ray_sampler_parameters.yml"
+np_parameters_path = experiment_path + "/np_parameters.yml"
+
+with open(np_parameters_path, 'r') as f:
+    np_parameters = yaml.safe_load(f)
+
+# ray_sampler_parameters_path = experiment_path + "/ray_sampler_parameters.yml"
 
 
 env_name = '3DOFFLIPPER'
@@ -119,14 +124,15 @@ for data in ellipsoid_data:
 
 source_q = ellipsoids[parameters["vertex_sequence"][0]].center()
 target_q = ellipsoids[parameters["vertex_sequence"][-1]].center()
-
+import pydrake.all as pd
 
 ray_options = IrisNp2Options()
 ray_options.sampling_strategy = "ray"
-ray_options.ray_sampler_options = ...
 greedy_options = IrisNp2Options()
 greedy_options.sampling_strategy = "greedy"
 zo_options = IrisZoOptions()
+
+np_options = IrisOptions()
 
 for k in parameters.keys():
     if k!='num_trials_iris' and k!='num_trials_optimizer'  and k!='num_knots' and k!='solver' and k!='vertex_sequence':
@@ -136,6 +142,9 @@ for k in parameters.keys():
 
 for k in greedy_parameters.keys():
     setattr(greedy_options.sampled_iris_options, k, greedy_parameters[k])
+
+for k in np_parameters.keys():
+    setattr(np_options, k, np_parameters[k])
 
 for k in zo_parameters.keys():
     if hasattr(zo_options, k):
@@ -226,8 +235,8 @@ domain = HPolyhedron.MakeBox(plant.GetPositionLowerLimits(),
 # greedy_path_costs = []
 # zo_path_costs = []
 
-algs = ["ray", "greedy", "zo"]
-options = [ray_options, greedy_options, zo_options]
+algs = ["np", "ray", "greedy", "zo"]
+options = [np_options, ray_options, greedy_options, zo_options]
 
 iris_times = np.zeros((len(algs), parameters["num_trials_iris"]))
 optimizer_times = np.zeros((len(algs), parameters["num_trials_iris"]))
@@ -236,15 +245,22 @@ path_costs = np.zeros((len(algs), parameters["num_trials_iris"]))
 
 for i_trial in range(parameters["num_trials_iris"]):
 
-    for i_alg in range(3):
-        options[i_alg].sampled_iris_options.random_seed = i_trial
+    for i_alg in range(len(algs)):
+        if algs[i_alg] =='np':
+            options[i_alg].random_seed = i_trial
+        else:
+            options[i_alg].sampled_iris_options.random_seed = i_trial
 
         regions = []
         t0 = time.time()
         n_faces = []
         for i, e in enumerate(ellipsoids):
             if algs[i_alg] == "zo":
-                 regions.append(IrisZo(checker, e, domain, options[i_alg]))
+                regions.append(IrisZo(checker, e, domain, options[i_alg]))
+            elif algs[i_alg] == 'np':
+                np_options.starting_ellipse = e
+                plant.SetPositions(plant_context, e.center())
+                regions.append(IrisInConfigurationSpace(plant, plant_context, np_options))
             else:
                 regions.append(IrisNp2(checker, e, domain, options[i_alg]))
             n_faces.append(len(regions[-1].b()))
