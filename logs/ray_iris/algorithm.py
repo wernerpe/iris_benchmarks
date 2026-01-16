@@ -45,6 +45,7 @@ def get_iris_handle(env_name,
     options.ray_sampler_options.ray_search_num_steps = settings["face_ray_steps"]
     options.sampled_iris_options.max_iterations = settings["iteration_limit"]
     options.ray_sampler_options.num_particles_to_walk_towards = settings["particle_batch_size"]
+    options.ray_sampler_options.only_walk_toward_collisions = settings["only_walk_toward_collisions"]
     options.sampled_iris_options.mixing_steps = settings["mixing_steps"]
     options.sampled_iris_options.require_sample_point_is_contained = settings["require_sample_point_is_contained"]
     options.sampled_iris_options.relative_termination_threshold = settings["relative_termination_threshold"]
